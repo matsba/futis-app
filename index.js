@@ -6,8 +6,12 @@ app.set('port', (process.env.PORT || 5000))
 
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.set('view engine', 'pug')
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname+'/index.html'));
+    res.render('index', {
+        title: 'Etusivu', 
+        })
 })
 
 app.listen(app.get('port'), () => {
