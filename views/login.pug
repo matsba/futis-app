@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    div.columns
+        h1 Kirjaudu sisään
+    div.columns
+        if loginErrorMsg
+            span(class="label label-error")= loginErrorMsg 
+        if regSuccesMsg
+            span(class="label label-succes")= regSuccesMsg 
+    div.columns
+        div.form-group
+            form(action='/login', method='POST')
+                label.form-label Käyttäjätunnus
+                input(type='text', name='username' class="form-input")
+                label.form-label Salasana
+                input(type='password', name='password' class="form-input")
+                input(type='submit', value='Kirjaudu', class='btn btn-primary')
+    div.columns
+        a(class='btn btn-link', href="/register") Rekisteröidy

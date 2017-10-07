@@ -1,12 +1,10 @@
-html
-    head   
-        title= 'MM futis veikkaus | ' + title
-        link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")/
-    body
-        div(class='container grid-lg')
+extends layout
+
+block content
             div(class='columns')
                 h1= 'MM futis veikkaus'
             div(class='columns')
-                p= 'Tervetuloa jälleen futisveikkauksen pariin!'
+                p= 'Tervetuloa, ' + username 
+                a(href='/logout')= '(Kirjaudu ulos)'
             div(class='columns')
                 img(src='2018_FIFA_WC.svg.png')/
