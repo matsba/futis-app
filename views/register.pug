@@ -1,22 +1,32 @@
 extends layout
 
 block content
-    div.columns
+    div(class='column col-12')
         h1 Rekisteröidy
-    div.columns
         if regErrorMsg
             span(class='label label-error')= regErrorMsg
-    div.columns
-        div.form-group
-            form(action='/register', method='POST')
-                label.form-label Käyttäjätunnus
-                input(type='text', name='username' class="form-input" required)
-                label.form-label Sähköposti
-                input(type='email', name='email' class="form-input" required)     
-                label.form-label Salasana
-                if pwdErrorMsg
-                    span(class='label label-error')= pwdErrorMsg
-                input(type='password', name='password' class="form-input" required)
-                label.form-label Salasana uudestaan
-                input(type='password', name='password2' class="form-input" required)
-                input(type='submit', value='Rekisteröidy', class='btn btn-primary')
+        if errors
+            dl
+                for error in errors
+                    dd(class='text-error')= error.msg
+    div(class='column')
+        div(class='column col-8')
+            div.form-group
+                form(action='/register', method='POST')
+                    label.form-label Käyttäjätunnus
+                    input(type='text', name='username' class="form-input" required)
+                    label.form-label Sähköposti
+                    input(type='email', name='email' class="form-input" required)     
+                    label.form-label Salasana
+                    if pwdErrorMsg
+                        span(class='label label-error')= pwdErrorMsg
+                    input(type='password', name='password' class="form-input" required)
+                    label.form-label Salasana uudestaan
+                    input(type='password', name='password2' class="form-input" required)
+                    input(type='submit', value='Rekisteröidy', class='btn btn-primary login-button')
+    div.divider-vert
+    div(class='column')
+        ul
+            li Käyttäjätunnusta käytetään kirjautumiseen
+            li Käyttäjätunnuksen tulee olla 5-20 merkkiä ja saa sisältää vain numeroita ja kirjaimia
+            li Salasanan tulee olla 5-20 merkkiä pitkä ja saa sisältää vain numeroita ja kirjaimia

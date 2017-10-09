@@ -2,6 +2,25 @@ html
     head   
         title= 'MM futis veikkaus'
         link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")/
+        link(rel="stylesheet" type="text/css" href="css/updates.css")/
+        link(rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css")/
     body
         div(class='container grid-lg')
-            block content
+            header.navbar
+                section.navbar-section
+                    a(href="/" class="navbar-brand mr-2")= 'Etusivu'
+                section.navbar-center
+                    span.logo-text= 'MM'
+                    img(src="img/logo-32.png")/
+                    span.logo-text= '2018'
+                section.navbar-section
+                    div(class="input-group input-inline")
+                        if username                            
+                            a(href="#" class='btn btn-primary input-group-btn')
+                                span(class="icon icon-people")
+                                span.nav-username= username
+                            a(href="/logout" class="btn btn-link input-group-btn")= 'Kirjaudu ulos'
+                        else
+                            a(href="/login" class="btn btn-primary input-group-btn")= 'Kirjaudu sisään'
+            div(class='columns')
+                block content

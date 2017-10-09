@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.3",
     "express": "^4.11.0",
     "express-session": "^1.15.6",
+    "express-validator": "^4.2.1",
     "knex": "^0.13.0",
     "pg": "^7.3.0",
     "pug": "^2.0.0-rc.4"
