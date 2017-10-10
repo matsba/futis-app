@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    div(class='column col-12')
+        h2 Hyväksy käyttäjiä
+        p  Hyväksy käyttäjiä jotka ovat rekisteröityneet
+        if userToApprove
+            form(action="/admin/approveUsers", method="post")
+                table(class='table table-striped')
+                    thead
+                        tr
+                            th Nimi
+                            th Sähköposti
+                            th Hyväksy
+                    for user in userToApprove
+                        tr
+                            td #{user.username}
+                            td #{user.email}
+                            td
+                                - var id = user.id
+                                input(type="checkbox" name= id)
+            
+                input(type='submit' value='Hyväksy' class='btn btn-primary login-button')
+        else
+            div.empty
+                p(class='empty-title h5') Ei käyttäjiä hyväksyttäväksi

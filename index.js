@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
     if(username){
         res.render('index', {'username' : username})
     } else {
-        res.redirect('/login')
+        res.render('login')
     }    
 })
 
@@ -55,8 +55,13 @@ app.post('/login', (req, res) => {
         var hash = user[0].password
 
         if(bcrypt.compareSync(password, hash)){
-            req.session.username = user[0].username
-            res.redirect('/')                
+
+            if(user[0].approved == true){
+                req.session.username = user[0].username
+                res.redirect('/')                
+            } else {
+                res.render('login', {'loginErrorMsg': 'Rekisteröintiäsi ei ole hyväksytty!'})
+            }
         } else {
             res.render('login', {'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!'})
         }  
@@ -131,6 +136,39 @@ app.post('/register', (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
+})
+
+app.get('/admin', (req, res) => {
+    if(req.session.username == 'admin'){
+
+        db.select('id', 'username', 'email', 'approved').from('users').where({approved: false}).then(notApprovedUsers => {
+            res.render('admin', {userToApprove: notApprovedUsers})
+        })        
+    } else {
+        res.render('index')
+    }
+})
+
+app.post('/admin/approveUsers', (req, res) => {
+
+    var idsToApprove = []
+    var r = req.body
+
+    for(var key in r){
+        if(r[key] == "on"){
+            idsToApprove.push(key)
+        }
+    }
+
+    if(idsToApprove){
+        db('users').whereIn('id', idsToApprove).update({approved: true}).on('query-response', function(response, obj, builder) {
+            console.log("Approved users with ids: " + idsToApprove)
+        }).then(() => {
+            res.redirect('/admin')
+        })
+    } else {
+        res.redirect('/admin')
+    }
 })
 
 app.listen(app.get('port'), () => {

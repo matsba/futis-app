@@ -1,5 +1,3 @@
--- This scropt can be used to make the database structure
-
 -- Table: public.users
 
 -- DROP TABLE public.users;
@@ -10,6 +8,7 @@ CREATE TABLE public.users
     username text COLLATE pg_catalog."default" NOT NULL,
     password text COLLATE pg_catalog."default" NOT NULL,
     email text COLLATE pg_catalog."default" NOT NULL,
+    approved boolean NOT NULL DEFAULT false,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT "Unique email" UNIQUE (email),
     CONSTRAINT "Unique username" UNIQUE (username)
