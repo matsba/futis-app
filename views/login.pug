@@ -3,11 +3,11 @@ extends layout
 block content
     div(class='column col-12')
         h1 Kirjaudu sisään
-        if loginErrorMsg
-            span(class="label label-error")= loginErrorMsg 
-        if regSuccesMsg
-            span(class="label label-success")= regSuccesMsg 
     div(class='column')
+        if loginErrorMsg
+            span(class="toast toast-error")= loginErrorMsg 
+        if regSuccesMsg
+            span(class="toast toast-success")= regSuccesMsg 
         div(class='column col-8')
             div(class='form-group')
                 form(action='/login', method='POST')

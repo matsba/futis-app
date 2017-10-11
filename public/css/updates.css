@@ -13,7 +13,7 @@
 }
 
 body {
-    background-image: url('../img/background.jpg');
+    background-image: url('/public/img/background.jpg');
     background-repeat:no-repeat;
     background-position: center center;
     background-color: transparent;
@@ -29,4 +29,10 @@ body {
 
 .login-button {
     margin-top: 1.4em;
+}
+
+.btn-primary.btn-danger {
+    background: #e85600;
+    border-color: #d25004;
+    color: #fff;
 }

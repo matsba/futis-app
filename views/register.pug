@@ -4,7 +4,7 @@ block content
     div(class='column col-12')
         h1 Rekisteröidy
         if regErrorMsg
-            span(class='label label-error')= regErrorMsg
+            span(class='toast toast-error')= regErrorMsg
         if errors
             dl
                 for error in errors

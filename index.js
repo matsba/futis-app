@@ -6,12 +6,12 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var bcrypt = require('bcryptjs')
 var expressValidator = require('express-validator')
+var moment = require('moment')
 var db  = require('./database/db')
 
 app.set('port', (process.env.PORT || 5000))
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, 'client')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.set('view engine', 'pug')
 
@@ -19,6 +19,8 @@ app.set('view engine', 'pug')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(expressValidator())
+
+app.locals.moment = require('moment');
 
 app.use(session({
     secret: 'keyboard cat',
@@ -106,7 +108,8 @@ app.post('/register', (req, res) => {
                 db.insert({
                     username: username,	
                     password: hash,	
-                    email: email	
+                    email: email,
+                    //dateRegistered: moment().format()	
                 })
                 .into('users')
                 .on('query-error', (err, obj) => {
@@ -142,10 +145,21 @@ app.get('/admin', (req, res) => {
     var username = req.session.username
 
     if(username == 'admin'){
+        res.render('admin/admin', {username: username})     
+    } else {
+        res.render('index')
+    }
+})
 
-        db.select('id', 'username', 'email', 'approved').from('users').where({approved: false}).then(notApprovedUsers => {
-            res.render('admin', {userToApprove: notApprovedUsers, username: username})
-        })        
+app.get('/admin/userManagement', (req, res) => {
+    var username = req.session.username
+
+    if(username == 'admin'){
+        db.select('id', 'username', 'email', 'dateRegistered', 'approved').from('users').where({approved: false}).then(notApprovedUsers => {
+            db.select('id', 'username', 'email', 'dateRegistered', 'approved').from('users').where({approved: true}).andWhereNot({username: 'admin'}).then(users =>{
+                res.render('admin/usermanagement', {usersToApprove: notApprovedUsers, users: users, username: username})
+            })  
+       })
     } else {
         res.render('index')
     }
@@ -166,12 +180,34 @@ app.post('/admin/approveUsers', (req, res) => {
         db('users').whereIn('id', idsToApprove).update({approved: true}).on('query-response', function(response, obj, builder) {
             console.log("Approved users with ids: " + idsToApprove)
         }).then(() => {
-            res.redirect('/admin')
+            res.redirect('/admin/userManagement')
         })
     } else {
-        res.redirect('/admin')
+        res.redirect('/admin/userManagement')
     }
 })
+
+app.post('/admin/removeUsers', (req, res) => {
+    
+        var idsToRemove = []
+        var r = req.body
+    
+        for(var key in r){
+            if(r[key] == "on"){
+                idsToRemove.push(key)
+            }
+        }
+    
+        if(idsToRemove){
+            db('users').whereIn('id', idsToRemove).del().on('query-response', function(response, obj, builder) {
+                console.log("Removed users with ids: " + idsToRemove)
+            }).then(() => {
+                res.redirect('/admin/userManagement')
+            })
+        } else {
+            res.redirect('/admin/userManagement')
+        }
+    })
 
 app.listen(app.get('port'), () => {
     console.log('App is running on port ', app.get('port'))
