@@ -139,10 +139,12 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    if(req.session.username == 'admin'){
+    var username = req.session.username
+
+    if(username == 'admin'){
 
         db.select('id', 'username', 'email', 'approved').from('users').where({approved: false}).then(notApprovedUsers => {
-            res.render('admin', {userToApprove: notApprovedUsers})
+            res.render('admin', {userToApprove: notApprovedUsers, username: username})
         })        
     } else {
         res.render('index')
