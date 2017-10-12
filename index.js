@@ -157,6 +157,48 @@ app.get('/user', (req, res) => {
     }
 })
 
+app.post('/user', (req, res) => {
+    req.checkBody('password').isLength({min: 5, max: 20}).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        console.log(errors)
+        res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+        return;
+    }
+
+    var username = req.session.username
+    var password = req.body.password
+    var password2 = req.body.password2
+
+    if (username) {
+        if (password && password === password2) {
+            var salt = bcrypt.genSaltSync(10)
+            var hash = bcrypt.hashSync(password, salt)
+
+            db('users')
+                .where({username: username})
+                .update({'password': hash})
+                .then(console.log('Password updated to database'))
+                .catch(err => {
+                    console.log('Catched error code:', err.code, ' (google more) \nError detail: ', err.detail)
+                    if (err) {
+                        errors = [{"msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu."}]
+                        res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+                    }
+                })
+            res.render('user', {'user': req.session, 'username': req.session.username, 'passwordUpdateMsg': 'Salasana päivitetty!'})
+        } else {
+            errors = [{"msg": "Salasanat eivät täsmänneet."}]
+            res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+        }
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/admin', (req, res) => {
     var username = req.session.username
 
