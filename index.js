@@ -41,6 +41,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
+    var username = req.session.username;
+    if (username) {
+        res.redirect('/')
+    }
     res.render('login')
 })
 
@@ -60,9 +64,10 @@ app.post('/login', (req, res) => {
 
             if(user[0].approved == true){
                 req.session.username = user[0].username
+                req.session.email = user[0].email
                 res.redirect('/')                
             } else {
-                res.render('login', {'loginErrorMsg': 'Rekisteröintiäsi ei ole hyväksytty!'})
+                res.render('login', {'loginErrorMsg': 'Admin ei ole hyväksynyt rekisteröintiäsi vielä!'})
             }
         } else {
             res.render('login', {'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!'})
@@ -74,6 +79,9 @@ app.post('/login', (req, res) => {
 
 //Register page
 app.get('/register', (req, res) => {
+    if (req.session.username) {
+        res.redirect('/')
+    }
     res.render('register')
 })
 
@@ -141,13 +149,21 @@ app.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
+app.get('/user', (req, res) => {
+    if (req.session.username) {
+        res.render('user', {'user': req.session, 'username': req.session.username})
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/admin', (req, res) => {
     var username = req.session.username
 
     if(username == 'admin'){
         res.render('admin/admin', {username: username})     
     } else {
-        res.render('index')
+        res.redirect('/')
     }
 })
 
@@ -161,7 +177,7 @@ app.get('/admin/userManagement', (req, res) => {
             })  
        })
     } else {
-        res.render('index')
+        res.redirect('/')
     }
 })
 
@@ -188,26 +204,26 @@ app.post('/admin/approveUsers', (req, res) => {
 })
 
 app.post('/admin/removeUsers', (req, res) => {
-    
-        var idsToRemove = []
-        var r = req.body
-    
-        for(var key in r){
-            if(r[key] == "on"){
-                idsToRemove.push(key)
-            }
+
+    var idsToRemove = []
+    var r = req.body
+
+    for(var key in r){
+        if(r[key] == "on"){
+            idsToRemove.push(key)
         }
-    
-        if(idsToRemove){
-            db('users').whereIn('id', idsToRemove).del().on('query-response', function(response, obj, builder) {
-                console.log("Removed users with ids: " + idsToRemove)
-            }).then(() => {
-                res.redirect('/admin/userManagement')
-            })
-        } else {
+    }
+
+    if(idsToRemove){
+        db('users').whereIn('id', idsToRemove).del().on('query-response', function(response, obj, builder) {
+            console.log("Removed users with ids: " + idsToRemove)
+        }).then(() => {
             res.redirect('/admin/userManagement')
-        }
-    })
+        })
+    } else {
+        res.redirect('/admin/userManagement')
+    }
+})
 
 app.listen(app.get('port'), () => {
     console.log('App is running on port ', app.get('port'))
