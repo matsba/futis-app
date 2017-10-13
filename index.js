@@ -41,6 +41,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
+    var username = req.session.username;
+    if (username) {
+        res.redirect('/')
+    }
     res.render('login')
 })
 
@@ -60,9 +64,10 @@ app.post('/login', (req, res) => {
 
             if(user[0].approved == true){
                 req.session.username = user[0].username
+                req.session.email = user[0].email
                 res.redirect('/')                
             } else {
-                res.render('login', {'loginErrorMsg': 'Rekisteröintiäsi ei ole hyväksytty!'})
+                res.render('login', {'loginErrorMsg': 'Admin ei ole hyväksynyt rekisteröintiäsi vielä!'})
             }
         } else {
             res.render('login', {'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!'})
@@ -74,6 +79,9 @@ app.post('/login', (req, res) => {
 
 //Register page
 app.get('/register', (req, res) => {
+    if (req.session.username) {
+        res.redirect('/')
+    }
     res.render('register')
 })
 
@@ -141,13 +149,63 @@ app.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
+app.get('/user', (req, res) => {
+    if (req.session.username) {
+        res.render('user', {'user': req.session, 'username': req.session.username})
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/user', (req, res) => {
+    req.checkBody('password').isLength({min: 5, max: 20}).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        console.log(errors)
+        res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+        return;
+    }
+
+    var username = req.session.username
+    var password = req.body.password
+    var password2 = req.body.password2
+
+    if (username) {
+        if (password && password === password2) {
+            var salt = bcrypt.genSaltSync(10)
+            var hash = bcrypt.hashSync(password, salt)
+
+            db('users')
+                .where({username: username})
+                .update({'password': hash})
+                .then(console.log('Password updated to database'))
+                .catch(err => {
+                    console.log('Catched error code:', err.code, ' (google more) \nError detail: ', err.detail)
+                    if (err) {
+                        errors = [{"msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu."}]
+                        res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+                    }
+                })
+            res.render('user', {'user': req.session, 'username': req.session.username, 'passwordUpdateMsg': 'Salasana päivitetty!'})
+        } else {
+            errors = [{"msg": "Salasanat eivät täsmänneet."}]
+            res.render('user', {'user': req.session, 'username': req.session.username, errors: errors})
+        }
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/admin', (req, res) => {
     var username = req.session.username
 
     if(username == 'admin'){
         res.render('admin/admin', {username: username})     
     } else {
-        res.render('index')
+        res.redirect('/')
     }
 })
 
@@ -161,7 +219,7 @@ app.get('/admin/userManagement', (req, res) => {
             })  
        })
     } else {
-        res.render('index')
+        res.redirect('/')
     }
 })
 
@@ -188,26 +246,26 @@ app.post('/admin/approveUsers', (req, res) => {
 })
 
 app.post('/admin/removeUsers', (req, res) => {
-    
-        var idsToRemove = []
-        var r = req.body
-    
-        for(var key in r){
-            if(r[key] == "on"){
-                idsToRemove.push(key)
-            }
+
+    var idsToRemove = []
+    var r = req.body
+
+    for(var key in r){
+        if(r[key] == "on"){
+            idsToRemove.push(key)
         }
-    
-        if(idsToRemove){
-            db('users').whereIn('id', idsToRemove).del().on('query-response', function(response, obj, builder) {
-                console.log("Removed users with ids: " + idsToRemove)
-            }).then(() => {
-                res.redirect('/admin/userManagement')
-            })
-        } else {
+    }
+
+    if(idsToRemove){
+        db('users').whereIn('id', idsToRemove).del().on('query-response', function(response, obj, builder) {
+            console.log("Removed users with ids: " + idsToRemove)
+        }).then(() => {
             res.redirect('/admin/userManagement')
-        }
-    })
+        })
+    } else {
+        res.redirect('/admin/userManagement')
+    }
+})
 
 app.listen(app.get('port'), () => {
     console.log('App is running on port ', app.get('port'))

@@ -1,0 +1,29 @@
+extends ./layout
+
+block content
+    div(class='column')
+        h1= user.username
+        div(class='column col-6')
+            p
+            dl
+                dt Sähköposti
+                dd #{user.email}
+                dt Rekisteröitynyt
+                dd #{moment(user.dateRegistered).format("D.M.YYYY, HH:mm")}
+    div.divider-vert
+    div(class='column')
+        h2 Päivitä salasanasi
+        if passwordUpdateMsg
+            span(class='toast toast-success')= passwordUpdateMsg
+        if errors
+            dl
+                for error in errors
+                    dd(class='text-error')= error.msg
+        form(action='/user', method='POST')
+            label.form-label Salasana
+            if pwdErrorMsg
+                span(class='label label-error')= pwdErrorMsg
+            input(type='password', name='password' class="form-input" required)
+            label.form-label Salasana uudestaan
+            input(type='password', name='password2' class="form-input" required)
+            input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')
