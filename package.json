@@ -16,6 +16,7 @@
     "express": "^4.11.0",
     "express-session": "^1.15.6",
     "express-validator": "^4.2.1",
+    "jquery-slim": "^3.0.0",
     "knex": "^0.13.0",
     "moment": "^2.19.0",
     "pg": "^7.3.0",
