@@ -2,7 +2,7 @@ extends layout
 
 block content
     div(class='column col-12')
-        if username == 'admin'
+        if user.username == 'admin'
             a(href='/admin' class='btn')= 'Admin työkalut'
     div(class='column col-12')
         p Tämä on etusivu

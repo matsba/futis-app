@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    div(class='column col-12')
+        ul(class="tab tab-block")
+            li(class="tab-item active")
+                a(href="/admin/gamesManagement") Pelien hallinta
+            li(class="tab-item ")
+                a(href="/admin/userManagement") Käyttäjien hallinta
+    div(class='column col-12')
+        h3.pt-2 Luo peli
+        p  Tässä voit luoda uusia pelejä
+        div(class='form-group col-6')
+            input(id="number_of_games" class='form-select' type="number" min="1" max="50" step="1" value ="24")
+            button(class='btn btn-primary' id='number_of_games_button' onClick='createGames()') Luo pelejä
+        div(class='column col-12')
+            form(action="/admin/createGames", method="post" id='create_games_form')
