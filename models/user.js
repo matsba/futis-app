@@ -18,8 +18,22 @@ exports.register = (username, password, email, callback) => {
         console.log('Inserted user to database: ' + username)
         return callback()
     })
-    .catch((error) =>  {
-        return callback(error)
+    .catch((err) =>  {
+        return callback(err)
+    })
+}
+
+exports.updatePassword = (username, password, callback) => {
+    
+    db('users')
+    .where({username: username})
+    .update({password: hashPassword(password)})
+    .then(() => {
+        console.log('Password updated to database')
+        return callback()
+    })
+    .catch(err => {
+        return callback(err)
     })
 }
 
@@ -45,4 +59,22 @@ exports.authenticate = (username, password, callback) => {
     .catch((err) => {
         return callback(null, err)
     })
+}
+
+exports.getUsersAsync = (approved = true) => {
+    const users = db.select('id', 'username', 'email', 'dateRegistered', 'approved')
+    .from('users')
+    .where({approved: approved})
+    .andWhereNot({username: 'admin'})
+    return users
+}
+
+exports.approveUsersAsync = (idsToApprove) => {
+    db('users').whereIn('id', idsToApprove).update({approved: true})
+    .catch((err) => {console.log(err)})
+}
+
+exports.removeUsersAsync = (idsToRemove) => {
+    db('users').whereIn('id', idsToRemove).del()
+    .catch((err) => {console.log(err)})
 }

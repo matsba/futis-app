@@ -1,15 +1,16 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
-//var auth = require('../middlewares/auth')
 var session = require('express-session')
 
 router.get('/login', (req, res) => {
 
-    if (req.session.user.username) {
+    if (req.session && req.session.user) {
+        res.locals.user = req.session.user        
         res.redirect('/')
+    } else {
+        res.render('user/login')
     }
-    res.render('user/login')
 })
 
 router.post('/login', (req, res) => {
@@ -22,30 +23,36 @@ router.post('/login', (req, res) => {
     var password = req.body.password
 
     User.authenticate(username, password, (user, err) => {
-        if(user){
+        if (user) {
             req.session.user = user
+            res.locals.user = req.session.user
             res.redirect('/')
         } else {
-            if(err == 'Not approved'){
-                res.render('user/login', {'loginErrorMsg': 'Admin ei ole hyväksynyt rekisteröintiäsi vielä!'})
-            } else if (err == "Authentication error"){
-                res.render('user/login', {'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!'})
+            if (err == 'Not approved') {
+                res.render('user/login', { 'loginErrorMsg': 'Admin ei ole hyväksynyt rekisteröintiäsi vielä!' })
+            } else if (err == "Authentication error") {
+                res.render('user/login', { 'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!' })
             } else {
-                res.render('user/login', {'loginErrorMsg': 'Kirjautuminen epäonnistui'})
+                res.render('user/login', { 'loginErrorMsg': 'Kirjautuminen epäonnistui' })
             }
         }
     })
 })
 
 router.get('/register', (req, res) => {
-    res.render('user/register')
+    if (req.session && req.session.user) {
+        res.locals.user = req.session.user        
+        res.render('user/register')
+    } else {
+        res.render('user/login')
+    }
 })
 
 router.post('/register', (req, res) => {
 
-    req.checkBody('password').isLength({min: 5, max: 20}).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('password').isLength({ min: 5, max: 20 }).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
     req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
-    req.checkBody('username').isLength({min: 5, max: 20}).withMessage('Käyttäjätunnuksen tulee olla 5-20 merkkiä')
+    req.checkBody('username').isLength({ min: 5, max: 20 }).withMessage('Käyttäjätunnuksen tulee olla 5-20 merkkiä')
     req.checkBody('username').isAlphanumeric().withMessage('Käyttäjätunnus saa sisältää vain numeroita ja kirjaimia')
     req.checkBody('email').isEmail().withMessage('Sähköposti väärässä muodossa')
 
@@ -61,28 +68,28 @@ router.post('/register', (req, res) => {
     var email = req.body.email
 
     if (errors) {
-        res.render('user/register', {errors: errors})
+        res.render('user/register', { errors: errors })
     } else {
-        if(password && username && email){
-            if(password == password2){
+        if (password && username && email) {
+            if (password == password2) {
                 User.register(username, password, email, (err) => {
-                    if(err){
+                    if (err) {
                         console.log('There was an error:', err.code, '\nError detail: ', err.detail)
 
                         if (err.code == 23505) {
-                            res.render('user/register', {'regErrorMsg': 'Käyttäjätunnus tai sähköposti on jo käytössä!'})
+                            res.render('user/register', { 'regErrorMsg': 'Käyttäjätunnus tai sähköposti on jo käytössä!' })
                         } else {
-                            res.render('user/register', {'regErrorMsg': 'Rekisteröinti epäonnistui. Yritä uudestaan!'})
+                            res.render('user/register', { 'regErrorMsg': 'Rekisteröinti epäonnistui. Yritä uudestaan!' })
                         }
                     } else {
-                        res.render('user/login', {'regSuccesMsg': 'Rekisteröinti onnistui'})                       
+                        res.render('user/login', { 'regSuccesMsg': 'Rekisteröinti onnistui' })
                     }
                 })
             } else {
-                res.render('user/register', {'pwdErrorMsg' : 'Salasanat eivät täsmää!'})
+                res.render('user/register', { 'pwdErrorMsg': 'Salasanat eivät täsmää!' })
             }
         } else {
-            res.render('user/register', {'regErrorMsg': 'Rekisteröinti epäonnistui. Yritä uudestaan!'})
+            res.render('user/register', { 'regErrorMsg': 'Rekisteröinti epäonnistui. Yritä uudestaan!' })
         }
     }
 })
@@ -90,58 +97,91 @@ router.post('/register', (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
+    delete res.locals.user
 })
 
 
-//KESKEN
 router.get('/user', (req, res) => {
-    if (req.session.username) {
-        res.render('user/user', {'user': req.session, 'username': req.session.username})
+    if (req.session && req.session.user) {
+        res.locals.user = req.session.user
+        res.render('user/user')
     } else {
         res.redirect('/user/login')
     }
 })
 
-router.post('/user', (req, res) => {
-    req.checkBody('password').isLength({min: 5, max: 20}).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
-    req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+router.post('/changePassword', (req, res) => {
 
-    var errors = req.validationErrors();
+    req.checkBody('oldPassword').isLength({ min: 5, max: 20 }).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('oldPassword').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+    req.checkBody('password').isLength({ min: 5, max: 20 }).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+    req.checkBody('password2').isLength({ min: 5, max: 20 }).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
+    req.checkBody('password2').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
+
+    let errors = req.validationErrors();
 
     if (errors) {
         console.log(errors)
-        res.render('user/user', {'user': req.session, 'username': req.session.username, errors: errors})
-        return;
+        res.render('user/user', { errors: errors })
+        return
     }
 
-    var username = req.session.username
+    var username = req.session.user.username
+    var oldPassword = req.body.oldPassword
     var password = req.body.password
     var password2 = req.body.password2
 
-    if (username) {
-        if (password && password === password2) {
-            var salt = bcrypt.genSaltSync(10)
-            var hash = bcrypt.hashSync(password, salt)
+    if (!username) return res.redirect('/user/login')
+    if (!oldPassword) return res.render('user/user', { oldPwdErrorMsg: "Täytä vanha salasana."})
 
-            db('users')
-                .where({username: username})
-                .update({'password': hash})
-                .then(console.log('Password updated to database'))
-                .catch(err => {
-                    console.log('Catched error code:', err.code, ' (google more) \nError detail: ', err.detail)
-                    if (err) {
-                        errors = [{"msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu."}]
-                        res.render('user/user', {'user': req.session, 'username': req.session.username, errors: errors})
-                    }
-                })
-            res.render('user/user', {'user': req.session, 'username': req.session.username, 'passwordUpdateMsg': 'Salasana päivitetty!'})
+    User.authenticate(username, password, (err) => {
+        if (err) return res.render('user/user', { oldPwdErrorMsg: 'Virheellinen salasana' })
+        if (password && password === password2) {
+            User.updatePassword(username, password, (err) => {
+                if (err) {
+                    console.log('There was an error:', err.code, '\nError detail: ', err.detail)
+                    errors = [{ "msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu." }]
+                    res.render('user/user', { errors: errors })
+                    return
+                }
+                res.render('user/user', { 'passwordUpdateMsg': 'Salasana päivitetty!' })
+            })
         } else {
             errors = [{"msg": "Salasanat eivät täsmänneet."}]
-            res.render('user/user', {'user': req.session, 'username': req.session.username, errors: errors})
+            res.render('user/user', {errors: errors})
         }
-    } else {
-        res.redirect('/user/login')
-    }
+    })
 })
+
+
+    // if (username) {
+    //     if(oldPassword) {
+    //         User.authenticate(username, password, (err) => {
+    //             if(err){
+    //                 let errors = 'Virheellinen salasana'
+    //                 res.render('user/user', { oldPwdErrorMsg: errors })
+    //                 return
+    //             }
+    //             if (password && password === password2) {
+    //                 User.updatePassword(username, password, (err) => {
+    //                     if (err) {
+    //                         console.log('There was an error:', err.code, '\nError detail: ', err.detail)
+    //                         errors = [{ "msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu." }]
+    //                         res.render('user/user', { errors: errors })
+    //                         return
+    //                     }                        
+    //                     res.render('user/user', { 'passwordUpdateMsg': 'Salasana päivitetty!' })
+    //                 })
+    //             } else {
+    //                 errors = [{"msg": "Salasanat eivät täsmänneet."}]
+    //                 res.render('user/user', {errors: errors})
+    //             }
+    //         })        
+    //     } 
+    // } else {
+    //     res.redirect('/user/login')
+    // }
+    //})
 
 module.exports = router

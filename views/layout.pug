@@ -19,7 +19,7 @@ html
                     span.logo-text= '2018'
                 section.navbar-section
                     div(class="input-group input-inline")
-                        if user.username                          
+                        if user && user.username                          
                             a(href="/user/user" class='btn btn-primary input-group-btn')
                                 span(class="icon icon-people")
                                 span.nav-username= user.username

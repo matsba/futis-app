@@ -8,6 +8,10 @@ block content
             li(class="tab-item active")
                 a(href="/admin/userManagement") Käyttäjien hallinta
     div(class='column col-12')
+        if errors
+            span(class='toast toast-error')= errors
+        if success
+            span(class='toast toast-success')= success
         h3.pt-2 Hyväksy käyttäjiä
         p  Hyväksy käyttäjiä jotka ovat rekisteröityneet
         if usersToApprove.length > 0
