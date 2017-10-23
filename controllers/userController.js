@@ -42,9 +42,9 @@ router.post('/login', (req, res) => {
 router.get('/register', (req, res) => {
     if (req.session && req.session.user) {
         res.locals.user = req.session.user        
-        res.render('user/register')
-    } else {
         res.render('user/login')
+    } else {
+        res.render('user/register')
     }
 })
 
@@ -100,7 +100,6 @@ router.get('/logout', (req, res) => {
     delete res.locals.user
 })
 
-
 router.get('/user', (req, res) => {
     if (req.session && req.session.user) {
         res.locals.user = req.session.user
@@ -153,35 +152,5 @@ router.post('/changePassword', (req, res) => {
         }
     })
 })
-
-
-    // if (username) {
-    //     if(oldPassword) {
-    //         User.authenticate(username, password, (err) => {
-    //             if(err){
-    //                 let errors = 'Virheellinen salasana'
-    //                 res.render('user/user', { oldPwdErrorMsg: errors })
-    //                 return
-    //             }
-    //             if (password && password === password2) {
-    //                 User.updatePassword(username, password, (err) => {
-    //                     if (err) {
-    //                         console.log('There was an error:', err.code, '\nError detail: ', err.detail)
-    //                         errors = [{ "msg": "Jokin meni nyt pieleen. Ota yhteys ylläpitoon, jos ongelma jatkuu." }]
-    //                         res.render('user/user', { errors: errors })
-    //                         return
-    //                     }                        
-    //                     res.render('user/user', { 'passwordUpdateMsg': 'Salasana päivitetty!' })
-    //                 })
-    //             } else {
-    //                 errors = [{"msg": "Salasanat eivät täsmänneet."}]
-    //                 res.render('user/user', {errors: errors})
-    //             }
-    //         })        
-    //     } 
-    // } else {
-    //     res.redirect('/user/login')
-    // }
-    //})
-
+   
 module.exports = router

@@ -10,8 +10,38 @@ block content
     div(class='column col-12')
         h3.pt-2 Luo peli
         p  Tässä voit luoda uusia pelejä
-        div(class='form-group col-6')
-            input(id="number_of_games" class='form-select' type="number" min="1" max="50" step="1" value ="24")
-            button(class='btn btn-primary' id='number_of_games_button' onClick='createGames()') Luo pelejä
-        div(class='column col-12')
-            form(action="/admin/createGames", method="post" id='create_games_form')
+        ul.step
+            li.step-item.active#step1
+                a(href="/admin/gamesManagement" data-tooltip="Step 1") Aloitus
+            li.step-item#step2
+                a(data-tooltip="Step 1") Pelit
+            li.step-item#step3
+                a(data-tooltip="Step 1") Valmista
+    div(class='column col-12' id='create_games_start')
+        div.form-group
+            label.form-label Turnauksen nimi
+            input(id="name_of_tournament" class='form-input' type="text" required)
+        
+        div.form-group
+            label.form-label Alkusarjan pelit
+            input(id="number_of_games" class='form-select col-3' type="number" min="1" max="50" step="1" value ="24")
+            
+        div.form-group
+            label.form-switch 
+                input(id="game_winner_bet" type="checkbox")
+                i.form-icon
+                | Voittajaveto
+        p.form-input-hint Lisää turnaukseen voittajavedon (1. ja 2. sijat)
+            
+        div.form-group
+            label.form-switch
+                input(id="game_top_striker" type="checkbox") 
+                i.form-icon 
+                | Maalintekijä 
+        p.form-input-hint Lisää turnaukseen paras maalintekijä osion        
+        div.form-group  
+            button(class='btn btn-primary' id='number_of_games_button' onClick='createGames()') Luo pelejä        
+        
+    div(class='column col-12')
+        h1#create_games_title
+        form(action="/admin/createGames", method="post" id='create_games_form', class="form-horizontal")
