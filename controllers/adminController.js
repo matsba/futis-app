@@ -75,4 +75,9 @@ router.post('/removeUsers', async (req, res) => {
     }
 })
 
+router.post('/createGames', (req, res) => {
+    console.log('Got element:')
+    console.log(req.body)
+})
+
 module.exports = router
