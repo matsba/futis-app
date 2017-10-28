@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
     div(class='column col-12')
@@ -12,7 +12,7 @@ block content
     div(class='column')
         div(class='column col-8')
             div.form-group
-                form(action='/register', method='POST')
+                form(action='/user/register', method='POST')
                     label.form-label Käyttäjätunnus
                     input(type='text', name='username' class="form-input" required)
                     label.form-label Sähköposti

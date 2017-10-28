@@ -2,10 +2,10 @@
   "name": "herokuepicapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,10 +16,12 @@
     "express": "^4.11.0",
     "express-session": "^1.15.6",
     "express-validator": "^4.2.1",
-    "jquery-slim": "^3.0.0",
     "knex": "^0.13.0",
     "moment": "^2.19.0",
     "pg": "^7.3.0",
     "pug": "^2.0.0-rc.4"
+  },
+  "engines": {
+    "node": ">= 8.7.0"
   }
 }

@@ -1,4 +1,5 @@
-extends ./layout
+extends ../layout
+
 
 block content
     div(class='column')
@@ -19,11 +20,15 @@ block content
             dl
                 for error in errors
                     dd(class='text-error')= error.msg
-        form(action='/user', method='POST')
-            label.form-label Salasana
+        form(action='/user/changePassword', method='POST')
+            label.form-label Nykyinen salasana
+            if oldPwdErrorMsg
+                span(class='label label-error')= oldPwdErrorMsg
+            input(type='password', name='oldPassword' class="form-input" required)
+            label.form-label Uusi salasana
             if pwdErrorMsg
                 span(class='label label-error')= pwdErrorMsg
             input(type='password', name='password' class="form-input" required)
-            label.form-label Salasana uudestaan
+            label.form-label Uusi salasana uudestaan
             input(type='password', name='password2' class="form-input" required)
             input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')

@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
     div(class='column col-12')
@@ -10,7 +10,7 @@ block content
             span(class="toast toast-success")= regSuccesMsg 
         div(class='column col-8')
             div(class='form-group')
-                form(action='/login', method='POST')
+                form(action='/user/login', method='POST')
                     label.form-label Käyttäjätunnus
                     input(type='text', name='username' class="form-input")
                     label.form-label Salasana
@@ -21,4 +21,4 @@ block content
         h3 Tervetuloa sivulle
         p Tämä on leipätekstiä
     div(class='column col-12')
-        a(class='btn btn-link', href="/register") Rekisteröidy
+        a(class='btn btn-link', href="/user/register") Rekisteröidy
