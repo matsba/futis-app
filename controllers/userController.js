@@ -1,11 +1,9 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
-var session = require('express-session')
 
 router.get('/login', (req, res) => {
     if (req.session && req.session.user) {
-        res.locals.user = req.session.user        
         res.redirect('/')
     } else {
         res.render('user/login')
@@ -23,7 +21,6 @@ router.post('/login', (req, res) => {
     User.authenticate(username, password, (user, err) => {
         if (user) {
             req.session.user = user
-            res.locals.user = req.session.user
             res.redirect('/')
         } else {
             if (err == 'Not approved') {
@@ -39,7 +36,6 @@ router.post('/login', (req, res) => {
 
 router.get('/register', (req, res) => {
     if (req.session && req.session.user) {
-        res.locals.user = req.session.user
         res.render('user/login')
     } else {
         res.render('user/register')
@@ -95,12 +91,10 @@ router.post('/register', (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
-    delete res.locals.user
 })
 
 router.get('/user', (req, res) => {
     if (req.session && req.session.user) {
-        res.locals.user = req.session.user
         res.render('user/user')
     } else {
         res.redirect('/user/login')
