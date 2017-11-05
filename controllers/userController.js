@@ -4,7 +4,6 @@ var User = require('../models/user')
 var session = require('express-session')
 
 router.get('/login', (req, res) => {
-
     if (req.session && req.session.user) {
         res.locals.user = req.session.user        
         res.redirect('/')
@@ -14,7 +13,6 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-
     //Filter shit out of fields against injection
     req.sanitizeBody('username').escape()
     req.sanitizeBody('password').escape()
@@ -41,7 +39,7 @@ router.post('/login', (req, res) => {
 
 router.get('/register', (req, res) => {
     if (req.session && req.session.user) {
-        res.locals.user = req.session.user        
+        res.locals.user = req.session.user
         res.render('user/login')
     } else {
         res.render('user/register')

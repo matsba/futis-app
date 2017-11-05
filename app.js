@@ -25,6 +25,11 @@ app.use(session({
     saveUninitialized: true
   }))
 
+app.use(function(req, res, next){
+    res.locals.user = req.session.user;
+    next();
+});
+
 //This sends moment to use in views
 app.locals.moment = require('moment');
 app.use(require('./controllers'))
