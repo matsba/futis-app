@@ -13,7 +13,7 @@ exports.register = (username, password, email, callback) => {
         password: hashPassword(password),	
         email: email,
     })
-    .into('users')
+    .into('user')
     .then(()=> {
         console.log('Inserted user to database: ' + username)
         return callback()
@@ -25,7 +25,7 @@ exports.register = (username, password, email, callback) => {
 
 exports.updatePassword = (username, password, callback) => {
     
-    db('users')
+    db('user')
     .where({username: username})
     .update({password: hashPassword(password)})
     .then(() => {
@@ -38,7 +38,7 @@ exports.updatePassword = (username, password, callback) => {
 }
 
 exports.authenticate = (username, password, callback) => {
-    db.select('*').from('users').where({ username: username })
+    db.select('*').from('user').where({ username: username })
     .then(userFromDB => {
         if(userFromDB[0].approved){
             if (bcrypt.compareSync(password, userFromDB[0].password)) {
@@ -63,18 +63,18 @@ exports.authenticate = (username, password, callback) => {
 
 exports.getUsersAsync = (approved = true) => {
     const users = db.select('id', 'username', 'email', 'dateRegistered', 'approved')
-    .from('users')
+    .from('user')
     .where({approved: approved})
     .andWhereNot({username: 'admin'})
     return users
 }
 
 exports.approveUsersAsync = (idsToApprove) => {
-    db('users').whereIn('id', idsToApprove).update({approved: true})
+    db('user').whereIn('id', idsToApprove).update({approved: true})
     .catch((err) => {console.log(err)})
 }
 
 exports.removeUsersAsync = (idsToRemove) => {
-    db('users').whereIn('id', idsToRemove).del()
+    db('user').whereIn('id', idsToRemove).del()
     .catch((err) => {console.log(err)})
 }
