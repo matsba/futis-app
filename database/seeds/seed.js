@@ -1,17 +1,17 @@
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex.raw("delete from participant; delete from pools; delete from game; delete from tournament")
+  return knex.raw('delete from participant; delete from pools; delete from game; delete from tournament; delete from "user"')
 
     .then(() => {
       return knex('tournament').insert([
-        {id: '402af448-c275-491e-9f79-511bfe80545b', name: 'Jalkapallon MM 2018', datePlayingStarts: '1.12.2017', dateStarts: '3.12.2017', dateEnds: '30.1.2018', active: false}
+        {id: '402af448-c275-491e-9f79-511bfe80545b', name: 'Jalkapallon MM 2018', datePlayingStarts: '1.12.2017', dateStarts: '3.12.2017', dateEnds: '30.1.2018', active: true}
       ])
     })
 
     .then(() => {
       return knex('game').insert([
-        {id: 1,  team_1: 'Islanti',  team_2: 'Suomi', team_1_score: '1', team_2_score: '0', result: '1', tournament_id: '402af448-c275-491e-9f79-511bfe80545b'},
-        {id: 2,  team_1: 'Ranska',  team_2: 'Saksa', team_1_score: '2', team_2_score: '2', result: 'x', tournament_id: '402af448-c275-491e-9f79-511bfe80545b'},
+        {id: 1,  team_1: 'Islanti',  team_2: 'Suomi', team_1_score: '1', team_2_score: '0', result: '1', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', startDateAndTime: '1.12.2017 15:00' },
+        {id: 2,  team_1: 'Ranska',  team_2: 'Saksa', team_1_score: '2', team_2_score: '2', result: 'x', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', startDateAndTime: '1.12.2017 17:00'},
       ])
     })
 

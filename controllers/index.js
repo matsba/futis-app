@@ -3,10 +3,11 @@ var router = express.Router()
 
 router.use('/user', require('./userController'))
 router.use('/admin', require('./adminController'))
+router.use('/home', require('./homeController'))
 
 router.get('/', (req, res) => {
     if(req.session && req.session.user){
-        res.render('index')
+        res.redirect('/home/')
     } else {
         res.render('user/login')
     }
