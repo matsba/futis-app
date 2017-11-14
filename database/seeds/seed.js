@@ -10,8 +10,8 @@ exports.seed = function(knex, Promise) {
 
     .then(() => {
       return knex('game').insert([
-        {id: 1,  team_1: 'Islanti',  team_2: 'Suomi', team_1_score: '1', team_2_score: '0', result: '1', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', startDateAndTime: '1.12.2017 15:00' },
-        {id: 2,  team_1: 'Ranska',  team_2: 'Saksa', team_1_score: '2', team_2_score: '2', result: 'x', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', startDateAndTime: '1.12.2017 17:00'},
+        {id: 1,  team_1: 'Islanti',  team_2: 'Suomi', team_1_score: '1', team_2_score: '0', result: '1', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', game_start_datetime: '1.12.2017 15:00' },
+        {id: 2,  team_1: 'Ranska',  team_2: 'Saksa', team_1_score: '2', team_2_score: '2', result: 'x', tournament_id: '402af448-c275-491e-9f79-511bfe80545b', game_start_datetime: '1.12.2017 17:00'},
       ])
     })
 

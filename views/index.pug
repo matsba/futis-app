@@ -25,15 +25,11 @@ block content
                         th Peli
                         th Tulos
                 tbody
+                for game in todays
                     tr
-                        td 14:00
-                        td Suomi - Islanti
-                        td 1 - 0
-                    tr
-                        td 17:00
-                        td Venäjä - Ukanda
-                        td
-
+                        td= moment(game.game_start_datetime).format("H:mm")
+                        td= game.game
+                        td= game.score
         div(class='column col-6')
             h3 Huomisen pelit
             table(class='table table-hover')
@@ -42,12 +38,10 @@ block content
                         th Klo
                         th Peli
                 tbody
+                for game in tomorrows
                     tr
-                        td 14:00
-                        td Ruotsi - Islanti
-                    tr
-                        td 17:00
-                        td Irlanti - Wales
+                        td= moment(game.game_start_datetime).format("H:mm")
+                        td= game.game
     div.columns
         div(class='column col-6')
             h2 Omat tulokset
