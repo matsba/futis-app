@@ -53,18 +53,15 @@ block content
                         th Oma
                         th Tulos
                 tbody
+                for game in userPools
                     tr
                         td
-                        td Saksa - Sveitsi
-                        td X
-                        td X
-                    tr
-                        td
-                        td Kiina - Pohjois-Korea
-                        td 1
-                        td X
+                        td= game.game
+                        td= game.pool
+                        td= game.result
+
         div(class='column col-6')
-            h2 Leaderboard
+            h2 Leaderboard (TODO)
             table(class='table table-striped table-hover')
                 thead
                     tr

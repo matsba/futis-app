@@ -43,8 +43,10 @@ exports.authenticate = (username, password, callback) => {
         if(userFromDB[0].approved){
             if (bcrypt.compareSync(password, userFromDB[0].password)) {
                 user = {
+                    id: userFromDB[0].id,
                     username: userFromDB[0].username,
-                    email: userFromDB[0].email
+                    email: userFromDB[0].email,
+                    dateRegistered: userFromDB[0].dateRegistered
                 }
                 return callback(user, null)
             } else {
