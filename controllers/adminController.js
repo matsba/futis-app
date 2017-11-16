@@ -1,12 +1,13 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
+var Tournament = require('../models/tournament')
 var session = require('express-session')
 var formHelper = require('../helpers/formHelper')
 
 
 router.get('/admin', (req, res) => {
-    if(req.session && req.session.user && req.session.user.username == 'admin'){
+    if(authenticateAdmin(req)){
         res.locals.user = req.session.user
         res.render('admin/gamesManagement')        
     } else {
@@ -16,7 +17,7 @@ router.get('/admin', (req, res) => {
 
 router.get('/gamesManagement', (req, res) => {
     
-    if(req.session && req.session.user && req.session.user.username == 'admin'){
+    if(authenticateAdmin(req)){
         res.locals.user = req.session.user
         res.render('admin/gamesManagement')        
     } else {
@@ -26,7 +27,7 @@ router.get('/gamesManagement', (req, res) => {
 
 router.get('/userManagement', async (req, res, next) => {
 
-    if(req.session && req.session.user && req.session.user.username == 'admin'){
+    if(authenticateAdmin(req)){
         try {        
             const notApprovedUsers = await User.getUsersAsync(false)    
             const approvedUsers = await User.getUsersAsync(true)               
@@ -41,8 +42,23 @@ router.get('/userManagement', async (req, res, next) => {
     }
 })
 
-router.post('/approveUsers', async (req, res) => {
+router.get('/tournamentManagement', async (req, res) => {
+    if (authenticateAdmin(req)) {
+        try {
+            const activeTournaments = await Tournament.getActiveAsync()
+            res.render('admin/tournamentManagement', {activeTournaments: activeTournaments})
+        } catch (error) {
+            req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
+            res.redirect('/')
+            delete req.session.error
+        }
+    } else {
+        res.redirect('/')
+    }
+})
 
+router.post('/approveUsers', async (req, res) => {
+    if (!authenticateAdmin(req)) return
     try {
         var users = await formHelper.idsFromForm(req)
         if(users.length < 1){
@@ -59,7 +75,7 @@ router.post('/approveUsers', async (req, res) => {
 })
 
 router.post('/removeUsers', async (req, res) => {
-
+    if (!authenticateAdmin(req)) return
     try {
         var users = await formHelper.idsFromForm(req)
         if(users.length < 1){
@@ -76,8 +92,13 @@ router.post('/removeUsers', async (req, res) => {
 })
 
 router.post('/createGames', (req, res) => {
+    if (!authenticateAdmin(req)) return
     console.log('Got element:')
     console.log(req.body)
 })
+
+function authenticateAdmin(req) {
+    return req.session && req.session.user && req.session.user.username == 'admin';
+}
 
 module.exports = router
