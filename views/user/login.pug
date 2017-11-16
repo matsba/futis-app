@@ -3,22 +3,21 @@ extends ../layout
 block content
     div(class='column col-12')
         h1 Kirjaudu sisään
-    div(class='column')
-        if loginErrorMsg
-            span(class="toast toast-error")= loginErrorMsg 
-        if regSuccesMsg
-            span(class="toast toast-success")= regSuccesMsg 
-        div(class='column col-8')
+    div(class='columns')
+        div(class='column col-md-6 col-sm-12')
+            if loginErrorMsg
+                span(class="toast toast-error")= loginErrorMsg
+            if regSuccesMsg
+                span(class="toast toast-success")= regSuccesMsg
             div(class='form-group')
                 form(action='/user/login', method='POST')
                     label.form-label Käyttäjätunnus
                     input(type='text', name='username' class="form-input")
                     label.form-label Salasana
                     input(type='password', name='password' class="form-input")
-                    input(type='submit', value='Kirjaudu', class='btn btn-primary login-button')
-    div.divider-vert
-    div(class='column')
-        h3 Tervetuloa sivulle
-        p Tämä on leipätekstiä
-    div(class='column col-12')
-        a(class='btn btn-link', href="/user/register") Rekisteröidy
+                    input(type='submit', value='Kirjaudu', class='btn btn-primary login-button col-4')
+                    a(class='btn btn-link login-button col-4 col-mr-auto', href="/user/register") Rekisteröidy
+        div.divider-vert(class='hide-sm')
+        div(class='column col-md-5 col-sm-12')
+            h3 Tervetuloa MM-futis 2018 veikkaus sivulle!
+            p Täällä voit haastaa kaverisi jalkapallotietämykselläsi ja tehdä futiksen seuraamisesta hauskaa! Aloita kirjautumulla sisään tai rekisteröitymällä palveluun.

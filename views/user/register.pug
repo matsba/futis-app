@@ -1,16 +1,16 @@
 extends ../layout
 
 block content
-    div(class='column col-12')
-        h1 Rekisteröidy
-        if regErrorMsg
-            span(class='toast toast-error')= regErrorMsg
-        if errors
-            dl
-                for error in errors
-                    dd(class='text-error')= error.msg
-    div(class='column')
-        div(class='column col-8')
+    h1 Rekisteröidy
+    if regErrorMsg
+        span(class='toast toast-error')= regErrorMsg
+    if errors
+        dl
+            for error in errors
+                dd(class='text-error')= error.msg
+
+    div(class='columns')
+        div(class='column col-md-6 col-sm-12')
             div.form-group
                 form(action='/user/register', method='POST')
                     label.form-label Käyttäjätunnus
@@ -24,9 +24,9 @@ block content
                     label.form-label Salasana uudestaan
                     input(type='password', name='password2' class="form-input" required)
                     input(type='submit', value='Rekisteröidy', class='btn btn-primary login-button')
-    div.divider-vert
-    div(class='column')
-        ul
-            li Käyttäjätunnusta käytetään kirjautumiseen
-            li Käyttäjätunnuksen tulee olla 5-20 merkkiä ja saa sisältää vain numeroita ja kirjaimia
-            li Salasanan tulee olla 5-20 merkkiä pitkä ja saa sisältää vain numeroita ja kirjaimia
+        div.divider-vert(class='hide-sm')
+        div(class='column col-md-5 col-sm-12')
+            ul
+                li Käyttäjätunnusta käytetään kirjautumiseen
+                li Käyttäjätunnuksen tulee olla 5-20 merkkiä ja saa sisältää vain numeroita ja kirjaimia
+                li Salasanan tulee olla 5-20 merkkiä pitkä ja saa sisältää vain numeroita ja kirjaimia
