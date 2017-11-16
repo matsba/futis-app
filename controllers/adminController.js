@@ -30,7 +30,7 @@ router.get('/userManagement', async (req, res, next) => {
         try {        
             const notApprovedUsers = await User.getUsersAsync(false)    
             const approvedUsers = await User.getUsersAsync(true)               
-            res.render('admin/usermanagement', {usersToApprove: notApprovedUsers, users: approvedUsers})         
+            res.render('admin/userManagement', {usersToApprove: notApprovedUsers, users: approvedUsers})
         } catch (error) {
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
             res.redirect('/admin/userManagement')
