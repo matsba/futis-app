@@ -3,12 +3,12 @@ extends ../layout
 block content
     div(class='column col-12')
         ul(class="tab tab-block")
-            li(class="tab-item")
-                a(href="/admin/gamesManagement") Pelien hallinta
-            li(class="tab-item")
-                a(href="/admin/userManagement") Käyttäjien hallinta
             li(class="tab-item active")
                 a(href="/admin/tournamentManagement") Turnausten hallinta
+            li(class="tab-item")
+                a(href="/admin/gamesManagement") Luo uusi turnaus
+            li(class="tab-item")
+                a(href="/admin/userManagement") Käyttäjien hallinta
     h3.pt-2 Aktiiviset turnaukset:
     div.columns
         for t in activeTournaments

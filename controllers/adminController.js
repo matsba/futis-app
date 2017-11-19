@@ -6,15 +6,6 @@ var session = require('express-session')
 var formHelper = require('../helpers/formHelper')
 
 
-router.get('/admin', (req, res) => {
-    if(authenticateAdmin(req)){
-        res.locals.user = req.session.user
-        res.render('admin/gamesManagement')        
-    } else {
-        res.redirect('/')
-    }
-})
-
 router.get('/gamesManagement', (req, res) => {
     
     if(authenticateAdmin(req)){
@@ -93,8 +84,24 @@ router.post('/removeUsers', async (req, res) => {
 
 router.post('/createGames', (req, res) => {
     if (!authenticateAdmin(req)) return
-    console.log('Got element:')
-    console.log(req.body)
+
+    req.sanitizeBody('tournamentName').escape()
+
+    req.checkBody('tournamentName').isAlphanumeric().withMessage('Turnauksen nimi saa sisältää vain numeroita ja kirjaimia')
+    req.checkBody('numberOfGames').isNumeric()
+
+    var game = {
+        tournamentName: req.body.tournamentName,
+        numberOfGames: req.body.numberOfGames,
+        winnerBet: req.body.winnerBet ? true : null,
+        topStriker: req.body.topStriker ? true : null
+    }
+
+    res.render('admin/createGames', {game: game} )
+})
+
+router.post('/createGamesSubmit', (req, res) => {
+    res.json(req.body)
 })
 
 function authenticateAdmin(req) {

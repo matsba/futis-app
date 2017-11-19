@@ -1,49 +1,74 @@
 extends ../layout
 
 block content
-    div(class='column col-12')
-        ul(class="tab tab-block")
-            li(class="tab-item active")
-                a(href="/admin/gamesManagement") Pelien hallinta
-            li(class="tab-item ")
-                a(href="/admin/userManagement") Käyttäjien hallinta
-            li(class="tab-item")
-                a(href="/admin/tournamentManagement") Turnausten hallinta
-    div(class='column col-12')
-        h3.pt-2 Luo peli
-        p  Tässä voit luoda uusia pelejä
-        ul.step
-            li.step-item.active#step1
-                a(href="/admin/gamesManagement" data-tooltip="Step 1") Aloitus
-            li.step-item#step2
-                a(data-tooltip="Step 1") Pelit
-            li.step-item#step3
-                a(data-tooltip="Step 1") Valmista
-    div(class='column col-12' id='create_games_start')
-        div.form-group
-            label.form-label Turnauksen nimi
-            input(id="name_of_tournament" class='form-input' type="text" required)
-        
-        div.form-group
-            label.form-label Alkusarjan pelit
-            input(id="number_of_games" class='form-select col-3' type="number" min="1" max="50" step="1" value ="24")
-            
-        div.form-group
-            label.form-switch 
-                input(id="game_winner_bet" type="checkbox")
-                i.form-icon
-                | Voittajaveto
-        p.form-input-hint Lisää turnaukseen voittajavedon (1. ja 2. sijat)
-            
-        div.form-group
-            label.form-switch
-                input(id="game_top_striker" type="checkbox") 
-                i.form-icon 
-                | Maalintekijä 
-        p.form-input-hint Lisää turnaukseen paras maalintekijä osion        
-        div.form-group  
-            button(class='btn btn-primary' id='number_of_games_button' onClick='createGames()') Luo pelejä        
-        
-    div(class='column col-12')
-        h1#create_games_title
-        form(action="/admin/createGames", method="post" id='create_games_form', class="form-horizontal")
+    -var currentDate = moment().format("YYYY-MM-DD")
+    div.columns
+        div(class='column col-12')
+            ul(class="tab tab-block")
+                li(class="tab-item")
+                    a(href="/admin/tournamentManagement") Turnausten hallinta
+                li(class="tab-item active")
+                    a(href="/admin/gamesManagement") Luo uusi turnaus
+                li(class="tab-item")
+                    a(href="/admin/userManagement") Käyttäjien hallinta
+        div(class='column col-12')
+            h3.pt-2 Luo uusi turnaus
+            p  Luo tästä uusi turnaus ja sen pelit
+            ul.step.pb-1-4
+                li.step-item.active#step1
+                    a(href="/admin/gamesManagement" data-tooltip="Step 1") Turnauksen tiedot
+                li.step-item#step2
+                    a(data-tooltip="Step 1") Pelit
+                li.step-item#step3
+                    a(data-tooltip="Step 1") Valmista
+        div(class='column col-12' id='create_games_start')
+            h4 Turnauksen tiedot
+            form(action="/admin/createGames" method="post" class="form-horizontal")
+                div.form-group
+                    div.col-3
+                        label.form-label Turnauksen nimi
+                    div.col-6
+                        input(id="tournamentName" name='tournamentName' class='form-input' type="text" required)
+                div.form-group
+                    div.col-3
+                        label.form-label Veikkaamisen voi aloittaa
+                    div.col-3
+                        input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate required)
+                        p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa 
+                div.form-group
+                    div.col-3
+                        label.form-label Turnaus alkaa 
+                    div.col-3
+                        input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" min=currentDate required)
+                        p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
+                div.form-group
+                    div.col-3
+                        label.form-label Turnaus loppuu
+                    div.col-3
+                        input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" min=currentDate required)               
+                div.form-group
+                    div.col-3
+                        label.form-label Alkusarjan pelit
+                    div.col-1
+                        input(id="numberOfGames" name='numberOfGames' class='form-input' type="number" min="1" max="50" step="1" value ="24")                    
+                div.form-group
+                    div.col-3
+                        label.form-label Lisäykset
+                    div.col-6
+                        label.form-switch 
+                            input(id="winnerBet" name='winnerBet' type="checkbox")
+                            i.form-icon
+                            | Voittajaveto
+                        p.form-input-hint Lisää turnaukseen voittajavedon (1. ja 2. sijat)                    
+                div.form-group
+                    div.col-3
+                    div.col-6
+                        label.form-switch
+                            input(id="topStriker" name='topStriker' type="checkbox") 
+                            i.form-icon 
+                            | Maalintekijä 
+                        p.form-input-hint Lisää turnaukseen paras maalintekijä osion        
+                div.form-group
+                    div.col-3
+                    div.col-6
+                        button(class='btn btn-primary' type='submit') Jatka

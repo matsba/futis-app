@@ -11,6 +11,11 @@ block content
                 dd #{user.email}
                 dt Rekisteröitynyt
                 dd #{moment(user.dateRegistered).format("D.M.YYYY, HH:mm")}
+                if user.username == 'admin'
+                    dd 
+                    a(href='/admin/tournamentManagement' class='btn  btn-primary')
+                        span(class="icon icon-edit")
+                        span.nav-username Admin työkalut
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
             h2 Päivitä salasanasi

@@ -2,6 +2,14 @@ var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
 
+router.get('/', (req, res) => {
+    if (req.session && req.session.user) {
+        res.render('user/user')
+    } else {
+        res.redirect('/user/login')
+    }
+})
+
 router.get('/login', (req, res) => {
     if (req.session && req.session.user) {
         res.redirect('/')
@@ -91,14 +99,6 @@ router.post('/register', (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
-})
-
-router.get('/user', (req, res) => {
-    if (req.session && req.session.user) {
-        res.render('user/user')
-    } else {
-        res.redirect('/user/login')
-    }
 })
 
 router.post('/changePassword', (req, res) => {

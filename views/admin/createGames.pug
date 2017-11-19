@@ -1,0 +1,65 @@
+extends ../layout
+
+block scripts
+    script(src="/easy/jquery.easy-autocomplete.min.js")
+    link(rel="stylesheet" href="/easy/easy-autocomplete.css")
+
+block content
+    div.columns
+        div(class='column col-12')
+            ul(class="tab tab-block")
+                li(class="tab-item active")
+                    a(href="/admin/gamesManagement") Pelien hallinta
+                li(class="tab-item ")
+                    a(href="/admin/userManagement") Käyttäjien hallinta
+                li(class="tab-item")
+                    a(href="/admin/tournamentManagement") Turnausten hallinta
+        div(class='column col-12')
+            h3.pt-2 Luo peli
+            p  Tässä voit luoda uusia pelejä
+            ul.step
+                li.step-item#step1
+                    a(href="/admin/gamesManagement" data-tooltip="Step 1") Aloitus
+                li.step-item.active#step2
+                    a(data-tooltip="Step 1") Pelit
+                li.step-item#step3
+                    a(data-tooltip="Step 1") Valmista
+        div(class='column col-12')   
+            form(action='/admin/createGamesSubmit' method='POST' class='form-horizontal')
+                h2 #{game.tournamentName}
+                input(name="title" type="hidden" value=game.tournamentName)
+                if game.winnerBet
+                    .text-success ✔️ - Voittajaveto
+                    input(name="winnerBet" type="hidden" value="true")
+                else 
+                    p.text-error ❌ - Voittajaveto
+                    input(name="winnerBet" type="hidden" value='false')
+                if game.topStriker
+                    p.text-success ✔️ - Maalintekijä
+                    input(name="topStriker" type="hidden" value="true")
+                else 
+                    p.text-error ❌ - Maalintekijä
+                    input(name="topStriker" type="hidden" value='false')
+
+                -var x  = 0, forFlag = "", forAutoInput = "", teamInput = ""                                   
+                -for (var i = 0; i < game.numberOfGames; i++){
+                -forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-1"
+                    div.form-group
+                        div.col-1   
+                            label.form-label #{i+1}.
+                        div.col-4
+                            input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required)
+                        div.col-1
+                            img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
+                        
+                        div.col-1.text-center vs.
+
+                        -x++; forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-2"
+                        div.col-4
+                            input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required) 
+                        div.col-1
+                            img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
+                -}
+                div.form-group  
+                    button(class='btn btn-primary' type='submit') Valmis
+    script(src="/public/country-typehead.js")

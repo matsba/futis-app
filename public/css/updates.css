@@ -41,3 +41,12 @@ body {
 .pb-1-4 {
     padding-bottom: 1.4em;
 }
+
+.img-flag-small {
+	height: 36px;
+	padding-left: 8px;
+}
+
+.form-input-hint.no-validation {
+    color: #acb3c2 !important;
+}

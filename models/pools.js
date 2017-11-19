@@ -24,10 +24,10 @@ exports.getPoolsByUserAndTournament = (userId, tournamentId) => {
 }
 
 
+
 // SELECT u.*, g.*, p.* FROM "user" as u
 // JOIN participant as par ON par.user_id = u.id
 // JOIN tournament as t ON t.id = par.tournament_id
 // JOIN game as g ON g.tournament_id = t.id
 // LEFT JOIN pools as p ON p.user_id = u.id AND g.id = p.game_id
-
 // WHERE u.id = 102 AND t.id = '402af448-c275-491e-9f79-511bfe80545b'

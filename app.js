@@ -10,6 +10,8 @@ var moment = require('moment')
 app.set('port', (process.env.PORT || 5000))
 
 app.use('/public', express.static(path.join(__dirname, 'public')))
+app.use('/scripts', express.static(__dirname + '/node_modules/jquery-typeahead/dist/'));
+app.use('/easy', express.static(__dirname + '/node_modules/easy-autocomplete/dist/'))
 
 app.set('view engine', 'pug')
 

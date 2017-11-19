@@ -16,3 +16,7 @@ exports.getGamesByDate = (tournamentId, date) => {
     .where({tournament_id: tournamentId}).andWhere(db.raw('game_start_datetime::timestamp::date = ?', date))
     return games
 }
+
+//TODO: add games
+
+//TODO: update game by parameter result, date, team names

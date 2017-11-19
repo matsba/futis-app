@@ -1,13 +1,12 @@
 html
     head   
         title= 'MM futis veikkaus'
-        link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")/
-        link(rel="stylesheet" type="text/css" href="/public/css/updates.css")/
-        link(rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css")/
-        script(src="http://code.jquery.com/jquery-3.2.1.slim.js"
-			  integrity="sha256-tA8y0XqiwnpwmOIl3SGAcFl2RvxHjA8qp0+1uCGmRmg="
-			  crossorigin="anonymous")
-        script(src="/public/scripts.js")
+        link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")
+        link(rel="stylesheet" type="text/css" href="/public/css/updates.css")
+        link(rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css")
+        script(src="https://code.jquery.com/jquery-2.1.3.min.js")
+        block scripts
+
     body
         div(class='container grid-lg')
             header.navbar
@@ -20,7 +19,7 @@ html
                 section.navbar-section
                     div(class="input-group input-inline")
                         if user && user.username                          
-                            a(href="/user/user" class='btn btn-primary input-group-btn')
+                            a(href="/user/" class='btn btn-primary input-group-btn')
                                 span(class="icon icon-people")
                                 span.nav-username= user.username
                             a(href="/user/logout" class="btn btn-link input-group-btn")= 'Kirjaudu ulos'
