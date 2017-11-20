@@ -104,6 +104,15 @@ router.post('/createGamesSubmit', (req, res) => {
     res.json(req.body)
 })
 
+// TODO: get tournament by id and render page with that tournament
+router.get('/tournament/:tournamentId', (req, res) => {
+    if (!authenticateAdmin(req)) return
+
+    var tournamentId = req.params.tournamentId
+    // MOCKDATA!!!!!
+    res.render('admin/tournamentEdit', { tournament: { name:'MockData', id:tournamentId}})
+})
+
 function authenticateAdmin(req) {
     return req.session && req.session.user && req.session.user.username == 'admin';
 }
