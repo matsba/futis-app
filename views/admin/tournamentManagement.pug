@@ -13,4 +13,4 @@ block content
     div.columns
         for t in activeTournaments
             h5(class='col-5')=t.name
-            a(href='#' class='col-5 ml-2') Päivitä tuloksia
+            a(href='tournament/' + t.id class='col-5 ml-2') Päivitä tuloksia
