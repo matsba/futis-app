@@ -5,6 +5,7 @@ block scripts
     link(rel="stylesheet" href="/easy/easy-autocomplete.css")
 
 block content
+    -var currentDate = moment().format("DD.MM.YYYY H:00")
     div.columns
         div(class='column col-12')
             ul(class="tab tab-block")
@@ -15,8 +16,8 @@ block content
                 li(class="tab-item")
                     a(href="/admin/tournamentManagement") Turnausten hallinta
         div(class='column col-12')
-            h3.pt-2 Luo peli
-            p  Tässä voit luoda uusia pelejä
+            h3.pt-2 Luo uusi turnaus
+            p  Luo tästä uusi turnaus ja sen pelit
             ul.step
                 li.step-item#step1
                     a(href="/admin/gamesManagement" data-tooltip="Step 1") Aloitus
@@ -27,9 +28,49 @@ block content
         div(class='column col-12')   
             form(action='/admin/createGamesSubmit' method='POST' class='form-horizontal')
                 h2 #{game.tournamentName}
-                input(name="title" type="hidden" value=game.tournamentName)
+                input(name="tournamentName" type="hidden" value=game.tournamentName)
+                p.text-gray Luo vielä turnaukseen pelit...
+                table(class="table")
+                    thead
+                        tr
+                            th #
+                            th pvm ja aika
+                            th joukue 1
+                            th 
+                            th 
+                            th joukue 2
+                            th
+                    tbody
+                    -var x  = 0, forFlag = "", forAutoInput = "", teamInput = ""                                   
+                    -for (var i = 0; i < game.numberOfGames; i++){
+                    -forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-1"; gameDateTime = "game-" + i + "-datetime"
+                        tr
+                            td  #{i+1}.                            
+                            td
+                                input(class="form-input" name=gameDateTime id=gameDateTime type="text" placeholder=currentDate  required)
+                            td
+                                input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required)
+                            td
+                                img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
+                            td vs.
+                            -x++; forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-2"
+                            td
+                                input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required) 
+                            td
+                                img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
+                    -}
+                h3.pt-20 Yhteenveto
+                p Turnaukseen veikkaus alkaa 
+                    span.text-primary #{moment(game.tournamentPlayingStartDate).format("D.M.YYYY")}
+                p Turnaus alkaa 
+                    span.text-primary #{moment(game.tournamentStartDate).format("D.M.YYYY")}
+                p Turnaus loppuu 
+                    span.text-primary #{moment(game.tournamentEndDate).format("D.M.YYYY")}
+                input(name="tournamentPlayingStartDate" type="hidden" value=game.tournamentPlayingStartDate)
+                input(name="tournamentStartDate" type="hidden" value=game.tournamentStartDate)
+                input(name="tournamentEndDate" type="hidden" value=game.tournamentEndDate)
                 if game.winnerBet
-                    .text-success ✔️ - Voittajaveto
+                    p.text-success ✔️ - Voittajaveto
                     input(name="winnerBet" type="hidden" value="true")
                 else 
                     p.text-error ❌ - Voittajaveto
@@ -40,26 +81,7 @@ block content
                 else 
                     p.text-error ❌ - Maalintekijä
                     input(name="topStriker" type="hidden" value='false')
-
-                -var x  = 0, forFlag = "", forAutoInput = "", teamInput = ""                                   
-                -for (var i = 0; i < game.numberOfGames; i++){
-                -forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-1"
-                    div.form-group
-                        div.col-1   
-                            label.form-label #{i+1}.
-                        div.col-4
-                            input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required)
-                        div.col-1
-                            img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
-                        
-                        div.col-1.text-center vs.
-
-                        -x++; forFlag = "flag-img-" + x; forAutoInput = "auto-input-" + x++; teamInput = "team-" + i + "-2"
-                        div.col-4
-                            input(class="form-input countries-complete" id=forAutoInput name=teamInput type="text" required) 
-                        div.col-1
-                            img(class='img-responsive img-flag-small' id=forFlag src="/public/img/flags/placeholder.png")
-                -}
-                div.form-group  
+                div.divider.pt-20
+                div.form-group
                     button(class='btn btn-primary' type='submit') Valmis
     script(src="/public/country-typehead.js")

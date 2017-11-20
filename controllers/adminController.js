@@ -93,6 +93,9 @@ router.post('/createGames', (req, res) => {
     var game = {
         tournamentName: req.body.tournamentName,
         numberOfGames: req.body.numberOfGames,
+        tournamentPlayingStartDate: req.body.tournamentPlayingStartDate,
+        tournamentStartDate: req.body.tournamentStartDate,
+        tournamentEndDate: req.body.tournamentEndDate,
         winnerBet: req.body.winnerBet ? true : null,
         topStriker: req.body.topStriker ? true : null
     }
