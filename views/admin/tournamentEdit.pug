@@ -11,7 +11,7 @@ block content
                 a(href="/admin/userManagement") Käyttäjien hallinta
     h3=tournament.name
     p=tournament.id
-    form(action="/admin/tournament" + tournament.id method="post" class="form-horizontal")
+    form(action="/admin/tournament/update" method="post" class="form-horizontal")
         div.form-group
             div.col-3
                 label.form-label Turnauksen nimi
@@ -21,13 +21,14 @@ block content
             div.col-3
                 label.form-label Veikkaamisen voi aloittaa
             div.col-3
-                input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate required)
+                p Päivämääriin tulee sitten se päivämäärä passattuna controllerista
+                input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate value=tournament.datePlayingStarts required)
                 p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
         div.form-group
             div.col-3
                 label.form-label Turnaus alkaa
             div.col-3
-                input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" min=currentDate required)
+                input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" min=currentDate value=tournament.dateStarts required)
                 p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
         div.form-group
             div.col-3
@@ -37,5 +38,6 @@ block content
         div.form-group
             div.col-3
             div.col-6
+                input(name=tournamentId type='hidden' value=tournament.id)
                 button(class='btn btn-primary' type='submit') Tallenna muutokset
 

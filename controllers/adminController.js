@@ -49,7 +49,7 @@ router.get('/tournamentManagement', async (req, res) => {
 })
 
 router.post('/approveUsers', async (req, res) => {
-    if (!authenticateAdmin(req)) return
+    if (!authenticateAdmin(req)) return res.redirect('/')
     try {
         var users = await formHelper.idsFromForm(req)
         if(users.length < 1){
@@ -66,7 +66,7 @@ router.post('/approveUsers', async (req, res) => {
 })
 
 router.post('/removeUsers', async (req, res) => {
-    if (!authenticateAdmin(req)) return
+    if (!authenticateAdmin(req)) return res.redirect('/')
     try {
         var users = await formHelper.idsFromForm(req)
         if(users.length < 1){
@@ -83,7 +83,7 @@ router.post('/removeUsers', async (req, res) => {
 })
 
 router.post('/createGames', (req, res) => {
-    if (!authenticateAdmin(req)) return
+    if (!authenticateAdmin(req)) return res.redirect('/')
 
     req.sanitizeBody('tournamentName').escape()
 
@@ -105,12 +105,28 @@ router.post('/createGamesSubmit', (req, res) => {
 })
 
 // TODO: get tournament by id and render page with that tournament
+// TODO: render error page if cant fetch tournament with given ID!!
 router.get('/tournament/:tournamentId', (req, res) => {
-    if (!authenticateAdmin(req)) return
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
 
-    var tournamentId = req.params.tournamentId
+    var tournamentId = req.params.tournamentIde
     // MOCKDATA!!!!!
-    res.render('admin/tournamentEdit', { tournament: { name:'MockData', id:tournamentId}})
+    res.render('admin/tournamentEdit', { tournament:
+        {
+            name:'MockData',
+            id:tournamentId,
+            datePlayingStarts: Date.now(),
+            dateStarts: Date.now(),
+            dateEnds: Date.now(),
+            active: true
+        }
+    })
+})
+
+router.post('/tournament/update', (req, res) => {
+    res.json(req.body)
 })
 
 function authenticateAdmin(req) {
