@@ -4,6 +4,7 @@ var User = require('../models/user')
 var Tournament = require('../models/tournament')
 var session = require('express-session')
 var formHelper = require('../helpers/formHelper')
+const util = require('util')
 
 
 router.get('/gamesManagement', (req, res) => {
@@ -104,6 +105,18 @@ router.post('/createGames', (req, res) => {
 })
 
 router.post('/createGamesSubmit', (req, res) => {
+    console.log(util.inspect(req.body))
+    //TODO: do something with this (sanitize etc)
+    var tournament = new Tournament.Tournament(
+        req.body.tournamentName,
+        req.body.tournamentPlayingStartDate,
+        req.body.tournamentStartDate,
+        req.body.tournamentEndDate,
+        req.body.winnerBet,
+        req.body.topStriker
+    )
+
+    Tournament.createTournament(tournament)
     res.json(req.body)
 })
 
