@@ -26,9 +26,9 @@ exports.getActiveAsync = (date) => {
 
 exports.createTournament = async (tournament) => {
     try {
-        const dbTournament = await db.insert(tournament, 'id').into('tournament')
-        const tournamentId = dbTournament[0]
-        console.log('Created new tournament: ' + tournamentId)
+        const tournamentId = await db.insert(tournament, 'id').into('tournament')
+        console.log('Created new tournament: ' + tournamentId[0])
+        return tournamentId[0]
         
     } catch (error) {
         console.log(error)

@@ -29,6 +29,7 @@ block content
             form(action='/admin/createGamesSubmit' method='POST' class='form-horizontal')
                 h2 #{game.tournamentName}
                 input(name="tournamentName" type="hidden" value=game.tournamentName)
+                input(name="numberOfGames" type="hidden" value=game.numberOfGames)
                 p.text-gray Luo vielä turnaukseen pelit...
                 table(class="table")
                     thead

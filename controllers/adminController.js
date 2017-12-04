@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
 var Tournament = require('../models/tournament')
+var Game = require('../models/game')
 var session = require('express-session')
 var formHelper = require('../helpers/formHelper')
 const util = require('util')
@@ -98,16 +99,33 @@ router.post('/createGames', (req, res) => {
         tournamentStartDate: req.body.tournamentStartDate,
         tournamentEndDate: req.body.tournamentEndDate,
         winnerBet: req.body.winnerBet ? true : null,
-        topStriker: req.body.topStriker ? true : null
+        topStriker: req.body.topStriker ? true : null,
+        numberOfGames: req.body.numberOfGames
     }
 
     res.render('admin/createGames', {game: game} )
 })
 
-router.post('/createGamesSubmit', (req, res) => {
-    console.log(util.inspect(req.body))
-    //TODO: do something with this (sanitize etc)
-    var tournament = new Tournament.Tournament(
+router.post('/createGamesSubmit', async (req, res) => {
+
+    //TODO: do something with this (sanitize etc)    	
+/*     {
+  "tournamentName": "Nimi",
+  "numberOfGames": "2",
+  "game-0-datetime": "19.11.2017 17:00",
+  "team-0-1": "Alankomaiden Antillit",
+  "team-0-2": "Antarktis",
+  "game-1-datetime": "30.11.2017 19:00",
+  "team-1-1": "d",
+  "team-1-2": "Alankomaat",
+  "tournamentPlayingStartDate": "2017-12-04",
+  "tournamentStartDate": "2017-12-05",
+  "tournamentEndDate": "2017-12-06",
+  "winnerBet": "true",
+  "topStriker": "true"
+} */
+    var gameList = []
+    const tournament = new Tournament.Tournament(
         req.body.tournamentName,
         req.body.tournamentPlayingStartDate,
         req.body.tournamentStartDate,
@@ -115,8 +133,22 @@ router.post('/createGamesSubmit', (req, res) => {
         req.body.winnerBet,
         req.body.topStriker
     )
+    const numberOfGames = req.body.numberOfGames
 
-    Tournament.createTournament(tournament)
+    //Creating toournament and getting its id
+    const tournamentId = await Tournament.createTournament(tournament)
+
+    for(var i = 0; i < numberOfGames; i++){
+            gameList.push({
+                game_start_datetime: req.body["game-"+i+"-datetime"],
+                team_1: req.body["team-"+i+"-1"],
+                team_2: req.body["team-"+i+"-2"],
+                tournament_id: tournamentId
+            })
+        }
+
+    Game.createGames(gameList)
+
     res.json(req.body)
 })
 

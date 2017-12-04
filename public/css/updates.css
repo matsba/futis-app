@@ -1,6 +1,9 @@
 .navbar {
-    padding-top: 1.4em;
-    padding-bottom: 1.4em;
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+    padding-left: 1.4em;
+    padding-right: 1.4em;
+    margin-bottom: 1.4em;
 }
 
 .logo-text {
@@ -12,10 +15,6 @@
     padding-left: 10px;
 }
 
-.navbar {
-    padding: 1.4em;
-    margin-bottom: 1.4em;
-}
 
 .footer {
 	padding: 1.4em;
