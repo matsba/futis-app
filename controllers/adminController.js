@@ -136,7 +136,7 @@ router.post('/createGamesSubmit', async (req, res) => {
     const numberOfGames = req.body.numberOfGames
 
     //Creating toournament and getting its id
-    const tournamentId = await Tournament.createTournament(tournament)
+    const tournamentId = await Tournament.createTournamentAsync(tournament)
 
     for(var i = 0; i < numberOfGames; i++){
             gameList.push({
@@ -149,7 +149,7 @@ router.post('/createGamesSubmit', async (req, res) => {
 
     Game.createGames(gameList)
 
-    res.json(req.body)
+    res.rederict('/tournament/' + tournamentId)
 })
 
 // TODO: get tournament by id and render page with that tournament

@@ -22,9 +22,31 @@ exports.getActiveAsync = (date) => {
     return tournament
 }
 
-//TDOD: get tournament by id
+exports.getByIdAsync = async (tournamentId) => {
+    try {
+        const tournament = await db.raw(`select row_to_json(t) as tournament
+        from (
+            select *, 
+            (
+                select array_to_json(array_agg(row_to_json(g)))
+                from (
+                    select team_1, team_2, team_1_score, team_2_score, result
+                    from game
+                    where tournament_id = tournament.id
+                ) g         
+                ) as games   
+            from tournament
+            where id = ?
+        ) t`, [tournamentId])
 
-exports.createTournament = async (tournament) => {
+        return tournament['rows'][0]['tournament']
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.createTournamentAsync = async (tournament) => {
     try {
         const tournamentId = await db.insert(tournament, 'id').into('tournament')
         console.log('Created new tournament: ' + tournamentId[0])
