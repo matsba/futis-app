@@ -109,21 +109,21 @@ router.post('/createGames', (req, res) => {
 router.post('/createGamesSubmit', async (req, res) => {
 
     //TODO: do something with this (sanitize etc)    	
-/*     {
-  "tournamentName": "Nimi",
-  "numberOfGames": "2",
-  "game-0-datetime": "19.11.2017 17:00",
-  "team-0-1": "Alankomaiden Antillit",
-  "team-0-2": "Antarktis",
-  "game-1-datetime": "30.11.2017 19:00",
-  "team-1-1": "d",
-  "team-1-2": "Alankomaat",
-  "tournamentPlayingStartDate": "2017-12-04",
-  "tournamentStartDate": "2017-12-05",
-  "tournamentEndDate": "2017-12-06",
-  "winnerBet": "true",
-  "topStriker": "true"
-} */
+        /*     {
+        "tournamentName": "Nimi",
+        "numberOfGames": "2",
+        "game-0-datetime": "19.11.2017 17:00",
+        "team-0-1": "Alankomaiden Antillit",
+        "team-0-2": "Antarktis",
+        "game-1-datetime": "30.11.2017 19:00",
+        "team-1-1": "d",
+        "team-1-2": "Alankomaat",
+        "tournamentPlayingStartDate": "2017-12-04",
+        "tournamentStartDate": "2017-12-05",
+        "tournamentEndDate": "2017-12-06",
+        "winnerBet": "true",
+        "topStriker": "true"
+        } */
     var gameList = []
     const tournament = new Tournament.Tournament(
         req.body.tournamentName,
@@ -152,25 +152,21 @@ router.post('/createGamesSubmit', async (req, res) => {
     res.rederict('/tournament/' + tournamentId)
 })
 
-// TODO: get tournament by id and render page with that tournament
 // TODO: render error page if cant fetch tournament with given ID!!
-router.get('/tournament/:tournamentId', (req, res) => {
+router.get('/tournament/:tournamentId', async (req, res) => {
     if (!authenticateAdmin(req)) {
         return res.sendStatus(403)
     }
 
-    var tournamentId = req.params.tournamentIde
-    // MOCKDATA!!!!!
-    res.render('admin/tournamentEdit', { tournament:
-        {
-            name:'MockData',
-            id:tournamentId,
-            datePlayingStarts: Date.now(),
-            dateStarts: Date.now(),
-            dateEnds: Date.now(),
-            active: true
-        }
-    })
+    const tournamentId = req.params.tournamentId
+
+    try {
+        const tournament = await Tournament.getByIdAsync(tournamentId)
+        console.log(tournament)
+        res.render('admin/tournamentEdit', { tournament })
+    } catch (error) {
+        res.status(500).send('Internal_server_error')
+    } 
 })
 
 router.post('/tournament/update', (req, res) => {
