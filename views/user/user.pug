@@ -18,6 +18,25 @@ block content
                         span.nav-username Admin työkalut
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
+            h2 Omat tulokset
+            h4 Pisteitä: #{points}
+            table(class='table table-striped table-hover')
+                thead
+                    tr
+                        th #
+                        th Peli
+                        th Oma
+                        th Tulos
+                tbody
+                for game in userPools
+                    tr
+                        td
+                        td= game.game
+                        td= game.pool
+                        td= game.result
+    div.divider-horz
+    div.columns
+        div(class='column col-md-6 col-sm-12')
             h2 Päivitä salasanasi
             if passwordUpdateMsg
                 span(class='toast toast-success')= passwordUpdateMsg

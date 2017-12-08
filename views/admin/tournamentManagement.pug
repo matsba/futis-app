@@ -12,5 +12,9 @@ block content
     h3.pt-2 Aktiiviset turnaukset:
     div.columns
         for t in activeTournaments
-            h5(class='col-5')=t.name
-            a(href='tournament/' + t.id class='col-5 ml-2') Päivitä tuloksia
+            h5(class='col-4')=t.name
+            a(href='/#' class='col-2') Päivitä tuloksia
+            a(href='tournament/' + t.id class='col-4') Muokkaa turnauksen tietoja
+            a(href='/#' class='col-2') Deaktivoi turnaus
+
+    h3.pt-2 Menneet turnaukset:
