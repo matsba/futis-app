@@ -16,28 +16,8 @@ block content
                     a(href='/admin/tournamentManagement' class='btn  btn-primary')
                         span(class="icon icon-edit")
                         span.nav-username Admin työkalut
-        div.divider-vert(class='hide-sm')
-        div(class='column col-md-6 col-sm-12')
-            h2 Omat tulokset
-            h4 Pisteitä: #{points}
-            table(class='table table-striped table-hover')
-                thead
-                    tr
-                        th #
-                        th Peli
-                        th Oma
-                        th Tulos
-                tbody
-                for game in userPools
-                    tr
-                        td
-                        td= game.game
-                        td= game.pool
-                        td= game.result
-    div.divider-horz
-    div.columns
-        div(class='column col-md-6 col-sm-12')
-            h2 Päivitä salasanasi
+            div.divider
+            h5 Päivitä salasanasi
             if passwordUpdateMsg
                 span(class='toast toast-success')= passwordUpdateMsg
             if errors
@@ -56,3 +36,48 @@ block content
                 label.form-label Uusi salasana uudestaan
                 input(type='password', name='password2' class="form-input" required)
                 input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')
+        div.divider-vert(class='hide-sm')
+        div(class='column col-md-6 col-sm-12')
+            h3= tournament.name
+            h5.card-heading 
+                i(class="fa fa-list-ul card-icon" aria-hidden="true")
+                | Omat tulokset
+            if userPools.lenght > 0
+                p Pisteitä: #{points}
+                table(class='table table-striped table-hover')
+                    thead
+                        tr
+                            th pvm
+                            th Peli
+                            th Oma
+                            th Tulos
+                    tbody
+                    for game in userPools
+                        tr
+                            td= moment(game.game_start_datetime).format('D.MM.YYYY')
+                            td
+                                span
+                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    =game.team_1 
+                                span  -                           
+                                    =game.team_2
+                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                            td= game.pool
+                            td= game.result
+            else if moment(tournament.dateStarts) > moment()
+                div.empty
+                    div.empty-icon
+                        i(class="fa fa-users fa-5x" aria-hidden="true")
+                    p.empty-title.h5 Hei, #{user.username}!
+                    p.empty-subtitle Paina nappia osallistuaksesi peliin!
+                    div.empty-action
+                        button.btn.btn-primary Osallistu
+            else 
+                div.empty
+                    div.empty-icon
+                        i(class="fa fa-calendar-times-o fa-5x" aria-hidden="true")
+                    p.empty-title.h5 Pahoittelut, #{user.username}!
+                    p.empty-subtitle Peliin osallistuminen ei ole enää mahdollista. Turnaus on jo käynnissä!
+            h5.card-heading 
+                i(class="fa fa-history card-icon" aria-hidden="true")
+                | Aikaisemmat turnaukset
