@@ -4,7 +4,7 @@ exports.seed = function(knex, Promise) {
 
     .then(() => {
       return knex('tournament').insert([
-        {id: '402af448-c275-491e-9f79-511bfe80545b', name: 'Jalkapallon MM 2018', datePlayingStarts: '1.12.2017', dateStarts: '3.12.2017', dateEnds: '30.1.2018', active: true},
+        {id: '402af448-c275-491e-9f79-511bfe80545b', name: 'Championnat dEurope de football 2016', datePlayingStarts: '10.05.2016', dateStarts: '10.06.2016', dateEnds: '10.07.2016', active: false},
         { "dateStarts": "2018-06-14T00:00:00+03:00",
         "dateEnds": "2018-07-15T00:00:00+03:00",
         "winnerBet": true,

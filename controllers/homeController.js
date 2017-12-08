@@ -13,11 +13,11 @@ router.get('/', async (req, res) => {
         var userId = req.session.user.id
 
         try {
-            const tournamnetId = 'fed06e43-5e24-47f5-ad53-4e8ac238e734'
+            const tournamnetId = (await Tournament.getActiveAsync())[0].id
             const tournament = await Tournament.getByIdAsync(tournamnetId)
             const games = Game.getCountryCodeForTeams(tournament.games)
-            const todaysGames = Game.filterGamesByDate(games, '2018-06-20')
-            const tomorrowsGames = Game.filterGamesByDate(games, '2018-06-21')            
+            const todaysGames = Game.filterGamesByDate(games, '2018-06-20') //mock date
+            const tomorrowsGames = Game.filterGamesByDate(games, '2018-06-21') //mock date         
             const userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournament(userId, tournamnetId))
 
             res.render('index', {
