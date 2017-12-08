@@ -1,10 +1,20 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
+var Pools = require('../models/pools')
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     if (req.session && req.session.user) {
-        res.render('user/user')
+        var userId = req.session.user.id
+        var userPools = await Pools.getPoolsByUserAndTournament(userId, '402af448-c275-491e-9f79-511bfe80545b')
+        var poolsRight = 0
+        userPools.map(pool => {
+            if (pool.pool == pool.result) {
+                poolsRight++
+            }
+        })
+        var points = poolsRight + '/' + userPools.length
+        res.render('user/user', { userPools: userPools, points: points })
     } else {
         res.redirect('/user/login')
     }
