@@ -16,7 +16,7 @@ exports.Tournament = class Tournament {
   }
 
 
-exports.getActiveAsync = (date) => {
+exports.getActiveAsync = () => {
     const tournament = db.select('*').from('tournament')
     .where({active: true})
     return tournament
@@ -30,9 +30,10 @@ exports.getByIdAsync = async (tournamentId) => {
             (
                 select array_to_json(array_agg(row_to_json(g)))
                 from (
-                    select team_1, team_2, team_1_score, team_2_score, result
+                    select team_1, team_2, team_1_score, team_2_score, result, game_start_datetime
                     from game
                     where tournament_id = tournament.id
+                    order by game_start_datetime asc
                 ) g         
                 ) as games   
             from tournament

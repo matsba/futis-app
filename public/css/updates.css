@@ -73,6 +73,12 @@ body {
 	padding-left: 8px;
 }
 
+.img-flag-tiny {
+    width: 30px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
 .form-input-hint.no-validation {
     color: #acb3c2 !important;
 }
@@ -85,4 +91,27 @@ body {
 	background: 0 0;
 	border-color: transparent;
 	color: #fff;
+}
+
+
+/* cards */
+
+.card {
+	background: #fff;
+	border: transparent;
+	border-radius: .1rem;
+	display: flex;
+	display: -ms-flexbox;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	padding: 1.4em 0.4em;
+}
+
+.card-heading {
+    padding: 5px 5px 5px 5px;
+    border-bottom: 2px solid #F8F9FA;
+}
+
+.card-icon {
+    padding-right: 0.4em;
 }

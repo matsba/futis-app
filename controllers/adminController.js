@@ -149,8 +149,9 @@ router.post('/createGamesSubmit', async (req, res) => {
 
     Game.createGames(gameList)
 
-    res.rederict('/tournament/' + tournamentId)
+    res.redirect('/tournament/' + tournamentId)
 })
+
 
 // TODO: render error page if cant fetch tournament with given ID!!
 router.get('/tournament/:tournamentId', async (req, res) => {
