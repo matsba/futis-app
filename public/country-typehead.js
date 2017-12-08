@@ -10,7 +10,7 @@ $('input.countries-complete').each(function() {
                 onSelectItemEvent: function() {      
                     var value = $("#"+id).getSelectedItemData().code;
 
-                    var source = '/public/img/flags/' + value +  '.png'
+                    var source = '/public/img/flags/' + value.toLowerCase() +  '.png'
                     var flag_id = $("#"+id).parent().parent().next().children().attr('id')
                     $('#' + flag_id).attr( "src", source)               
                 },

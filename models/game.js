@@ -8,7 +8,7 @@ const findCode = (team) => {
         return c.name == team
     })
 
-    return country ? country.code : null
+    return country ? country.code.toLowerCase() : null
 }
 
 exports.getCountryCodeForTeams = (games) => {
