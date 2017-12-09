@@ -6,7 +6,7 @@ var Tournament = require('../models/tournament')
 var Game = require('../models/game')
 
 router.get('/', async (req, res) => {
-    if (req.session && req.session.user) {
+    if (User.authenticateUser(req)) {
         var userId = req.session.user.id
         const tournamnetId = 'fed06e43-5e24-47f5-ad53-4e8ac238e734'
         const tournament = await Tournament.getByIdAsync(tournamnetId)
@@ -25,11 +25,12 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    if (req.session && req.session.user) {
-        res.redirect('/')
-    } else {
-        res.render('user/login')
-    }
+    if (!User.authenticateUser(req)) {
+        return res.redirect('/')
+    }    
+        
+    res.render('user/login')
+
 })
 
 router.post('/login', (req, res) => {
@@ -57,7 +58,7 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/register', (req, res) => {
-    if (req.session && req.session.user) {
+    if (User.authenticateUser(req)) {
         res.render('user/login')
     } else {
         res.render('user/register')

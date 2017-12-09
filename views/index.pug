@@ -7,7 +7,8 @@ block content
     div.columns
         div(class='column col-12')
             span.text-gray Turnaus
-            h1= tournament.name
+            a(href="/tournament/" + tournament.id)
+                h1= tournament.name
         div(class='column col-6')
             span.text-gray Alkaa
             p.text-primary #{moment(tournament.dateStarts).format("D.MM.YYYY")}

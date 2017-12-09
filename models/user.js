@@ -80,3 +80,7 @@ exports.removeUsersAsync = (idsToRemove) => {
     db('user').whereIn('id', idsToRemove).del()
     .catch((err) => {console.log(err)})
 }
+
+exports.authenticateUser = (req) => {
+    return req.session && req.session.user;
+}

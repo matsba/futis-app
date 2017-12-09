@@ -9,7 +9,7 @@ const util = require('util')
 
 
 router.get('/', async (req, res) => {
-    if (req.session && req.session.user) {
+    if (User.authenticateUser(req)) {
         var userId = req.session.user.id
 
         try {
