@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+
+    div.column.col-12
+        h2 Aktiiviset turnaukset
+        if activeTournaments.length > 0
+            p Näihin turnauksiin voit vielä osallistua
+            table.table
+                thead
+                    th Turnaus
+                    th Osallistuminen loppuu
+                    th 
+                tbody
+                for tournament in activeTournaments
+                    tr
+                        td= tournament.name
+                        td #{moment(tournament.dateStarts).format('D.MM.YYYY')} 
+                            i (#{moment(tournament.dateStarts).fromNow()})
+                        td 
+                            a(href="/participate/tournament/" + tournament.id)
+                                button.btn.btn-primary Osallistu
+        else
+            p Ei aktiivisia turnauksia :(
+
+        

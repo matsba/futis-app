@@ -16,8 +16,8 @@ exports.Tournament = class Tournament {
   }
 
 
-exports.getActiveAsync = () => {
-    const tournament = db.select('*').from('tournament')
+exports.getActiveAsync = async () => {
+    const tournament = await db.select('*').from('tournament')
     .where({active: true})
     return tournament
 }

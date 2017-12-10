@@ -93,7 +93,8 @@ block content
                     p.empty-title.h5 Hei, #{user.username}!
                     p.empty-subtitle Paina nappia osallistuaksesi peliin!
                     div.empty-action
-                        button.btn.btn-primary Osallistu
+                        a(href="/participate/tournament/" + tournament.id)
+                            button.btn.btn-primary Osallistu
             else 
                 div.empty
                     div.empty-icon
