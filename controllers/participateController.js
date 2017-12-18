@@ -14,7 +14,9 @@ router.get('/tournament/:id', async (req, res) => {
     const tournamentId = req.params.id
     
     try {
-        const tournament = await Tournament.getByIdAsync(tournamentId)
+        let tournament = await Tournament.getByIdAsync(tournamentId)
+        const gamesWithCountryCodes = Game.getCountryCodeForTeams(tournament.games)
+        tournament.games = gamesWithCountryCodes;
         res.render('participate/action', {tournament: tournament})
     } catch (error) {
         console.log(error)
