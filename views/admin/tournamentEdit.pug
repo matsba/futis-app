@@ -21,7 +21,7 @@ block content
             div.col-3
                 label.form-label Veikkaamisen voi aloittaa
             div.col-3
-                p Päivämääriin tulee sitten se päivämäärä passattuna controllerista
+                p Päivämäärä muodossa MM/DD/YYYY
                 input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate value=tournament.datePlayingStarts required)
                 p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
         div.form-group
@@ -34,7 +34,7 @@ block content
             div.col-3
                 label.form-label Turnaus loppuu
             div.col-3
-                input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" min=currentDate required)
+                input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" min=currentDate value=tournament.dateEnds required)
         div.form-group
             div.col-3
             div.col-6

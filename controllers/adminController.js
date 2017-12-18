@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+const moment = require('moment')
 var User = require('../models/user')
 var Tournament = require('../models/tournament')
 var Game = require('../models/game')
@@ -162,8 +163,14 @@ router.get('/tournament/:tournamentId', async (req, res) => {
     const tournamentId = req.params.tournamentId
 
     try {
-        const tournament = await Tournament.getByIdAsync(tournamentId)
-        console.log(tournament)
+        let tournament = await Tournament.getByIdAsync(tournamentId)
+        const playingStarts = moment(tournament.datePlayingStarts).format("YYYY-MM-DD")
+        const startingDate = moment(tournament.dateStarts).format("YYYY-MM-DD")
+        const endingDate = moment(tournament.dateEnds).format("YYYY-MM-DD")
+        tournament.datePlayingStarts = playingStarts;
+        tournament.dateStarts = startingDate;
+        tournament.dateEnds = endingDate;
+        console.log(util.inspect(tournament))
         res.render('admin/tournamentEdit', { tournament })
     } catch (error) {
         res.status(500).send('Internal_server_error')
