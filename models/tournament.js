@@ -30,7 +30,7 @@ exports.getByIdAsync = async (tournamentId) => {
             (
                 select array_to_json(array_agg(row_to_json(g)))
                 from (
-                    select team_1, team_2, team_1_score, team_2_score, result, game_start_datetime
+                    select id, team_1, team_2, team_1_score, team_2_score, result, game_start_datetime
                     from game
                     where tournament_id = tournament.id
                     order by game_start_datetime asc

@@ -6,6 +6,20 @@
     margin-bottom: 1.4em;
 }
 
+.navbar-grid-xl {
+	max-width: 1296px;
+	width: 100%;
+	align-items: stretch;
+	display: flex;
+	display: -ms-flexbox;
+	-ms-flex-align: stretch;
+	-ms-flex-pack: justify;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+}
+
 .menu .menu-item > a {
 	color: #50596c;
 }
@@ -76,6 +90,15 @@ body {
     padding-top: 20px;
 }
 
+.ptb-1-4 {
+    padding-top:1.4em;
+    padding-bottom:1.4em;
+}
+
+.mtb-1-4 {
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+}
 .img-flag-small {
 	height: 36px;
 	padding-left: 8px;
@@ -122,4 +145,36 @@ body {
 
 .card-icon {
     padding-right: 0.4em;
+}
+
+
+/*
+  Hide radio button (the round disc)
+  we will use just the label to create pushbutton effect
+*/
+input[type=radio] {
+    display:none; 
+    margin:10px;
+}
+
+/*
+  Change the look'n'feel of labels (which are adjacent to radiobuttons).
+  Add some margin, padding to label
+*/
+input[type="radio"] + label {
+	display: inline-block;
+	margin: -2px;
+	padding: 4px 12px;
+	background-color: #e7e7e7;
+	border-color: #ddd;
+	margin: -2px 0.4em;
+}
+/*
+ Change background color for label next to checked radio button
+ to make it look like highlighted button
+*/
+input[type="radio"]:checked + label {
+	background-image: none;
+	background-color: #5755d9;
+	color: white;
 }

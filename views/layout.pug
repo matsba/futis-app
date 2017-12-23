@@ -10,33 +10,32 @@ html
 
     body.site
         header.navbar.bg-dark
-            section.navbar-section
-                a(href="/" class="btn btn-link text-light input-group-btn")= 'Etusivu'
-            section.navbar-center
-                span.logo-text Turnauksen nimi tähän
-            section.navbar-section
-                if user && user.username
-                    a(href="#" class='btn-link text-light nav-link')
-                        i(class="fa fa-info-circle card-icon" aria-hidden="true") 
-                        span Info             
-                    a(href="/participate" class='btn-link text-light nav-link')
-                        i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
-                        span Osallistu
-                    div.dropdown.dropdown-right
-                        div.btn-group
-                            a(href="/user/" class="btn btn-primary")
-                                span(class="icon icon-people")
-                                span.nav-username= user.username
-                            a(class="btn btn-primary dropdown-toggle" tabindex="0")
-                                i(class="icon icon-caret")
-                            ul.menu.text-left
-                                li.menu-item 
-                                    a(href="/user/logout") Kirjudu ulos
-                else
-                    div(class="input-group input-inline")
-                        a(href="/user/login" class="btn btn-link text-light input-group-btn")= 'Kirjaudu sisään'                    
+            div.navbar-grid-xl
+                section.navbar-section
+                    a(href="/" class="btn btn-link text-light input-group-btn") Sivun nimi placeholder
+                section.navbar-section
+                    if user && user.username
+                        a(href="#" class='btn-link text-light nav-link')
+                            i(class="fa fa-info-circle card-icon" aria-hidden="true") 
+                            span Info             
+                        a(href="/participate" class='btn-link text-light nav-link')
+                            i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
+                            span Osallistu
+                        div.dropdown.dropdown-right
+                            div.btn-group
+                                a(href="/user/" class="btn btn-primary")
+                                    span(class="icon icon-people")
+                                    span.nav-username= user.username
+                                a(class="btn btn-primary dropdown-toggle" tabindex="0")
+                                    i(class="icon icon-caret")
+                                ul.menu.text-left
+                                    li.menu-item 
+                                        a(href="/user/logout") Kirjudu ulos
+                    else
+                        div(class="input-group input-inline")
+                            a(href="/user/login" class="btn btn-link text-light input-group-btn")= 'Kirjaudu sisään'                    
         main.content
-            div(class='container grid-lg')
+            div(class='container grid-xl')
                 block content
         footer.footer.bg-gray
             p Tämä on footer
