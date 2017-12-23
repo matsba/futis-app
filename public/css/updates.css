@@ -178,3 +178,53 @@ input[type="radio"]:checked + label {
 	background-color: #5755d9;
 	color: white;
 }
+
+
+body.landing-page {
+    background-image: url('/public/img/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container.landing-page {
+    max-height: 400px;
+    padding: 0;
+}
+
+.landing-info {
+	background-color: #5755d9;
+	color: white;
+    padding: 1.4em;
+    text-align: center;
+}
+
+.columns.landing-page {
+	height: 100%;
+}
+
+.column.landing-login {
+	padding: 1.4em;
+	padding-left: 2.4em;
+}
+
+.landing-icon {
+	height: 70px;
+}
+
+.landing-icon-set {
+	padding-top: 1.4em;
+	text-align: center;
+}
+
+.landing-info:before {      /* create a full-height inline block pseudo-element */
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle; /* vertical alignment of the inline element */
+    height: 100%;
+}
+
+.landing-info-content {
+    display: inline-block;
+    vertical-align: middle;          /* vertical alignment of the inline element */
+}

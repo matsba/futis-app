@@ -1,0 +1,39 @@
+html
+    head   
+        title= 'MM futis veikkaus'
+        link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")
+        link(rel="stylesheet" type="text/css" href="/public/css/updates.css")
+        link(rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+        script(src="https://code.jquery.com/jquery-2.1.3.min.js")
+        block scripts
+
+    body.site.landing-page
+        header.navbar.bg-dark
+            div.navbar-grid-xl
+                section.navbar-section
+                    a(href="/" class="btn btn-link text-light input-group-btn") Sivun nimi placeholder
+                section.navbar-section
+                    if user && user.username
+                        a(href="#" class='btn-link text-light nav-link')
+                            i(class="fa fa-info-circle card-icon" aria-hidden="true") 
+                            span Info             
+                        a(href="/participate" class='btn-link text-light nav-link')
+                            i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
+                            span Osallistu
+                        div.dropdown.dropdown-right
+                            div.btn-group
+                                a(href="/user/" class="btn btn-primary")
+                                    span(class="icon icon-people")
+                                    span.nav-username= user.username
+                                a(class="btn btn-primary dropdown-toggle" tabindex="0")
+                                    i(class="icon icon-caret")
+                                ul.menu.text-left
+                                    li.menu-item 
+                                        a(href="/user/logout") Kirjudu ulos
+                    else
+                        div(class="input-group input-inline")
+                            a(href="/user/login" class="btn btn-link text-light input-group-btn")= 'Kirjaudu sisään'                    
+        main.content
+            div(class='container grid-xl landing-page')
+                block content
