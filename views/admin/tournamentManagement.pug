@@ -11,10 +11,15 @@ block content
                 a(href="/admin/userManagement") Käyttäjien hallinta
     h3.pt-2 Aktiiviset turnaukset:
     div.columns
-        for t in activeTournaments
-            h5(class='col-4')=t.name
-            a(href='/#' class='col-2') Päivitä tuloksia
-            a(href='tournament/' + t.id class='col-4') Muokkaa turnauksen tietoja
-            a(href='/#' class='col-2') Deaktivoi turnaus
-
-    h3.pt-2 Menneet turnaukset:
+        table.table
+            tbody
+                for t in activeTournaments
+                    tr
+                        td= t.name
+                        td
+                            a(href='/#') Päivitä tuloksia
+                        td
+                            a(href='tournament/' + t.id) Muokkaa turnauksen tietoja
+                        td
+                            a(href='/#') Deaktivoi turnaus
+    h3.pt-1-4 Menneet turnaukset:

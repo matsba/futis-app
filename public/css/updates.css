@@ -38,11 +38,6 @@
 }
 
 
-.footer {
-	padding: 1.4em;
-	margin-top: 1.4em;
-}
-
 body {
     background-color: #fff;
 }
@@ -90,6 +85,9 @@ body {
     padding-top: 20px;
 }
 
+.pt-1-4 {
+    padding-top: 20px;
+}
 .ptb-1-4 {
     padding-top:1.4em;
     padding-bottom:1.4em;
@@ -148,19 +146,14 @@ body {
 }
 
 
-/*
-  Hide radio button (the round disc)
-  we will use just the label to create pushbutton effect
-*/
+/* Radio button styling */
+
 input[type=radio] {
     display:none; 
     margin:10px;
 }
 
-/*
-  Change the look'n'feel of labels (which are adjacent to radiobuttons).
-  Add some margin, padding to label
-*/
+
 input[type="radio"] + label {
 	display: inline-block;
 	margin: -2px;
@@ -169,16 +162,14 @@ input[type="radio"] + label {
 	border-color: #ddd;
 	margin: -2px 0.4em;
 }
-/*
- Change background color for label next to checked radio button
- to make it look like highlighted button
-*/
+
 input[type="radio"]:checked + label {
 	background-image: none;
 	background-color: #5755d9;
 	color: white;
 }
 
+/* Landing page */
 
 body.landing-page {
     background-image: url('/public/img/background.jpg');
@@ -217,14 +208,41 @@ body.landing-page {
 	text-align: center;
 }
 
-.landing-info:before {      /* create a full-height inline block pseudo-element */
+.landing-info:before {     
     content: ' ';
     display: inline-block;
-    vertical-align: middle; /* vertical alignment of the inline element */
+    vertical-align: middle; 
     height: 100%;
 }
 
 .landing-info-content {
     display: inline-block;
-    vertical-align: middle;          /* vertical alignment of the inline element */
+    vertical-align: middle;          
+}
+
+/* Footer */ 
+
+.footer-grid-xl {
+	max-width: 1296px;
+	width: 100%;
+	align-items: stretch;
+	display: flex;
+	display: -ms-flexbox;
+	-ms-flex-align: stretch;
+	-ms-flex-pack: justify;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	justify-content: space-between;
+    margin: 0 auto;
+    height: 200px;
+}
+
+.footer {
+	padding: 1.4em;
+	margin-top: 1.4em;
+}
+
+
+.faded {
+    opacity: 0.2
 }

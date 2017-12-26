@@ -38,4 +38,28 @@ html
             div(class='container grid-xl')
                 block content
         footer.footer.bg-gray
-            p Tämä on footer
+            div.footer-grid-xl
+                div.column.col-3.col-sm-4 
+                    dl
+                        dt Sivun otsikko
+                div.column.col-3.col-sm-4 
+                    dl
+                        dd
+                            a(href="/home" class="text-gray") Etusivu
+                        dd
+                            a(href="/participate" class="text-gray") Osallistu
+                        dd
+                            a(href="#" class="text-gray") Info
+                div.column.col-3.col-sm-4                    
+                    dl
+                        if user && user.username
+                            dd
+                                a(href="/user" class="text-gray") Käyttäjä
+                            dd
+                                a(href="/logout" class="text-gray") Kirjaudu ulos
+                        dd
+                            a(href="#" class="text-gray") Ota yhteyttä
+                div.column.col-3.hide-sm
+                    dl
+                        dd
+                            i(class="fa fa-trophy fa-5x faded" aria-hidden="true")
