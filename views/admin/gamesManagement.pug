@@ -1,5 +1,10 @@
 extends ../layout
 
+block scripts
+    script(src="/easy/jquery.easy-autocomplete.min.js")
+    script(src="/public/scripts.js")
+    link(rel="stylesheet" href="/easy/easy-autocomplete.css")
+
 block content
     -var currentDate = moment().format("YYYY-MM-DD")
     div.columns
@@ -14,13 +19,6 @@ block content
         div(class='column col-12')
             h3.pt-2 Luo uusi turnaus
             p  Luo tästä uusi turnaus ja sen pelit
-            ul.step.pb-1-4
-                li.step-item.active#step1
-                    a(href="/admin/gamesManagement" data-tooltip="Step 1") Turnauksen tiedot
-                li.step-item#step2
-                    a(data-tooltip="Step 1") Pelit
-                li.step-item#step3
-                    a(data-tooltip="Step 1") Valmista
         div(class='column col-12' id='create_games_start')
             h4 Turnauksen tiedot
             form(action="/admin/createGames" method="post" class="form-horizontal")
@@ -50,7 +48,41 @@ block content
                     div.col-3
                         label.form-label Alkusarjan pelit
                     div.col-1
-                        input(id="numberOfGames" name='numberOfGames' class='form-input' type="number" min="1" max="50" step="1" value ="24")                    
+                        input(id="numberOfGames" name='numberOfGames' class='form-input' type="number" min="1" max="50" step="1" value ="24")
+                    div.col-2
+                        a(class="btn btn-primary" onClick="addGames()" id="addGamesButton") Lisää
+                div(class="form-group" id="addGamesSection")
+                    table.table
+                        thead
+                            tr
+                                th #
+                                th pvm ja aika
+                                th joukue 1
+                                th 
+                                th 
+                                th joukue 2
+                                th
+                                th
+                        tbody(id="addGamesSectionTBody")
+                            tr(id="exampleRow")
+                                td.text-gray 
+                                    i X
+                                td.text-gray 
+                                    i Esimerkki
+                                td.text-gray 
+                                    i Suomi
+                                td.text-gray
+                                td.text-gray 
+                                    i vs
+                                td.text-gray
+                                    i Ruotsi
+                                td.text-gray 
+                                td.text-gray 
+                                td.text-gray 
+                div.form-group
+                    a(class="btn btn-success" onClick="addRow()" id="addGamesButton") 
+                        i(class="fa fa-plus-circle" aria-hidden="true")
+                        | Lisää rivi               
                 div.form-group
                     div.col-3
                         label.form-label Lisäykset
