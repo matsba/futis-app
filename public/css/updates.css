@@ -6,6 +6,20 @@
     margin-bottom: 1.4em;
 }
 
+.navbar-grid-xl {
+	max-width: 1296px;
+	width: 100%;
+	align-items: stretch;
+	display: flex;
+	display: -ms-flexbox;
+	-ms-flex-align: stretch;
+	-ms-flex-pack: justify;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+}
+
 .menu .menu-item > a {
 	color: #50596c;
 }
@@ -23,11 +37,6 @@
     padding-left: 10px;
 }
 
-
-.footer {
-	padding: 1.4em;
-	margin-top: 1.4em;
-}
 
 body {
     background-color: #fff;
@@ -76,6 +85,18 @@ body {
     padding-top: 20px;
 }
 
+.pt-1-4 {
+    padding-top: 20px;
+}
+.ptb-1-4 {
+    padding-top:1.4em;
+    padding-bottom:1.4em;
+}
+
+.mtb-1-4 {
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+}
 .img-flag-small {
 	height: 36px;
 	padding-left: 8px;
@@ -122,4 +143,111 @@ body {
 
 .card-icon {
     padding-right: 0.4em;
+}
+
+
+/* Radio button styling */
+
+input[type=radio] {
+    display:none; 
+    margin:10px;
+}
+
+
+input[type="radio"] + label {
+	display: inline-block;
+	margin: -2px;
+	padding: 4px 12px;
+	background-color: #e7e7e7;
+	border-color: #ddd;
+	margin: -2px 0.4em;
+}
+
+input[type="radio"]:checked + label {
+	background-image: none;
+	background-color: #5755d9;
+	color: white;
+}
+
+/* Landing page */
+
+body.landing-page {
+    background-image: url('/public/img/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container.landing-page {
+    max-height: 400px;
+    padding: 0;
+}
+
+.landing-info {
+	background-color: #5755d9;
+	color: white;
+    padding: 1.4em;
+    text-align: center;
+}
+
+.columns.landing-page {
+	height: 100%;
+}
+
+.column.landing-login {
+	padding: 1.4em;
+	padding-left: 2.4em;
+}
+
+.landing-icon {
+	height: 70px;
+}
+
+.landing-icon-set {
+	padding-top: 1.4em;
+	text-align: center;
+}
+
+.landing-info:before {     
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle; 
+    height: 100%;
+}
+
+.landing-info-content {
+    display: inline-block;
+    vertical-align: middle;          
+}
+
+/* Footer */ 
+
+.footer-grid-xl {
+	max-width: 1296px;
+	width: 100%;
+	align-items: stretch;
+	display: flex;
+	display: -ms-flexbox;
+	-ms-flex-align: stretch;
+	-ms-flex-pack: justify;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	justify-content: space-between;
+    margin: 0 auto;
+    height: 200px;
+}
+
+.footer {
+	padding: 1.4em;
+	margin-top: 1.4em;
+}
+
+
+.faded {
+    opacity: 0.2
+}
+
+.fade-out {
+    opacity: 0;
+    transition-duration: 750ms;
 }

@@ -11,11 +11,6 @@ block content
                 dd #{user.email}
                 dt Rekisteröitynyt
                 dd #{moment(user.dateRegistered).format("D.M.YYYY, HH:mm")}
-                if user.username == 'admin'
-                    dd 
-                    a(href='/admin/tournamentManagement' class='btn  btn-primary')
-                        span(class="icon icon-edit")
-                        span.nav-username Admin työkalut
             div.divider
             h5 Päivitä salasanasi
             if passwordUpdateMsg
@@ -38,6 +33,7 @@ block content
                 input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
+        if user.username != 'admin'
             h3= tournament.name
             h5.card-heading 
                 i(class="fa fa-list-ul card-icon" aria-hidden="true")
@@ -81,3 +77,8 @@ block content
             h5.card-heading 
                 i(class="fa fa-history card-icon" aria-hidden="true")
                 | Aikaisemmat turnaukset
+        else
+            dd 
+            a(href='/admin/tournamentManagement' class='btn  btn-primary')
+                span(class="icon icon-edit")
+                span.nav-username Admin työkalut

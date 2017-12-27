@@ -15,13 +15,13 @@ block content
         table(class='table table-striped table-hover')
             thead
                 tr
-                    th pvm
+                    th Aika
                     th Peli
                     th Tulos
             tbody
             for game in games
                 tr
-                    td= moment(game.game_start_datetime).format('D.MM.YYYY H:mm')
+                    td= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
                     td
                         span
                             img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
