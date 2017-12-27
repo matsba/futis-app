@@ -194,10 +194,10 @@ router.post('/tournament/update/:id', (req, res) => {
 
     if (editSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
-        res.redirect('/tournament/' + tournamentId)
+        res.redirect('/admin/tournament/' + tournament.id)
     } else {
         req.flash('info', 'Turnauksen tietojen päivityksessä ongelma')
-        res.redirect('/tournament/' + tournamentId)
+        res.redirect('/tournament/' + tournament.id)
     }
 
 })
