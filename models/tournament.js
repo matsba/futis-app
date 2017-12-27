@@ -59,7 +59,6 @@ exports.createTournamentAsync = async (tournament) => {
 }
 
 exports.updateTournamentAsync = async (tournament) => {
-    console.log(tournament)
     try {
         await db('tournament').where('id', tournament.id).update(tournament)
         console.log('Updated tournament with id ' + tournament.id)

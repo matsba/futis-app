@@ -23,8 +23,8 @@ router.get('/userManagement', async (req, res, next) => {
 
     if(authenticateAdmin(req)){
         try {        
-            const notApprovedUsers = await User.getUsersAsync(false)    
-            const approvedUsers = await User.getUsersAsync(true)               
+            const notApprovedUsers = await User.getUsersAsync(false)
+            const approvedUsers = await User.getUsersAsync(true)
             res.render('admin/userManagement', {usersToApprove: notApprovedUsers, users: approvedUsers})
         } catch (error) {
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
@@ -177,7 +177,7 @@ router.get('/tournament/:tournamentId', async (req, res) => {
     } 
 })
 
-router.post('/tournament/update/:id', (req, res) => {
+router.post('/tournament/update/:id', async (req, res) => {
     if (!authenticateAdmin(req)) {
         return res.sendStatus(403)
     }
@@ -190,14 +190,19 @@ router.post('/tournament/update/:id', (req, res) => {
         dateEnds: par.tournamentEndDate,
         name: par.tournamentName
     }
-    const editSuccesful = Tournament.updateTournamentAsync(tournament)
+
+    const editSuccesful = await Tournament.updateTournamentAsync(tournament)
+
+    console.log("EDITSUCCESFULL: " + editSuccesful)
 
     if (editSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
+        req.flash('successful', 'true')
         res.redirect('/admin/tournament/' + tournament.id)
     } else {
         req.flash('info', 'Turnauksen tietojen päivityksessä ongelma')
-        res.redirect('/tournament/' + tournament.id)
+        req.flash('successful', 'false')
+        res.redirect('/admin/tournament/' + tournament.id)
     }
 
 })
