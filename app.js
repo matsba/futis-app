@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var expressValidator = require('express-validator')
 var moment = require('moment')
+const flash = require('express-flash')
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -29,6 +30,8 @@ app.use(function(req, res, next){
     res.locals.user = req.session.user;
     next();
 });
+
+app.use(flash());
 
 //This sends moment to use in views
 app.locals.moment = require('moment');

@@ -193,9 +193,11 @@ router.post('/tournament/update/:id', (req, res) => {
     const editSuccesful = Tournament.updateTournamentAsync(tournament)
 
     if (editSuccesful) {
-        res.render('admin/tournamentEdit/' + tournament.id, { message: 'Turnauksen tiedot päivitetty onnistuneesti', successful: true })
+        req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
+        res.redirect('/admin/tournament/' + tournament.id)
     } else {
-        res.render('admin/tournamentEdit/' + tournament.id, { message: 'Turnauksen tietojen päivitys ei onnistunut', successful: false })
+        req.flash('info', 'Turnauksen tietojen päivityksessä ongelma')
+        res.redirect('/tournament/' + tournament.id)
     }
 
 })
