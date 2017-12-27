@@ -9,10 +9,8 @@ block content
                 a(href="/admin/gamesManagement") Luo uusi turnaus
             li(class="tab-item")
                 a(href="/admin/userManagement") Käyttäjien hallinta
-    if message && successful
-        span(class='label label-success')= message
-    else if message
-        span(class='label label-error')= message
+    if message.info
+        span(class='label label-success')= info
     h3=tournament.name
     form(action="/admin/tournament/update/" + tournament.id method="post" class="form-horizontal")
         div.form-group
