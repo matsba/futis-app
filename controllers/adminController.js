@@ -108,7 +108,7 @@ router.post('/createGames', (req, res) => {
 })
 
 router.post('/createGamesSubmit', async (req, res) => {
-
+    if (!authenticateAdmin(req)) return res.redirect('/')
     //TODO: do something with this (sanitize etc)    	
         /*     {
         "tournamentName": "Nimi",
@@ -177,8 +177,27 @@ router.get('/tournament/:tournamentId', async (req, res) => {
     } 
 })
 
-router.post('/tournament/update', (req, res) => {
-    res.json(req.body)
+router.post('/tournament/update/:id', (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+    const par = req.body
+
+    const tournament = {
+        id: req.params.id,
+        dateStarts: par.tournamentStartDate,
+        datePlayingStarts: par.tournamentPlayingStartDate,
+        dateEnds: par.tournamentEndDate,
+        name: par.tournamentName
+    }
+    const editSuccesful = Tournament.updateTournamentAsync(tournament)
+
+    if (editSuccesful) {
+        res.render('admin/tournamentEdit/' + tournament.id, { message: 'Turnauksen tiedot päivitetty onnistuneesti', successful: true })
+    } else {
+        res.render('admin/tournamentEdit/' + tournament.id, { message: 'Turnauksen tietojen päivitys ei onnistunut', successful: false })
+    }
+
 })
 
 function authenticateAdmin(req) {

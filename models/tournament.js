@@ -56,5 +56,16 @@ exports.createTournamentAsync = async (tournament) => {
     } catch (error) {
         console.log(error)
     }
+}
 
+exports.updateTournamentAsync = async (tournament) => {
+    console.log(tournament)
+    try {
+        await db('tournament').where('id', tournament.id).update(tournament)
+        console.log('Updated tournament with id ' + tournament.id)
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }
