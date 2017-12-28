@@ -29,6 +29,9 @@ html
                                 a(class="btn btn-primary dropdown-toggle" tabindex="0")
                                     i(class="icon icon-caret")
                                 ul.menu.text-left
+                                    if user.username == 'admin'
+                                        li.menu-item 
+                                            a(href="/admin/tournamentManagement") Admin työkalut
                                     li.menu-item 
                                         a(href="/user/logout") Kirjudu ulos
                     else
