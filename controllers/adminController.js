@@ -1,13 +1,13 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 const moment = require('moment')
-var User = require('../models/user')
-var Tournament = require('../models/tournament')
-var Game = require('../models/game')
-var session = require('express-session')
-var formHelper = require('../helpers/formHelper')
+const User = require('../models/user')
+const Tournament = require('../models/tournament')
+const Game = require('../models/game')
+const session = require('express-session')
+const mainHelper = require('../helpers/mainHelper')
 const util = require('util')
-
+const { check, validationResult } = require('express-validator/check');
 
 router.get('/gamesManagement', (req, res) => {
     
@@ -54,7 +54,7 @@ router.get('/tournamentManagement', async (req, res) => {
 router.post('/approveUsers', async (req, res) => {
     if (!authenticateAdmin(req)) return res.redirect('/')
     try {
-        var users = await formHelper.idsFromForm(req)
+        var users = await mainHelper.idsFromForm(req)
         if(users.length < 1){
             req.session.error = 'Ei valittuja käyttäjiä hyväksyttäväksi'
             return res.redirect('/admin/userManagement')
@@ -71,7 +71,7 @@ router.post('/approveUsers', async (req, res) => {
 router.post('/removeUsers', async (req, res) => {
     if (!authenticateAdmin(req)) return res.redirect('/')
     try {
-        var users = await formHelper.idsFromForm(req)
+        var users = await mainHelper.idsFromForm(req)
         if(users.length < 1){
             req.session.error = 'Ei valittuja käyttäjiä poistettavaksi'
             return res.redirect('/admin/userManagement')
@@ -109,23 +109,42 @@ router.post('/createGames', (req, res) => {
 
 router.post('/createGamesSubmit', async (req, res) => {
 
-    //TODO: do something with this (sanitize etc)    	
-        /*     {
-        "tournamentName": "Nimi",
-        "numberOfGames": "2",
-        "game-0-datetime": "19.11.2017 17:00",
-        "team-0-1": "Alankomaiden Antillit",
-        "team-0-2": "Antarktis",
-        "game-1-datetime": "30.11.2017 19:00",
-        "team-1-1": "d",
-        "team-1-2": "Alankomaat",
-        "tournamentPlayingStartDate": "2017-12-04",
-        "tournamentStartDate": "2017-12-05",
-        "tournamentEndDate": "2017-12-06",
-        "winnerBet": "true",
-        "topStriker": "true"
-        } */
-    var gameList = []
+    //Incoming request format:
+    /*     {
+        "tournamentName": "Jalkapallon MM 2018 - Test",
+        "tournamentPlayingStartDate": "2017-12-27",
+        "tournamentStartDate": "2017-12-28",
+        "tournamentEndDate": "2017-12-29",
+        "game-datetime": [
+          "1.1.2018 21:00",
+          "1.1.2018 20:00",
+          "1.1.2018 10:00"
+        ],
+        "team-1": [
+          "Alankomaat",
+          "Burkina Faso",
+          "Etelä-Georgia ja Eteläiset  Sandwichsaaret"
+        ],
+        "team-2": [
+          "d",
+          "Arabiemiirikunnat",
+          "Armenia"
+        ],
+        "winnerBet": "on",
+        "topStriker": "on"
+      } */
+
+    //validate request
+
+    //If validation errors, render page with errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('admin/gamesManagement', { errors: errors.mapped() });
+    }
+
+    let gameList = []
+    const numberOfGames = req.body['team-1'].length
+
     const tournament = new Tournament.Tournament(
         req.body.tournamentName,
         req.body.tournamentPlayingStartDate,
@@ -134,22 +153,33 @@ router.post('/createGamesSubmit', async (req, res) => {
         req.body.winnerBet,
         req.body.topStriker
     )
-    const numberOfGames = req.body.numberOfGames
 
-    //Creating toournament and getting its id
+    //Creating toournament and this method returns its id
     const tournamentId = await Tournament.createTournamentAsync(tournament)
 
-    for(var i = 0; i < numberOfGames; i++){
-            gameList.push({
-                game_start_datetime: req.body["game-"+i+"-datetime"],
-                team_1: req.body["team-"+i+"-1"],
-                team_2: req.body["team-"+i+"-2"],
-                tournament_id: tournamentId
-            })
+    //Check if one game
+    if(req.body['team-1'] instanceof Array && req.body['team-2'] instanceof Array){
+    //Get games from request 
+        for(var i = 0; i < numberOfGames; i++){
+                gameList.push({
+                    game_start_datetime: moment(req.body['game-datetime'][i], "DD.MM.YYYY HH:mm").format(),
+                    team_1: req.body['team-1'][i],
+                    team_2: req.body['team-2'][i],
+                    tournament_id: tournamentId
+                }) 
         }
+    } else {
+        gameList.push({
+            game_start_datetime: moment(req.body['game-datetime'], "DD.MM.YYYY HH:mm").format(),
+            team_1: req.body['team-1'],
+            team_2: req.body['team-2'],
+            tournament_id: tournamentId
+        })  
+    }
 
     Game.createGames(gameList)
 
+    //Rederict user to created tournament page
     res.redirect('/tournament/' + tournamentId)
 })
 

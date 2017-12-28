@@ -3,6 +3,8 @@ extends ../layout
 block content
 
     div.column.col-12
+        if gameCreatedSuccess
+            div.toast.toast-success Turnauksen luominen onnistui!
         h2= tournament.name
         div.column.col-6
             span.text-gray Alkaa
