@@ -19,12 +19,12 @@ router.get('/gamesManagement', (req, res) => {
     }    
 })
 
-router.get('/userManagement', async (req, res, next) => {
+router.get('/userManagement', async (req, res) => {
 
     if(authenticateAdmin(req)){
         try {        
-            const notApprovedUsers = await User.getUsersAsync(false)    
-            const approvedUsers = await User.getUsersAsync(true)               
+            const notApprovedUsers = await User.getUsersAsync(false)
+            const approvedUsers = await User.getUsersAsync(true)
             res.render('admin/userManagement', {usersToApprove: notApprovedUsers, users: approvedUsers})
         } catch (error) {
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
@@ -39,8 +39,9 @@ router.get('/userManagement', async (req, res, next) => {
 router.get('/tournamentManagement', async (req, res) => {
     if (authenticateAdmin(req)) {
         try {
-            const activeTournaments = await Tournament.getActiveAsync()
-            res.render('admin/tournamentManagement', {activeTournaments: activeTournaments})
+            const activeTournaments = await Tournament.getAllAsync(true)
+            const allTournaments = await Tournament.getAllAsync()
+            res.render('admin/tournamentManagement', {activeTournaments: activeTournaments, allTournaments: allTournaments})
         } catch (error) {
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
             res.redirect('/')
@@ -49,6 +50,29 @@ router.get('/tournamentManagement', async (req, res) => {
     } else {
         res.redirect('/')
     }
+})
+
+// TODO: render error page if cant fetch tournament with given ID!!
+router.get('/tournament/:tournamentId', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const tournamentId = req.params.tournamentId
+
+    try {
+        let tournament = await Tournament.getByIdAsync(tournamentId)
+        const playingStarts = moment(tournament.datePlayingStarts).format("YYYY-MM-DD")
+        const startingDate = moment(tournament.dateStarts).format("YYYY-MM-DD")
+        const endingDate = moment(tournament.dateEnds).format("YYYY-MM-DD")
+        tournament.datePlayingStarts = playingStarts;
+        tournament.dateStarts = startingDate;
+        tournament.dateEnds = endingDate;
+        console.log(util.inspect(tournament))
+        res.render('admin/tournamentEdit', { tournament })
+    } catch (error) {
+        res.status(500).send('Internal_server_error')
+    } 
 })
 
 router.post('/approveUsers', async (req, res) => {
@@ -85,29 +109,7 @@ router.post('/removeUsers', async (req, res) => {
     }
 })
 
-router.post('/createGames', (req, res) => {
-    if (!authenticateAdmin(req)) return res.redirect('/')
-
-    req.sanitizeBody('tournamentName').escape()
-
-    req.checkBody('tournamentName').isAlphanumeric().withMessage('Turnauksen nimi saa sisältää vain numeroita ja kirjaimia')
-    req.checkBody('numberOfGames').isNumeric()
-
-    var game = {
-        tournamentName: req.body.tournamentName,
-        numberOfGames: req.body.numberOfGames,
-        tournamentPlayingStartDate: req.body.tournamentPlayingStartDate,
-        tournamentStartDate: req.body.tournamentStartDate,
-        tournamentEndDate: req.body.tournamentEndDate,
-        winnerBet: req.body.winnerBet ? true : null,
-        topStriker: req.body.topStriker ? true : null,
-        numberOfGames: req.body.numberOfGames
-    }
-
-    res.render('admin/createGames', {game: game} )
-})
-
-router.post('/createGamesSubmit', async (req, res) => {
+router.post('/createGames', async (req, res) => {
 
     //Incoming request format:
     /*     {
@@ -135,12 +137,6 @@ router.post('/createGamesSubmit', async (req, res) => {
       } */
 
     //validate request
-
-    //If validation errors, render page with errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.render('admin/gamesManagement', { errors: errors.mapped() });
-    }
 
     let gameList = []
     const numberOfGames = req.body['team-1'].length
@@ -183,32 +179,34 @@ router.post('/createGamesSubmit', async (req, res) => {
     res.redirect('/tournament/' + tournamentId)
 })
 
-
-// TODO: render error page if cant fetch tournament with given ID!!
-router.get('/tournament/:tournamentId', async (req, res) => {
+router.post('/tournament/update/:id', async (req, res) => {
     if (!authenticateAdmin(req)) {
         return res.sendStatus(403)
     }
+    const par = req.body
 
-    const tournamentId = req.params.tournamentId
+    const tournament = {
+        id: req.params.id,
+        dateStarts: par.tournamentStartDate,
+        datePlayingStarts: par.tournamentPlayingStartDate,
+        dateEnds: par.tournamentEndDate,
+        name: par.tournamentName
+    }
 
-    try {
-        let tournament = await Tournament.getByIdAsync(tournamentId)
-        const playingStarts = moment(tournament.datePlayingStarts).format("YYYY-MM-DD")
-        const startingDate = moment(tournament.dateStarts).format("YYYY-MM-DD")
-        const endingDate = moment(tournament.dateEnds).format("YYYY-MM-DD")
-        tournament.datePlayingStarts = playingStarts;
-        tournament.dateStarts = startingDate;
-        tournament.dateEnds = endingDate;
-        console.log(util.inspect(tournament))
-        res.render('admin/tournamentEdit', { tournament })
-    } catch (error) {
-        res.status(500).send('Internal_server_error')
-    } 
-})
+    const editSuccesful = await Tournament.updateTournamentAsync(tournament)
 
-router.post('/tournament/update', (req, res) => {
-    res.json(req.body)
+    console.log("EDITSUCCESFULL: " + editSuccesful)
+
+    if (editSuccesful) {
+        req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
+        req.flash('successful', 'true')
+        res.redirect('/admin/tournament/' + tournament.id)
+    } else {
+        req.flash('info', 'Turnauksen tietojen päivityksessä ongelma')
+        req.flash('successful', 'false')
+        res.redirect('/admin/tournament/' + tournament.id)
+    }
+
 })
 
 function authenticateAdmin(req) {

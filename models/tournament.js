@@ -1,6 +1,6 @@
-var db  = require('../database/db')
-var moment = require('moment')
-var Game = require('../models/game')
+const db  = require('../database/db')
+const moment = require('moment')
+const Game = require('../models/game')
 const util = require('util')
 
 exports.Tournament = class Tournament {
@@ -15,10 +15,16 @@ exports.Tournament = class Tournament {
     }
   }
 
+exports.getAllAsync = async (active=null) => {
+    
+    let tournament
 
-exports.getActiveAsync = async () => {
-    const tournament = await db.select('*').from('tournament')
-    .where({active: true})
+    if(active == null){
+        tournament = await db.select('*').from('tournament')
+    } else {
+        tournament = await db.select('*').from('tournament').where({active: active})
+    }
+
     return tournament
 }
 
@@ -56,5 +62,15 @@ exports.createTournamentAsync = async (tournament) => {
     } catch (error) {
         console.log(error)
     }
+}
 
+exports.updateTournamentAsync = async (tournament) => {
+    try {
+        await db('tournament').where('id', tournament.id).update(tournament)
+        console.log('Updated tournament with id ' + tournament.id)
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }

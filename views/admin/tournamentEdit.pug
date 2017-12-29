@@ -1,43 +1,46 @@
 extends ../layout
 
 block content
-    div(class='column col-12')
-        ul(class="tab tab-block")
-            li(class="tab-item active")
-                a(href="/admin/tournamentManagement") Turnausten hallinta
-            li(class="tab-item")
-                a(href="/admin/gamesManagement") Luo uusi turnaus
-            li(class="tab-item")
-                a(href="/admin/userManagement") Käyttäjien hallinta
-    h3=tournament.name
-    p=tournament.id
-    form(action="/admin/tournament/update" method="post" class="form-horizontal")
-        div.form-group
-            div.col-3
-                label.form-label Turnauksen nimi
-            div.col-6
-                input(id="tournamentName" name='tournamentName' class='form-input' type="text" value=tournament.name required)
-        div.form-group
-            div.col-3
-                label.form-label Veikkaamisen voi aloittaa
-            div.col-3
-                p Päivämäärä muodossa MM/DD/YYYY
-                input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate value=tournament.datePlayingStarts required)
-                p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
-        div.form-group
-            div.col-3
-                label.form-label Turnaus alkaa
-            div.col-3
-                input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" min=currentDate value=tournament.dateStarts required)
-                p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
-        div.form-group
-            div.col-3
-                label.form-label Turnaus loppuu
-            div.col-3
-                input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" min=currentDate value=tournament.dateEnds required)
-        div.form-group
-            div.col-3
-            div.col-6
-                input(name=tournamentId type='hidden' value=tournament.id)
-                button(class='btn btn-primary' type='submit') Tallenna muutokset
+    div.columns
+        div(class='column col-12')
+            a(href="/admin/tournamentManagement" class="text-gray")
+                i(class="fa fa-chevron-left") 
+                |   Takasin
+        div(class='column col-12')
+            if messages.info && messages.successful == 'true'
+                span(class='toast toast-success')= messages.info
+            else if messages.info && messages.successful == 'false'
+                span(class='toast toast-error')= messages.info
+    div.columns
+        div(class='column col-12')
+            h3.pt-1-4=tournament.name
+            form(action="/admin/tournament/update/" + tournament.id method="post" class="form-horizontal")
+                div.form-group
+                    div.col-3
+                        label.form-label Turnauksen nimi
+                    div.col-6
+                        input(id="tournamentName" name='tournamentName' class='form-input' type="text" value=tournament.name required)
+                div.form-group
+                    div.col-3
+                        label.form-label Veikkaamisen voi aloittaa
+                    div.col-3
+                        p Päivämäärä muodossa MM/DD/YYYY
+                        input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date" value=tournament.datePlayingStarts required)
+                        p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
+                div.form-group
+                    div.col-3
+                        label.form-label Turnaus alkaa
+                    div.col-3
+                        input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" value=tournament.dateStarts required)
+                        p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
+                div.form-group
+                    div.col-3
+                        label.form-label Turnaus loppuu
+                    div.col-3
+                        input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=tournament.dateEnds required)
+                div.form-group
+                    div.col-3
+                    div.col-6
+                        input(name=tournamentId type='hidden' value=tournament.id)
+                        button(class='btn btn-primary' type='submit') Tallenna muutokset
 

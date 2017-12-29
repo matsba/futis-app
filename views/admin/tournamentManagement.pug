@@ -9,9 +9,9 @@ block content
                 a(href="/admin/gamesManagement") Luo uusi turnaus
             li(class="tab-item")
                 a(href="/admin/userManagement") Käyttäjien hallinta
-    h3.pt-2 Aktiiviset turnaukset:
     div.columns
-        table.table
+        h3.pt-1-4 Aktiiviset turnaukset:
+        table.table.table-horizontal
             tbody
                 for t in activeTournaments
                     tr
@@ -19,7 +19,23 @@ block content
                         td
                             a(href='/#') Päivitä tuloksia
                         td
-                            a(href='tournament/' + t.id) Muokkaa turnauksen tietoja
+                            a(href='tournament/' + t.id) Muokkaa
                         td
-                            a(href='/#') Deaktivoi turnaus
-    h3.pt-1-4 Menneet turnaukset:
+                            a(href='/#' class="text-error") Deaktivoi turnaus                   
+    div.columns
+        h3.pt-1-4 Kaikki turnaukset:
+        table.table.table-horizontal
+            tbody
+                for t in allTournaments
+                    tr 
+                        td= t.name
+                        td
+                            a(href='/#') Päivitä tuloksia
+                        td
+                            a(href='tournament/' + t.id) Muokkaa
+                        td
+                            if t.active
+                                a(href='/#' class="text-error") Deaktivoi turnaus
+                            else
+                                a(href='/#' class="text-success") Aktivoi turnaus
+

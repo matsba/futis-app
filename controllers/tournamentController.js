@@ -1,10 +1,10 @@
-var express = require('express')
-var router = express.Router()
-var Tournament = require('../models/tournament')
-var Game = require('../models/game')
-var User = require('../models/user')
-var Pools = require('../models/pools')
-var moment = require('moment')
+const express = require('express')
+const router = express.Router()
+const Tournament = require('../models/tournament')
+const Game = require('../models/game')
+const User = require('../models/user')
+const Pools = require('../models/pools')
+const moment = require('moment')
 const util = require('util')
 
 router.get('/:id', async (req, res) => {

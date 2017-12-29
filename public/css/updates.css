@@ -246,3 +246,8 @@ body.landing-page {
 .faded {
     opacity: 0.2
 }
+
+.fade-out {
+    opacity: 0;
+    transition-duration: 750ms;
+}

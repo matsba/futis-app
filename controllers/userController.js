@@ -1,9 +1,9 @@
-var express = require('express')
-var router = express.Router()
-var User = require('../models/user')
-var Pools = require('../models/pools')
-var Tournament = require('../models/tournament')
-var Game = require('../models/game')
+const express = require('express')
+const router = express.Router()
+const User = require('../models/user')
+const Pools = require('../models/pools')
+const Tournament = require('../models/tournament')
+const Game = require('../models/game')
 
 router.get('/', async (req, res) => {
     if (User.authenticateUser(req)) {

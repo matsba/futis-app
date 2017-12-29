@@ -8,11 +8,11 @@ router.use('/tournament', require('./tournamentController'))
 router.use('/participate', require('./participateController'))
 
 router.get('/', (req, res) => {
-    if(req.session && req.session.user){
-        res.redirect('/home/')
-    } else {
-        res.render('user/login')
-    }
+	if(req.session && req.session.user){
+		res.redirect('/home/')
+	} else {
+		res.render('user/login')
+	}
 })
     
 

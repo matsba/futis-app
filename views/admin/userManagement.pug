@@ -1,5 +1,8 @@
 extends ../layout
 
+block scripts
+    script(src="/public/scripts.js")
+
 block content
     div(class='column col-12')
         ul(class="tab tab-block")
@@ -59,7 +62,7 @@ block content
                             td
                                 - var id = u.id
                                 input(type="checkbox" name= id)
-                input(type='submit' value='Poista valitut käyttäjät' class='btn btn-primary btn-danger login-button')
+                input(type='submit' value='Poista valitut käyttäjät' class='btn btn-error login-button' onclick="cancelButton(event)")
                 p.text-error.pt-2 Käyttäjien poistoa ei voi kumota!
         else
             div.empty
