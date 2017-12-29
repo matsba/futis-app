@@ -209,6 +209,31 @@ router.post('/tournament/update/:id', async (req, res) => {
 
 })
 
+router.post('/tournament/activate/', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const tournamentId = req.body.id
+    //default true:
+    let activate = true
+
+    if(typeof req.body.activate != undefined){
+        activate = req.body.activate
+    }
+
+    try {
+        await Tournament.updateTournamentAsync({id: tournamentId, active: activate})
+        req.flash('info', 'Turnaus aktivoitu')
+        req.flash('successful', 'true')
+        res.redirect('/admin/tournamentManagement/')
+    } catch (error) {
+        console.log(error)
+        req.flash('info', 'INTERNAL_SERVER_ERROR' + error)
+        req.flash('successful', 'false')
+        res.redirect('/admin/tournamentManagement/')
+    }
+})
 function authenticateAdmin(req) {
     return req.session && req.session.user && req.session.user.username == 'admin';
 }

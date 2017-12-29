@@ -24,6 +24,13 @@ router.get('/tournament/:id', async (req, res) => {
     }
 })
 
+router.post('/do/', async (req, res) => {
+    if (!User.authenticateUser(req)) {
+        return res.redirect('/')
+    }
+    res.json(req.body)
+})
+
 router.get('/', async (req, res) => {
     if (!User.authenticateUser(req)) {
         return res.redirect('/')

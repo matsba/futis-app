@@ -27,6 +27,38 @@ function cancelButton(event) {
 	}, 5000)
 }
 
+function activateTournamentButton(event, tournamentId, activate) {
+	event.preventDefault()
+			
+	var data = {
+		id: tournamentId,
+		activate: activate
+	}
+	
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/admin/tournament/activate/',						
+		success: function() {
+			location.reload()
+		},
+		error: function(error) {
+			let row = $("#message-row")
+
+			if(row.hasClass("toast toast-error")){
+				row.text(error.responseText).slideDown()
+			} else{
+				row.addClass("toast toast-error").text(error.responseText)                        
+			}
+
+			setTimeout(function(){
+				row.slideUp()
+			}, 3000)
+		}
+	})
+}
+
 function addGames() {
 	var nbr = $('#numberOfGames').val()
 	var table = $('#addGamesSectionTBody')  
