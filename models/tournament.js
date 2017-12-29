@@ -20,9 +20,9 @@ exports.getAllAsync = async (active=null) => {
     let tournament
 
     if(active == null){
-        tournament = await db.select('*').from('tournament')
+        tournament = await db.select('*').from('tournament').orderBy('name')
     } else {
-        tournament = await db.select('*').from('tournament').where({active: active})
+        tournament = await db.select('*').from('tournament').where({active: active}).orderBy('name')
     }
 
     return tournament

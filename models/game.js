@@ -13,6 +13,7 @@ const findCode = (team) => {
 }
 
 exports.getCountryCodeForTeams = (games) => {
+	if(!games) return
 	//Takes in game object with team_1 and team_2
 	//Example
 	/*{ team_1: 'Argentiina',
