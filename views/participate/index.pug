@@ -13,13 +13,14 @@ block content
                     th 
                 tbody
                 for tournament in activeTournaments
-                    tr
-                        td= tournament.name
-                        td #{moment(tournament.dateStarts).format('D.MM.YYYY')} 
-                            i (#{moment(tournament.dateStarts).fromNow()})
-                        td 
-                            a(href="/participate/tournament/" + tournament.id)
-                                button.btn.btn-primary Osallistu
+                    if tournament.gamescount > 0
+                        tr
+                            td= tournament.name
+                            td #{moment(tournament.dateStarts).format('D.MM.YYYY')} 
+                                i (#{moment(tournament.dateStarts).fromNow()})
+                            td 
+                                a(href="/participate/tournament/" + tournament.id)
+                                    button.btn.btn-primary Osallistu
         else
             p Ei aktiivisia turnauksia :(
 

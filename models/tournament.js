@@ -20,12 +20,23 @@ exports.getAllAsync = async (active=null) => {
     let tournament
 
     if(active == null){
-        tournament = await db.select('*').from('tournament').orderBy('name')
+        tournament = await db.raw(`
+        select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+            (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
+        from tournament
+        order by name`)
     } else {
-        tournament = await db.select('*').from('tournament').where({active: active}).orderBy('name')
+        tournament = await db.raw(`
+        select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+            (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
+        from tournament
+        where active = ?
+        order by name`
+        , [active]
+        )
     }
-
-    return tournament
+    console.log(util.inspect(tournament['rows']))
+    return tournament['rows']
 }
 
 exports.getByIdAsync = async (tournamentId) => {

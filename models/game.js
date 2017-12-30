@@ -39,7 +39,6 @@ exports.filterGamesByDate = (games, date) => {
 	return filtered
 }
 
-
 //INCLUDES DB QUERIES
 exports.createGames = (gameList) => {
 
@@ -77,5 +76,3 @@ exports.updateGames = async (gameList) => {
 		return false
 	}
 }
-
-//TODO: update game by parameter result, date, team names
