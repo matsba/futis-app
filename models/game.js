@@ -62,4 +62,19 @@ exports.createGames = (gameList) => {
 		})
 }
 
+exports.updateGames = async (gameList) => {
+	if (gameList.length < 1) return false;
+
+	try {
+		for (let game of gameList) {
+			await db('game').where('id', game.id).update(game)
+			console.log('Updated game with id ' + game.id)
+		}
+		return true
+	} catch (error) {
+		console.log(error)
+		return false
+	}
+}
+
 //TODO: update game by parameter result, date, team names

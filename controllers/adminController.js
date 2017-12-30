@@ -185,6 +185,19 @@ router.post('/tournament/update/:id', async (req, res) => {
     }
     const par = req.body
 
+
+    let games = []
+
+
+    for (let i = 0; i < par.game_id.length; i++) {
+        games.push({
+					id: par.game_id[i],
+					team_1: par.team_1[i],
+					team_2: par.team_2[i],
+					game_start_datetime: moment(par.game_datetime[i], "DD.MM.YYYY HH:mm").format()
+				})
+    }
+
     const tournament = {
         id: req.params.id,
         dateStarts: par.tournamentStartDate,
@@ -194,19 +207,20 @@ router.post('/tournament/update/:id', async (req, res) => {
     }
 
     const editSuccesful = await Tournament.updateTournamentAsync(tournament)
+		const gamesSuccesful = await Game.updateGames(games)
 
     console.log("EDITSUCCESFULL: " + editSuccesful)
+		console.log("GAMESSUCCESFULL: " + gamesSuccesful)
 
-    if (editSuccesful) {
+    if (editSuccesful && gamesSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
         req.flash('successful', 'true')
         res.redirect('/admin/tournament/' + tournament.id)
     } else {
-        req.flash('info', 'Turnauksen tietojen päivityksessä ongelma')
+        req.flash('info', 'Turnauksen tietojen päivityksessä ongelma, tarkista tiedot')
         req.flash('successful', 'false')
         res.redirect('/admin/tournament/' + tournament.id)
     }
-
 })
 
 router.post('/tournament/activate/', async (req, res) => {

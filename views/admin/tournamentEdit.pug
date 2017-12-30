@@ -38,8 +38,29 @@ block content
                         label.form-label Turnaus loppuu
                     div.col-3
                         input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=tournament.dateEnds required)
-                div.form-group
+                div.form-group.pt-1-4
+                    div.col-12
+                        table
+                            thead
+                                tr
+                                    th pvm ja aika
+                                    th joukue 1
+                                    th joukue 2
+                            tbody
+                                for game in tournament.games
+                                    tr
+                                        td
+                                            input(class="form-input" name="game_datetime" type="text" value=moment(game.game_start_datetime).format('D.M.YYYY H:mm') required)
+                                        td
+                                            input(class="form-input countries-complete" name="team_1" type="text" value=game.team_1 required)
+                                        td
+                                            input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
+                                        td
+                                            input(name="game_id" type='hidden' value=game.id required)
+                div.form-group.pt-1-4
                     div.col-3
+                    div.col-1
+                        a(class='btn btn-link' href="/admin/tournamentManagement") Peruuta
                     div.col-6
                         input(name=tournamentId type='hidden' value=tournament.id)
                         button(class='btn btn-primary' type='submit') Tallenna muutokset
