@@ -12,7 +12,7 @@ block content
         div.column.col-6
             span.text-gray Loppuu
             p.text-primary #{moment(tournament.dateEnds).format("D.MM.YYYY")}
-    div.column
+    div.column.col-12
         h3 Pelit
         table(class='table table-striped table-hover')
             thead
@@ -21,18 +21,18 @@ block content
                     th Peli
                     th Tulos
             tbody
-            if game && game.length > 0
+            if games && games.length > 0
                 for game in games
-                    tr
-                        td= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
-                        td
-                            span
-                                img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                =game.team_1 
-                            span  -                           
-                                =game.team_2
-                                img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                            if game.team_1_score 
-                                td #{game.team_1_score} - #{game.team_2_score}
-                            else
-                                td TBA
+                        tr
+                            td= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
+                            td
+                                span
+                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    =game.team_1 
+                                span  -                           
+                                    =game.team_2
+                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                if game.team_1_score 
+                                    td #{game.team_1_score} - #{game.team_2_score}
+                                else
+                                    td TBA

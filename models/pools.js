@@ -1,14 +1,15 @@
-var db  = require('../database/db')
-var moment = require('moment')
+const db = require('../database/db')
+const moment = require('moment')
+const util = require('util')
 
 exports.getPoolsByUserAndTournament = (userId, tournamentId) => {
 	const pools = db
-		.select('g.team_1', 'g.team_2', 'g.team_1_score', 'g.team_2_score', 'g.result', 'g.game_start_datetime',  'p.pool')
+		.select('g.team_1', 'g.team_2', 'g.team_1_score', 'g.team_2_score', 'g.result', 'g.game_start_datetime', 'p.pool')
 		.from('user as u')
 		.join('participant as par', 'par.user_id', '=', 'u.id')
 		.join('tournament as t', 't.id', '=', 'par.tournament_id')
 		.join('game as g', 'g.tournament_id', '=', 't.id')
-		.leftJoin('pools as p', function() {
+		.leftJoin('pools as p', function () {
 			this.on('p.user_id', '=', 'u.id').andOn('g.id', '=', 'p.game_id')
 		})
 		.where({
@@ -16,14 +17,62 @@ exports.getPoolsByUserAndTournament = (userId, tournamentId) => {
 			't.id': tournamentId
 		})
 		.orderBy('g.game_start_datetime', 'ASC')
-		.on('query-error', function(error, obj) {
+		.on('query-error', function (error, obj) {
 			console.log(error);
 		})
 		.catch((error) => {
 			console.log(error)
 		})
 
-	return pools 
+	return pools
+}
+
+exports.userParticipate = async (poolsList, extraPoolsList, userId, tournamentId) => {
+
+	try {
+		//Insert user into participant table and return created id
+		const participantId = await db.returning('id').insert({ 'user_id': userId, 'tournament_id': tournamentId }).into('participant')
+		console.log(participantId)
+
+		//poolsList example:
+		// {
+		// 	'0': { game_id: '1', pool: '1' },
+		// 	'1': { game_id: '2', pool: 'x' },
+		// 	'2': { game_id: '3', pool: '2' },
+		// 	'3': { game_id: '4', pool: '1' },
+		// 	'4': { game_id: '5', pool: 'x' },
+		// 	'5': { game_id: '6', pool: '2' }
+		// }
+
+		const makePoolsList = (poolsList, userId, participantId) => {
+			let list = []
+			for (item of poolsList) {
+				item['user_id'] = userId
+				item['participant_id'] = participantId[0]
+				list.push(item)
+			}
+			return list
+		}
+		const pools = db.insert(makePoolsList(poolsList, userId, participantId)).into('pools').catch((error) => console.log(error))
+
+		//extraPoolsList example:
+		// {
+		// 	topstriker: 'Messi',
+		// 	firstplace: 'Italia',
+		// 	secondplace: 'Suomi'
+		// }
+
+		extraPoolsList['participant_id'] = participantId[0]
+
+		const extraPools = db.insert(extraPoolsList).into('extra_pools').catch((error) => console.log(error))
+
+		return true
+
+	} catch (error) {
+		console.log(error)
+		return false
+	}
+
 }
 
 

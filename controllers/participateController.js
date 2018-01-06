@@ -24,11 +24,55 @@ router.get('/tournament/:id', async (req, res) => {
     }
 })
 
-router.post('/do/', async (req, res) => {
+router.post('/tournament/do/', async (req, res) => {
     if (!User.authenticateUser(req)) {
         return res.redirect('/')
     }
-    res.json(req.body)
+
+    //Incoming request example
+    //Where numeric properties are game_ids
+    //    { 'tournament_id': uuid
+    //    '1': '1',
+    //   '2': 'x',
+    //   '3': '2',
+    //   '4': '1',
+    //   '5': 'x',
+    //   '6': '2',
+    //   topstriker: 'Messi',
+    //   firstplace: 'Italia',
+    //   secondplace: 'Suomi'}
+
+    
+    let poolsList = []
+    let extraPoolsList = new Object()
+    const tournamentId = req.body.tournament_id
+
+    for(let bet in req.body){
+        if(!['top_striker', 'first_place', 'second_place', 'tournament_id'].includes(bet)){
+            poolsList.push({
+                'game_id': bet,
+                'pool': req.body[bet]
+            })
+        } else if(['top_striker', 'first_place', 'second_place'].includes(bet)) {
+            extraPoolsList[bet] = req.body[bet]
+        }
+    }
+
+    const insertedPools = await Pools.userParticipate(poolsList, extraPoolsList, req.session.user.id, tournamentId)
+    
+    if(insertedPools){
+        const activeTournaments = await Tournament.getAllAsync(true, userId)        
+        res.render('participate/index', {activeTournaments, success: {
+            text: "Turnaukseen osallistuminen onnistui!"
+        }})
+    } else {
+        let tournament = await Tournament.getByIdAsync(tournamentId)
+        const gamesWithCountryCodes = Game.getCountryCodeForTeams(tournament.games)
+        tournament.games = gamesWithCountryCodes;
+        res.render('participate/action', {tournament: tournament, error: {
+            text: "Tapahtui odottamaton virhe. Yritä uudelleen."
+        }})
+    }    
 })
 
 router.get('/', async (req, res) => {
@@ -36,9 +80,12 @@ router.get('/', async (req, res) => {
         return res.redirect('/')
     }    
 
+    const userId = req.session.user.id
+
     try {
-        const activeTournaments = await Tournament.getAllAsync(true)
-        res.render('participate/index', {activeTournaments: activeTournaments})
+        const activeTournamentsForUser = await Tournament.getAllAsync(true, userId)
+        console.log(util.inspect(activeTournamentsForUser))
+        res.render('participate/index', {activeTournaments: activeTournamentsForUser})
     } catch (error) {
         console.log(error)
         res.status(500).send('Internal_server_error')

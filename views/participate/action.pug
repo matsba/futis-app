@@ -6,10 +6,13 @@ block scripts
 block content
 
     div.column.col-12
+        if error
+            span.toast.toast-error= error.text
         h2= tournament.name
     div.column.col-12
         h3 Veikkaa
         form(action="do" method="POST" class="form-horizontal")
+            input(type="hidden" name="tournament_id" value=tournament.id)
             table(class='table table-striped table-hover')
                 thead
                     tr
@@ -28,28 +31,31 @@ block content
                                     =game.team_2
                                     img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
                             td.form-group
-                                input(type="radio" value="1" id="radio_" + game.id +"_1" name="radio_" + game.id)
+                                input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id)
                                 label(for="radio_" + game.id +"_1") 1 
-                                input(type="radio" value="x" id="radio_" + game.id +"_x" name="radio_" + game.id)
+                                input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id)
                                 label(for="radio_" + game.id +"_x") x 
-                                input(type="radio" value="2" id="radio_" + game.id +"_2" name="radio_" + game.id)
+                                input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id)
                                 label(for="radio_" + game.id +"_2") 2
-            h5.ptb-1-4 Täytä vielä nämä...
-            div.form-group
-                div.col-3
-                    label.form-label Maalikuningas
-                div.col-6
-                    input(type="text" name="topstriker" class="form-input")
-            div.form-group
-                div.col-3
-                    label.form-label Turnauksen voittaja
-                div.col-6
-                    input(type="text" name="firstplace" class="form-input")
-            div.form-group
-                div.col-3
-                    label.form-label Turnauksen 2. sija
-                div.col-6
-                    input(type="text" name="secondplace" class="form-input")
+            if tournament.topstriker || tournament.winnerbet
+                h5.ptb-1-4 Täytä vielä nämä...
+                if tournament.topstriker
+                    div.form-group
+                        div.col-3
+                            label.form-label Maalikuningas
+                        div.col-6
+                            input(type="text" name="top_striker" class="form-input")
+                if tournament.winnerbet
+                    div.form-group
+                        div.col-3
+                            label.form-label Turnauksen voittaja
+                        div.col-6
+                            input(type="text" name="first_place" class="form-input")
+                    div.form-group
+                        div.col-3
+                            label.form-label Turnauksen 2. sija
+                        div.col-6
+                            input(type="text" name="second_place" class="form-input")
             div.form-group.pt-20
                 div.col-9
                 div.col-1                    

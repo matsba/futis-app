@@ -7,25 +7,29 @@ exports.Tournament = class Tournament {
 
     constructor(name, datePlayingStarts, dateStarts, dateEnds, winnerBet, topStriker) {
         this.name = name,
-        this.datePlayingStarts= datePlayingStarts,
-        this.dateStarts = dateStarts,
-        this.dateEnds = dateEnds,
-        this.winnerBet = winnerBet,
-        this.topStriker = topStriker
+        this.dateplayingstarts= datePlayingStarts,
+        this.datestarts = dateStarts,
+        this.dateends = dateEnds,
+        this.winnerbet = winnerBet,
+        this.topstriker = topStriker
     }
   }
 
-exports.getAllAsync = async (active=null) => {
+exports.getAllAsync = async (active=null, userId=null) => {
     
+    const allTournaments = active == null
+    const activeTournaments = active == true && userId == null
+    const activeTournamentsWithUserParticipation = active == true && userId != null
+
     let tournament
 
-    if(active == null){
+    if(allTournaments){
         tournament = await db.raw(`
         select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         order by name`)
-    } else {
+    } else if(activeTournaments) {
         tournament = await db.raw(`
         select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
@@ -34,8 +38,17 @@ exports.getAllAsync = async (active=null) => {
         order by name`
         , [active]
         )
+    } else if(activeTournamentsWithUserParticipation){
+
+        tournament = await db.raw(`
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+            (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
+            (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
+        from tournament
+        where active = ?
+        order by name`, [userId, active]
+        )
     }
-    console.log(util.inspect(tournament['rows']))
     return tournament['rows']
 }
 

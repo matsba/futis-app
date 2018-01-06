@@ -2,26 +2,33 @@ extends ../layout
 
 block content
 
-    div.column.col-12
-        h2 Aktiiviset turnaukset
-        if activeTournaments.length > 0
-            p Näihin turnauksiin voit vielä osallistua
-            table.table
-                thead
-                    th Turnaus
-                    th Osallistuminen loppuu
-                    th 
-                tbody
-                for tournament in activeTournaments
-                    if tournament.gamescount > 0
-                        tr
-                            td= tournament.name
-                            td #{moment(tournament.dateStarts).format('D.MM.YYYY')} 
-                                i (#{moment(tournament.dateStarts).fromNow()})
-                            td 
-                                a(href="/participate/tournament/" + tournament.id)
-                                    button.btn.btn-primary Osallistu
-        else
-            p Ei aktiivisia turnauksia :(
+    div.columns
+        div.column.col-12
+            h2 Aktiiviset turnaukset
+            if success
+                span.toast.toast-success= success.text
+    div.columns
+        div.column.col-12.pt-1-4
+            if activeTournaments.length > 0
+                p Näihin turnauksiin voit vielä osallistua
+                table.table
+                    thead
+                        th Turnaus
+                        th Osallistuminen loppuu
+                        th
+                        th 
+                    tbody
+                    for tournament in activeTournaments
+                        if tournament.gamescount > 0 && !tournament.userparticipated
+                            tr
+                                td= tournament.name
+                                td #{moment(tournament.dateStarts).format('D.M.YYYY')} 
+                                    i (#{moment(tournament.dateStarts).fromNow()})
+                                td 
+                                    a(href="/participate/tournament/" + tournament.id)
+                                        button.btn.btn-primary Osallistu
+                                td= tournament.userparticipated
+            else
+                p Ei aktiivisia turnauksia :(
 
         
