@@ -76,3 +76,15 @@ exports.updateGames = async (gameList) => {
 		return false
 	}
 }
+
+exports.getGames = async (tournamentId) => {
+	try {
+		const games = await db('game').where('tournament_id', tournamentId).orderBy('game_start_datetime')
+		return games
+	} catch (error) {
+		console.log(error)
+		return false
+	}
+}
+
+//TODO: update game by parameter result, date, team names

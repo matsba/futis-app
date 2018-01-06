@@ -68,7 +68,6 @@ router.get('/tournament/:tournamentId', async (req, res) => {
         tournament.datePlayingStarts = playingStarts;
         tournament.dateStarts = startingDate;
         tournament.dateEnds = endingDate;
-        console.log(util.inspect(tournament))
         res.render('admin/tournamentEdit', { tournament })
     } catch (error) {
         res.status(500).send('Internal_server_error')
@@ -209,9 +208,6 @@ router.post('/tournament/update/:id', async (req, res) => {
     const editSuccesful = await Tournament.updateTournamentAsync(tournament)
 		const gamesSuccesful = await Game.updateGames(games)
 
-    console.log("EDITSUCCESFULL: " + editSuccesful)
-		console.log("GAMESSUCCESFULL: " + gamesSuccesful)
-
     if (editSuccesful && gamesSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
         req.flash('successful', 'true')
@@ -248,6 +244,57 @@ router.post('/tournament/activate/', async (req, res) => {
         res.redirect('/admin/tournamentManagement/')
     }
 })
+
+router.get('/tournament/:id/results', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const games = await Game.getGames(req.params.id)
+
+    res.render('admin/resultsUpdate', { games: games})
+})
+
+router.post('/tournament/:id/results', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const par = req.body
+    console.log(par)
+
+    let games = []
+
+    for (let i = 0; i < par.game_id.length; i++) {
+        if ((!par.goals_1[i] && par.goals_2[i]) || (par.goals_1[i] && !par.goals_2[i])) {
+            // TODO: RENDERÖI SAMA SIVU SAMOILLA TIEDOILLA MUTTA FLASH MESSAGE VIRHEILMOITUS
+        }
+        if (par.goals_1[i].length == 0 || par.goals_2[i] == 0) {
+            continue
+        }
+        let result = 'x'
+        if (par.goals_1[i] > par.goals_2[i]) {
+            result = '1'
+        } else if (par.goals_1[i] < par.goals_2[i]) {
+            result = '2'
+        }
+        games.push({
+            team_1_score: par.goals_1[i],
+            team_2_score: par.goals_2[i],
+            id: par.game_id[i],
+            result: result
+        })
+    }
+
+    console.log(games)
+
+    const succesful = await Game.updateGames(games)
+
+    console.log("PELIEN TULOKSIEN PÄIVITYS: " + succesful)
+
+    res.redirect('')
+})
+
 function authenticateAdmin(req) {
     return req.session && req.session.user && req.session.user.username == 'admin';
 }

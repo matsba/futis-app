@@ -17,9 +17,9 @@ exports.Tournament = class Tournament {
 
 exports.getAllAsync = async (active=null, userId=null) => {
     
-    const allTournaments = active == null
-    const activeTournaments = active == true && userId == null
-    const activeTournamentsWithUserParticipation = active == true && userId != null
+    const allTournaments = (active == null)
+    const activeTournaments = (active == true && userId == null)
+    const activeTournamentsWithUserParticipation = (active == true && userId != null)
 
     let tournament
 
