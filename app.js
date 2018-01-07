@@ -5,7 +5,6 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const flash = require('express-flash')
-
 //var moment = require('moment')
 //var cookieParser = require('cookie-parser')
 

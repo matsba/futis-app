@@ -1,6 +1,8 @@
-var db  = require('../database/db')
-var moment = require('moment')
+const db  = require('../database/db')
+const moment = require('moment')
 const countryCodes = require('../public/data/countryCodes.json')
+const logger = require('../logger')
+const util = require('util')
 //const util = require('util')
 
 //UTILITES THAT DON'T REQURE DB
@@ -40,7 +42,7 @@ exports.filterGamesByDate = (games, date) => {
 }
 
 //INCLUDES DB QUERIES
-exports.createGames = (gameList) => {
+exports.createGames = async (gameList) => {
 
 	/* gameList example:
     { game_start_datetime: '19.11.2017 17:00',
@@ -67,8 +69,9 @@ exports.updateGames = async (gameList) => {
 
 	try {
 		for (let game of gameList) {
-			await db('game').where('id', game.id).update(game)
-			console.log('Updated game with id ' + game.id)
+			const prevValue = await db.select('*').from('game').where('id', game.id)
+			const newValue = await db('game').where('id', game.id).update(game).returning('*')
+			logger.info('Updated game (id: ' + game.id + '). Previous value:' + util.inspect(prevValue) + ' - New value:' + util.inspect(newValue))
 		}
 		return true
 	} catch (error) {

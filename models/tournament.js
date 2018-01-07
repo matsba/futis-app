@@ -2,6 +2,7 @@ const db  = require('../database/db')
 const moment = require('moment')
 const Game = require('../models/game')
 const util = require('util')
+const logger = require('../logger')
 
 exports.Tournament = class Tournament {
 
@@ -80,21 +81,21 @@ exports.getByIdAsync = async (tournamentId) => {
 exports.createTournamentAsync = async (tournament) => {
     try {
         const tournamentId = await db.insert(tournament, 'id').into('tournament')
-        console.log('Created new tournament: ' + tournamentId[0])
+        logger.info('Created new tournament: ' + tournamentId[0])
         return tournamentId[0]
         
     } catch (error) {
-        console.log(error)
+        logger.error(error)
     }
 }
 
 exports.updateTournamentAsync = async (tournament) => {
     try {
         await db('tournament').where('id', tournament.id).update(tournament)
-        console.log('Updated tournament with id ' + tournament.id)
+        logger.info('Updated tournament with id ' + tournament.id)
         return true
     } catch (error) {
-        console.log(error)
+        logger.error(error)
         return false
     }
 }

@@ -172,7 +172,7 @@ router.post('/createGames', async (req, res) => {
         })  
     }
 
-    Game.createGames(gameList)
+    await Game.createGames(gameList)
 
     //Rederict user to created tournament page
     res.redirect('/tournament/' + tournamentId)
@@ -199,9 +199,9 @@ router.post('/tournament/update/:id', async (req, res) => {
 
     const tournament = {
         id: req.params.id,
-        dateStarts: par.tournamentStartDate,
-        datePlayingStarts: par.tournamentPlayingStartDate,
-        dateEnds: par.tournamentEndDate,
+        datestarts: par.tournamentStartDate,
+        dateplayingstarts: par.tournamentPlayingStartDate,
+        dateends: par.tournamentEndDate,
         name: par.tournamentName
     }
 

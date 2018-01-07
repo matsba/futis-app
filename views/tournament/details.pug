@@ -8,10 +8,10 @@ block content
         h2= tournament.name
         div.column.col-6
             span.text-gray Alkaa
-            p.text-primary #{moment(tournament.dateStarts).format("D.MM.YYYY")}
+            p.text-primary #{moment(tournament.dateStarts).format("D.M.YYYY")}
         div.column.col-6
             span.text-gray Loppuu
-            p.text-primary #{moment(tournament.dateEnds).format("D.MM.YYYY")}
+            p.text-primary #{moment(tournament.dateEnds).format("D.M.YYYY")}
     div.column.col-12
         h3 Pelit
         table(class='table table-striped table-hover')
