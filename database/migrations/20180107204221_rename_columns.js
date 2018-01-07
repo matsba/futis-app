@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
 			table.renameColumn('winnerBet', 'winnerbet'),
 			table.renameColumn('topStriker', 'topstriker'),
 			table.renameColumn('datePlayingStarts', 'datelayingstarts'),
-			table.renameColumn('dateStarts', 'dateStarts'),
+			table.renameColumn('dateStarts', 'datestarts'),
 			table.renameColumn('dateEnds', 'dateends')
 		})
 	])
@@ -16,8 +16,8 @@ exports.down = function(knex, Promise) {
 		knex.schema.table('users', function (table) {
 			table.renameColumn('winnerbet', 'winnerBet'),
 			table.renameColumn('topstriker', 'topStriker'),
-			table.renameColumn('datelayingstarts', 'datePlayingStarts'),
-			table.renameColumn('dateStarts', 'dateStarts'),
+			table.renameColumn('dateplayingstarts', 'datePlayingStarts'),
+			table.renameColumn('datestarts', 'dateStarts'),
 			table.renameColumn('dateends', 'dateEnds')
 		})
 	])
