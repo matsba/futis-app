@@ -2,3 +2,5 @@ node_modules/*
 database/knexfile.js
 .vscode
 .idea
+combined.log
+errors.log
