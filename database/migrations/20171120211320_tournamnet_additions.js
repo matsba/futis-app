@@ -2,8 +2,8 @@
 exports.up = function(knex, Promise) {
 	return Promise.all([
 		knex.schema.table('tournament', function(table){
-			table.boolean('winnerBet'),
-			table.boolean('topStriker')
+			table.boolean('winnerbet'),
+			table.boolean('topstriker')
 		})
 	])  
 }
@@ -11,8 +11,8 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
 	return Promise.all([
 		knex.schema.table('tournament', function(table){
-			table.dropColumn('winnerBet'),
-			table.dropColumn('topStriker')
+			table.dropColumn('winnerbet'),
+			table.dropColumn('topstriker')
 		})
 	])   
 }
