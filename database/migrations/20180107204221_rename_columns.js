@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
 		knex.schema.table('tournament', function (table) {
 			table.renameColumn('winnerBet', 'winnerbet'),
 			table.renameColumn('topStriker', 'topstriker'),
-			table.renameColumn('datePlayingStarts', 'datelayingstarts'),
+			table.renameColumn('datePlayingStarts', 'dateplayingstarts'),
 			table.renameColumn('dateStarts', 'datestarts'),
 			table.renameColumn('dateEnds', 'dateends')
 		})
