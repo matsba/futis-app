@@ -261,7 +261,6 @@ router.post('/tournament/:id/results', async (req, res) => {
     }
 
     const par = req.body
-    console.log(par)
 
     let games = []
 
@@ -286,11 +285,7 @@ router.post('/tournament/:id/results', async (req, res) => {
         })
     }
 
-    console.log(games)
-
     const succesful = await Game.updateGames(games)
-
-    console.log("PELIEN TULOKSIEN PÄIVITYS: " + succesful)
 
     res.redirect('')
 })
