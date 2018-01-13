@@ -46,6 +46,7 @@ router.post('/tournament/do/', async (req, res) => {
     let poolsList = []
     let extraPoolsList = new Object()
     const tournamentId = req.body.tournament_id
+    const userId = req.session.user.id
 
     for(let bet in req.body){
         if(!['top_striker', 'first_place', 'second_place', 'tournament_id'].includes(bet)){
@@ -58,7 +59,7 @@ router.post('/tournament/do/', async (req, res) => {
         }
     }
 
-    const insertedPools = await Pools.userParticipate(poolsList, extraPoolsList, req.session.user.id, tournamentId)
+    const insertedPools = await Pools.userParticipate(poolsList, extraPoolsList, userId, tournamentId)
     
     if(insertedPools){
         const activeTournaments = await Tournament.getAllAsync(true, userId)        
