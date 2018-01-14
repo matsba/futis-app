@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
 	return Promise.all([
-		knex.schema.table('users', function (table) {
+		knex.schema.table('tournament', function (table) {
 			table.renameColumn('winnerbet', 'winnerBet'),
 			table.renameColumn('topstriker', 'topStriker'),
 			table.renameColumn('dateplayingstarts', 'datePlayingStarts'),

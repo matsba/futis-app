@@ -22,8 +22,8 @@ block content
                         if tournament.gamescount > 0 && !tournament.userparticipated
                             tr
                                 td= tournament.name
-                                td #{moment(tournament.dateStarts).format('D.M.YYYY')} 
-                                    i (#{moment(tournament.dateStarts).fromNow()})
+                                td #{moment(tournament.datestarts).format('D.M.YYYY')}
+                                    i (#{moment(tournament.datestarts).fromNow()})
                                 td 
                                     a(href="/participate/tournament/" + tournament.id)
                                         button.btn.btn-primary Osallistu
