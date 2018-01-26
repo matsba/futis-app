@@ -7,7 +7,8 @@ const Game = require('../models/game')
 const session = require('express-session')
 const mainHelper = require('../helpers/mainHelper')
 const util = require('util')
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check')
+const logger = require('../logger')
 
 router.get('/gamesManagement', (req, res) => {
     
@@ -42,6 +43,7 @@ router.get('/tournamentManagement', async (req, res) => {
             const tournaments = await Tournament.getAllAsync(orderby='datestarts')
             res.render('admin/tournamentManagement', {tournaments: tournaments})
         } catch (error) {
+            logger.error(error)
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
             res.redirect('/')
             delete req.session.error
