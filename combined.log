@@ -27,3 +27,16 @@
 {"message":"Updated game (id: 3). Previous value:[ anonymous {\n    id: 3,\n    team_1: 'Tanska',\n    team_2: 'Honduras',\n    team_1_score: null,\n    team_2_score: null,\n    result: null,\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ] - New value:[ anonymous {\n    id: 3,\n    team_1: 'Tanska',\n    team_2: 'Honduras',\n    team_1_score: 1,\n    team_2_score: 2,\n    result: '2',\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ]","level":"info"}
 {"message":"Updated game (id: 1). Previous value:[ anonymous {\n    id: 1,\n    team_1: 'Suomi',\n    team_2: 'Argentiina',\n    team_1_score: 1,\n    team_2_score: 1,\n    result: 'x',\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ] - New value:[ anonymous {\n    id: 1,\n    team_1: 'Suomi',\n    team_2: 'Argentiina',\n    team_1_score: 1,\n    team_2_score: 1,\n    result: 'x',\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ]","level":"info"}
 {"message":"Updated game (id: 3). Previous value:[ anonymous {\n    id: 3,\n    team_1: 'Tanska',\n    team_2: 'Honduras',\n    team_1_score: 1,\n    team_2_score: 2,\n    result: '2',\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ] - New value:[ anonymous {\n    id: 3,\n    team_1: 'Tanska',\n    team_2: 'Honduras',\n    team_1_score: 1,\n    team_2_score: 2,\n    result: '2',\n    tournament_id: 'd8195d36-dc27-40c0-abaf-cef501d1943e',\n    game_start_datetime: 2018-01-01T10:00:00.000Z } ]","level":"info"}
+{"message":"Updated tournament with id e752de59-e753-401e-8c20-3692d986c274","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id 5653acb9-dc2a-41f4-b82b-b5e0a0051933","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id e752de59-e753-401e-8c20-3692d986c274","level":"info"}
+{"message":"Updated tournament with id 6352c326-6128-44e0-bc02-4b3174808eda","level":"info"}
+{"message":"Updated tournament with id 5653acb9-dc2a-41f4-b82b-b5e0a0051933","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id e752de59-e753-401e-8c20-3692d986c274","level":"info"}
+{"message":"Updated tournament with id 5653acb9-dc2a-41f4-b82b-b5e0a0051933","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id 6352c326-6128-44e0-bc02-4b3174808eda","level":"info"}

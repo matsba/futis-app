@@ -16,33 +16,27 @@ block content
         div(class='column col-12')
             span(id="message-row")
     div.columns
-        h3.pt-1-4 Aktiiviset turnaukset:
+        h3.pt-1-4 Turnaukset:
         table.table.table-horizontal
             tbody
-                for t in activeTournaments
-                    tr
-                        td= t.name
-                        td
-                            a(href='tournament/' + t.id + '/results') Päivitä tuloksia
-                        td
-                            a(href='tournament/' + t.id) Muokkaa
-                        td
-                            a(href='#' class="text-error" onclick='activateTournamentButton(event,"' + t.id + '", false)') Deaktivoi turnaus                   
-    div.columns
-        h3.pt-1-4 Kaikki turnaukset:
-        table.table.table-horizontal
-            tbody
-                for t in allTournaments
+                for t in tournaments
                     tr 
+                        td= moment(t.datestarts).format('D.M.YYYY')
                         td= t.name
                         td
-                            a(href='tournament/' + t.id + '/results') Päivitä tuloksia
-                        td
-                            a(href='tournament/' + t.id) Muokkaa
+                            if t.active 
+                                span.label.label-success.label-rounded Aktiivinen
+                            else
+                                span.label.label-error.label-rounded Ei aktiivinen
                         td
                             if t.active
-                                a(href='#' class="text-error" onclick='activateTournamentButton(event,"' + t.id + '", false)') Deaktivoi turnaus
+                                a(href='#' class="btn" onclick='activateTournamentButton(event,"' + t.id + '", false)') Muuta aktiivisuutta
                             else
-                                a(href='#' class="text-success" onclick='activateTournamentButton(event,"' + t.id + '", true)') Aktivoi turnaus
+                                a(href='#' class="btn" onclick='activateTournamentButton(event,"' + t.id + '", true)') Muuta aktiivisuutta
+                        td
+                            a(class="btn" href='tournament/' + t.id + '/results') Päivitä tuloksia
+                        td
+                            a(class="btn" href='tournament/' + t.id) Muokkaa
+
 
 

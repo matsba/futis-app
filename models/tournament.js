@@ -16,7 +16,7 @@ exports.Tournament = class Tournament {
     }
   }
 
-exports.getAllAsync = async (active=null, userId=null) => {
+exports.getAllAsync = async (active=null, userId=null, orderby='name') => {
     
     const allTournaments = (active == null)
     const activeTournaments = (active == true && userId == null)
@@ -29,15 +29,15 @@ exports.getAllAsync = async (active=null, userId=null) => {
         select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
-        order by name`)
+        order by ? desc`, [orderby])
     } else if(activeTournaments) {
         tournament = await db.raw(`
         select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         where active = ?
-        order by name`
-        , [active]
+        order by ? desc`
+        , [active, orderby]
         )
     } else if(activeTournamentsWithUserParticipation){
 
@@ -47,7 +47,7 @@ exports.getAllAsync = async (active=null, userId=null) => {
             (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
         from tournament
         where active = ?
-        order by name`, [userId, active]
+        order by ? desc`, [userId, active, orderby]
         )
     }
     return tournament['rows']

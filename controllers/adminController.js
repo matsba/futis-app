@@ -39,9 +39,8 @@ router.get('/userManagement', async (req, res) => {
 router.get('/tournamentManagement', async (req, res) => {
     if (authenticateAdmin(req)) {
         try {
-            const activeTournaments = await Tournament.getAllAsync(true)
-            const allTournaments = await Tournament.getAllAsync()
-            res.render('admin/tournamentManagement', {activeTournaments: activeTournaments, allTournaments: allTournaments})
+            const tournaments = await Tournament.getAllAsync(orderby='datestarts')
+            res.render('admin/tournamentManagement', {tournaments: tournaments})
         } catch (error) {
             req.session.error = 'Tapahtui odottamaton virhe! Päivitä sivu!'
             res.redirect('/')
