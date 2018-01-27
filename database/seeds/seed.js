@@ -513,11 +513,11 @@ exports.seed = function(knex, Promise) {
 		.then(() => {
 			return knex('user').insert([
 				//TODO: add user
-				{id: 0, username: 'admin', password:'$2y$10$3c0PdD1pwn3k9XOe.UMXyubKhoY1wpfY/pZagJlPRIay0DaO/i43e', email:'admin@admin.fi', approved: 'true'},
-				{id: 100, username: 'masa', password:'$2y$10$156ZiaDCBLJw.zD45IPYou5FgV7Q4KlvAk0io1o/i18IZJm4ZQQUi', email:'masa@seedaus.fi', approved: 'true'},
-				{id: 101, username: 'mikko', password: '$2y$10$UmVwvUtKep/6ZZP/88a6curk/dvYO41Cs0fcg9UoqRZ/rVkWiqmSO', email: 'mikkotest@seedaus.fi', approved: 'true'},
-				{id: 102, username: 'kalle', password: '$2y$10$vxcj.tprMjIt9JEouRyQkeEvJqAMBnzdrjXlCb7ZTdH4d0Ru4nomq', email: 'mrnopool@seedaus.fi', approved: 'true'},
-				{id: 10123, username: 'eihyväksytty', password: '$2y$10$BOq0m5jN.tfpwqU8T5nzU.QycKICGcADOnMkiCLb7yjxZ2VK2O//6', email: 'eihyvaksytty@seedaus.fi', approved: 'false'},
+				{id: 0, username: 'admin', password:'$2y$10$HjN1eBk8ziiCT.ArOxsahez.yw788yqPsoHIa4oiFZUWAhuc7Ac1a', email:'admin@admin.fi', approved: 'true'},
+				{id: 100, username: 'masa', password:'$2y$10$HjN1eBk8ziiCT.ArOxsahez.yw788yqPsoHIa4oiFZUWAhuc7Ac1a', email:'masa@seedaus.fi', approved: 'true'},
+				{id: 101, username: 'mikko', password: '$2y$10$HjN1eBk8ziiCT.ArOxsahez.yw788yqPsoHIa4oiFZUWAhuc7Ac1a', email: 'mikkotest@seedaus.fi', approved: 'true'},
+				{id: 102, username: 'kalle', password: '$2y$10$HjN1eBk8ziiCT.ArOxsahez.yw788yqPsoHIa4oiFZUWAhuc7Ac1a', email: 'mrnopool@seedaus.fi', approved: 'true'},
+				{id: 10123, username: 'eihyväksytty', password: '$2y$10$HjN1eBk8ziiCT.ArOxsahez.yw788yqPsoHIa4oiFZUWAhuc7Ac1a', email: 'eihyvaksytty@seedaus.fi', approved: 'false'},
           
 			])
 		})

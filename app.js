@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const flash = require('express-flash')
 const favicon = require('serve-favicon')
+require('dotenv').config()
 //var cookieParser = require('cookie-parser')
 
 const app = express()
