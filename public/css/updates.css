@@ -42,6 +42,7 @@ body {
     background-color: #fff;
 }
 
+
 .banner {
 	margin-bottom: 1.4em;
 }
@@ -171,11 +172,22 @@ input[type="radio"]:checked + label {
 
 /* Landing page */
 
-body.landing-page {
-    background-image: url('/public/img/background.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+
+
+@media (max-width: 600px) {
+    body.landing-page {
+        background-image: unset;
+        background-color: #ffffff;
+    }
+}
+
+@media (min-width: 600px) {
+    body.landing-page {
+        background-image: url('/public/img/background.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }
 
 .container.landing-page {
