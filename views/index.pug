@@ -3,9 +3,9 @@ extends layout
 block content    
     if tournaments.length > 1
         div.columns.pb-2
-            div(class='column col-2')
+            div(class='column col-3 col-sm-12')
                 span.text-gray Aktiiviset turnaukset:
-            div(class='column col-10')
+            div(class='column col-9 col-sm-12')
                 for t in tournaments
                     span.chip
                         a(href="/home/"+t.id)= t.name
@@ -16,7 +16,7 @@ block content
         div(class='column col-12')
             span.text-gray Turnaus
             a(href="/tournament/" + tournament.id)
-                h1= tournament.name
+                h1#index-tournament-name= tournament.name
         div(class='column col-6')
             span.text-gray Alkaa
             p.text-primary #{moment(tournament.datestarts).format("D.MM.YYYY")}

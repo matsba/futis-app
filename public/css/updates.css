@@ -6,6 +6,27 @@
     margin-bottom: 1.4em;
 }
 
+@media (max-width: 640px) {
+    #info-button {
+        display: none
+    }
+    #participate-button {
+        display: none
+    }
+}
+
+@media (min-width: 640px) {
+    #info-menu-item {
+        display: none
+    }
+    #participate-menu-item  {
+        display: none
+    }
+    #menu-item-divider {
+        display: none
+    }
+}
+
 .navbar-grid-xl {
 	max-width: 1296px;
 	width: 100%;
@@ -74,6 +95,11 @@ body {
     background: #e85600;
     border-color: #d25004;
     color: #fff;
+}
+@media (max-width: 640px) {
+    #index-tournament-name {
+        font-size: 25px;
+    }
 }
 
 /* Custom paddings */
