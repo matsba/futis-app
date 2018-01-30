@@ -1,4 +1,5 @@
-###Futis-app
+##Futis-app
+
 ![Picture of futis-app homepage](futis-app-homepage.png)
 
 Futis-app is fantasy football betting platform (for fun, not for money). Challenge your friends and see who has the best knowledge in football or other sports! Participate in ready-made tournaments, guess who will win games and earn points.
@@ -16,10 +17,10 @@ This app is developed with Node and Express in the backend, paired with Knex han
 
 1. Clone the repository.
 2. Run ```'npm install'.```
-3. Set up your database and add setup '.env' file with your configuration.
+3. Set up your database and setup '.env' file with your configuration (see the template file in root directory).
 4. Navigate to 'database'-folder.
-5. To get your database to right state run ```'knex migrate:latest'.```
-6. To get data your database run ```'knex seed:run'```
+5. To get your database to right state run ```'knex migrate:latest'```.
+6. To get data to your database run ```'knex seed:run'```. **Note:** _ _ You might want to modify ./database/seeds/seed.js admin password _ _
 7. Start application ```'npm start'```
 
 ## Contributors
