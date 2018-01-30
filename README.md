@@ -1,4 +1,4 @@
-##Futis-app
+### Futis-app
 
 ![Picture of futis-app homepage](futis-app-homepage.png)
 
@@ -9,7 +9,7 @@ You can use test account with username: "testuser", and password: "testpass".
 
 **Please note:** this project is not ready and is under construction.
 
-## Tecnologies
+## Technologies
 
 This app is developed with Node and Express in the backend, paired with Knex handling database queries and Pug for generating views. Used database is PostgreSQL and styling is done with Spectre.css.
 
@@ -20,7 +20,7 @@ This app is developed with Node and Express in the backend, paired with Knex han
 3. Set up your database and setup '.env' file with your configuration (see the template file in root directory).
 4. Navigate to 'database'-folder.
 5. To get your database to right state run ```'knex migrate:latest'```.
-6. To get data to your database run ```'knex seed:run'```. **Note:** _ _ You might want to modify ./database/seeds/seed.js admin password _ _
+6. To get data to your database run ```'knex seed:run'```. **Note:** You might want to modify ./database/seeds/seed.js admin password
 7. Start application ```'npm start'```
 
 ## Contributors
