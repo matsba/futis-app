@@ -40,12 +40,16 @@ block content
                         tr
                             td= moment(game.game_start_datetime).format("H:mm")
                             td
-                                span
-                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                    =game.team_1 
-                                span  -                           
-                                    =game.team_2
-                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                div.columns
+                                    div.col-md-12
+                                        img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_1 + ' - '
+                                    div.hide-md
+                                        span=game.team_2
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    div.col-md-12.show-md
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_2
                             if game.team_1_score 
                                 td #{game.team_1_score} - #{game.team_2_score}
                             else
@@ -65,12 +69,16 @@ block content
                         tr
                             td= moment(game.game_start_datetime).format("H:mm")
                             td
-                                span
-                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                    =game.team_1 
-                                span  -                           
-                                    =game.team_2
-                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                div.columns
+                                    div.col-md-12
+                                        img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_1 + ' - '
+                                    div.hide-md
+                                        span=game.team_2
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    div.col-md-12.show-md
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_2
     div.columns
         div(class='column col-md-6 col-sm-12 card')
             h4.card-heading 
