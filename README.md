@@ -7,7 +7,7 @@ Futis-app is fantasy football game. Challenge your friends and see who has the b
 If you want to test a live version, you can do it by visiting this [link](https://futis-app-test.herokuapp.com/). Note however that if you create new account, admin has to accept your registeration.
 You can use test account with username: "testuser", and password: "testpass".
 
-**Please note:** this project is not ready and is under construction.
+**Please note:** this project is not ready and is under construction. Project is tested only on Firefox.
 
 ## Technologies
 
@@ -17,7 +17,7 @@ This app is developed with Node and Express in the backend, paired with Knex han
 
 1. Clone the repository.
 2. Run ```'npm install'.```
-3. Set up your database and setup '.env' file with your configuration (see the template file in root directory).
+3. Create your local database and set up '.env' file with your configuration (see the template file in root directory).
 4. Set up the database by running ```'npm heroku-postbuild'```. **Note:** You might want to modify ./database/seeds/seed.js admin password
 5. Start application ```'npm start'```
 
