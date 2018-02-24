@@ -261,27 +261,36 @@ router.post('/tournament/:id/results', async (req, res) => {
         return res.sendStatus(403)
     }
 
-    const par = req.body
+    const scores = req.body
+    console.log(scores)
 
     let games = []
+    let result, teamScore1, teamScore2
 
-    for (let i = 0; i < par.game_id.length; i++) {
-        if ((!par.goals_1[i] && par.goals_2[i]) || (par.goals_1[i] && !par.goals_2[i])) {
-            // TODO: RENDERÖI SAMA SIVU SAMOILLA TIEDOILLA MUTTA FLASH MESSAGE VIRHEILMOITUS
-        }
-        if (par.goals_1[i].length == 0 || par.goals_2[i] == 0) {
+    for (let i = 0; i < scores.game_id.length; i++) {
+
+        teamScore1 = scores.goals_1[i]
+        teamScore2 = scores.goals_2[i]
+
+        //Check for empty values
+        if(!teamScore1.length || !teamScore2.length){
             continue
         }
-        let result = 'x'
-        if (par.goals_1[i] > par.goals_2[i]) {
-            result = '1'
-        } else if (par.goals_1[i] < par.goals_2[i]) {
-            result = '2'
+
+        if(teamScore1 > teamScore2){
+            result = 1
+        } else if (teamScore1 < teamScore2) {
+            result = 2
+        } else if (teamScore1 == teamScore2) {        
+            result = 'x'
+        } else {
+            continue
         }
+        
         games.push({
-            team_1_score: par.goals_1[i],
-            team_2_score: par.goals_2[i],
-            id: par.game_id[i],
+            team_1_score: teamScore1,
+            team_2_score: teamScore2,
+            id: scores.game_id[i],
             result: result
         })
     }

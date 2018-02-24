@@ -25,19 +25,19 @@ block content
                         label.form-label Veikkaamisen voi aloittaa
                     div.col-3
                         p Päivämäärä muodossa MM/DD/YYYY
-                        input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date" value=tournament.datePlayingStarts required)
+                        input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date" value=moment(tournament.dateplayingstarts).format('YYYY-MM-DD') required)
                         p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
                 div.form-group
                     div.col-3
                         label.form-label Turnaus alkaa
                     div.col-3
-                        input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" value=tournament.dateStarts required)
+                        input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" value=moment(tournament.datestarts).format('YYYY-MM-DD')  required)
                         p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
                 div.form-group
                     div.col-3
                         label.form-label Turnaus loppuu
                     div.col-3
-                        input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=tournament.dateEnds required)
+                        input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=moment(tournament.dateends).format('YYYY-MM-DD') required)
                 div.form-group.pt-1-4
                     div.col-12
                         table
