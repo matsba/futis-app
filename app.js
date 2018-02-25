@@ -39,9 +39,21 @@ app.use(flash())
 app.locals.moment = require('moment')
 app.locals.moment.locale('fi')
 app.use(require('./controllers'))
- 
+
+// Handle 404
+app.use(function(req, res) {
+	res.status(404)
+	res.render('404.pug')
+});
+
+// Handle 500
+app.use(function(error, req, res, next) {
+	res.status(500)
+	res.render('500.pug')
+});
+
 app.listen(app.get('port'), () => {
 	console.log('App is running on port ', app.get('port'))
 })
 
-app.use(favicon(__dirname + '/public/img/favicon.ico'))
+app.use(favicon(__dirname + '/public/img/favicon.ico')) 

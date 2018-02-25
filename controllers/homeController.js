@@ -8,7 +8,7 @@ const moment = require('moment')
 const util = require('util')
 
 
-router.get('/:id?', async (req, res) => {
+router.get('/:id?', async (req, res, next) => {
     if (User.authenticateUser(req)) {
         var userId = req.session.user.id
 
@@ -41,7 +41,7 @@ router.get('/:id?', async (req, res) => {
                 })
             }
         } catch (error) {
-            res.sendStatus(500)
+            next(error)
         }
     } else {
         res.redirect('/')
