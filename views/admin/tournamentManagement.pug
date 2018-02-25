@@ -14,29 +14,33 @@ block content
                 a(href="/admin/userManagement") Käyttäjien hallinta
     div.columns
         div(class='column col-12')
-            span(id="message-row")
+            span(id="message-row" class="toast" style="display: none")
     div.columns
-        h3.pt-1-4 Turnaukset:
+        div(class='column col-12')
+            h3.pt-1-4 Turnaukset
+            p Julkaistut turnaukset näkyvät kaikille käyttäjille, mutta vain aktiiviset turnaukset näkyvät kotisivulla käyttäjille.
         table.table.table-horizontal
+            thead
+                th pvm
+                th Nimi
+                th Julkaistu
+                th Aktiivinen
+                th 
+                th
             tbody
                 for t in tournaments
                     tr 
                         td= moment(t.datestarts).format('D.M.YYYY')
                         td= t.name
-                        td
-                            if t.active 
-                                span.label.label-success.label-rounded Aktiivinen
-                            else
-                                span.label.label-error.label-rounded Ei aktiivinen
-                        td
-                            if t.active
-                                a(href='#' class="btn" onclick='activateTournamentButton(event,"' + t.id + '", false)') Muuta aktiivisuutta
-                            else
-                                a(href='#' class="btn" onclick='activateTournamentButton(event,"' + t.id + '", true)') Muuta aktiivisuutta
+                        td 
+                            input(type="checkbox" checked=false name="hidden" onClick='ToggleValue(event, "'+t.id+'")')
+                        td  
+                            input(type="checkbox" checked=t.active name="active" onClick='ToggleValue(event, "'+t.id+'")')
                         td
                             a(class="btn" href='tournament/' + t.id + '/results') Päivitä tuloksia
                         td
                             a(class="btn" href='tournament/' + t.id) Muokkaa
+
 
 
 
