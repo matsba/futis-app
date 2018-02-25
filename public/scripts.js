@@ -56,6 +56,7 @@ function ToggleValue(event, tournamentId) {
 
 		}
 	})
+}
 
 function addGames() {
 	var nbr = $('#numberOfGames').val()

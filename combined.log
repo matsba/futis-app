@@ -640,3 +640,9 @@
 {"message":"Updated tournament with id fed06e43-5e24-47f5-ad53-4e8ac238e734","level":"info"}
 {"name":"error","length":131,"severity":"ERROR","code":"42703","position":"25","file":"analyze.c","line":"2231","routine":"transformUpdateTargetList","level":"error"}
 {"name":"error","length":131,"severity":"ERROR","code":"42703","position":"25","file":"analyze.c","line":"2231","routine":"transformUpdateTargetList","level":"error"}
+{"message":"Updated tournament with id fed06e43-5e24-47f5-ad53-4e8ac238e734","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id 869907ca-7c48-43ba-ab66-797627039fc6","level":"info"}
+{"message":"Updated tournament with id fed06e43-5e24-47f5-ad53-4e8ac238e734","level":"info"}
+{"message":"Updated tournament with id 66b46cb2-d59c-43e2-9723-3a9833bfa2c3","level":"info"}
+{"message":"Updated tournament with id 869907ca-7c48-43ba-ab66-797627039fc6","level":"info"}
