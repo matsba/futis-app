@@ -19,7 +19,6 @@ router.get('/tournament/:id', async (req, res) => {
         tournament.games = gamesWithCountryCodes;
         res.render('participate/action', {tournament: tournament})
     } catch (error) {
-        console.log(error)
         res.status(500).send('Internal_server_error')
     }
 })
@@ -85,10 +84,8 @@ router.get('/', async (req, res) => {
 
     try {
         const activeTournamentsForUser = await Tournament.getAllAsync(true, userId)
-        console.log(util.inspect(activeTournamentsForUser))
         res.render('participate/index', {activeTournaments: activeTournamentsForUser})
     } catch (error) {
-        console.log(error)
         res.status(500).send('Internal_server_error')
     }
 })

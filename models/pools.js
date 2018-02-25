@@ -18,10 +18,8 @@ exports.getPoolsByUserAndTournament = (userId, tournamentId) => {
 		})
 		.orderBy('g.game_start_datetime', 'ASC')
 		.on('query-error', function (error, obj) {
-			console.log(error);
 		})
 		.catch((error) => {
-			console.log(error)
 		})
 
 	return pools
@@ -69,7 +67,6 @@ exports.userParticipate = async (poolsList, extraPoolsList, userId, tournamentId
 		return true
 
 	} catch (error) {
-		console.log(error)
 		return false
 	}
 

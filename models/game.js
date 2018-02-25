@@ -3,7 +3,6 @@ const moment = require('moment')
 const countryCodes = require('../public/data/countryCodes.json')
 const logger = require('../logger')
 const util = require('util')
-//const util = require('util')
 
 //UTILITES THAT DON'T REQURE DB
 const findCode = (team) => {
@@ -54,14 +53,14 @@ exports.createGames = async (gameList) => {
     team_2: 'Alankomaat',
     tournament_id: '92640ab6-2223-4af3-8de2-0bea4fad88a5' }  */
 
-	const games = db('game')
-		.insert(gameList)
-		.then(() => { 
-			return games
-		})
-		.catch(err => {
-			throw new Error(err)
-		})
+	try {
+		const games = await db('game').insert(gameList)
+		logger.info("Created games: " + games)
+		return games
+	} catch (error) {
+		logget.error('There was an error creating games: ' + error)
+		throw new Error(error)
+	}
 }
 
 exports.updateGames = async (gameList) => {
@@ -75,8 +74,8 @@ exports.updateGames = async (gameList) => {
 		}
 		return true
 	} catch (error) {
-		console.log(error)
-		return false
+		logger.error("There was an error updating games: " + error)
+		throw new Error(error)
 	}
 }
 
@@ -85,8 +84,8 @@ exports.getGames = async (tournamentId) => {
 		const games = await db('game').where('tournament_id', tournamentId).orderBy('game_start_datetime')
 		return games
 	} catch (error) {
-		console.log(error)
-		return false
+		logger.error("There was an error getting games from database: " + error)
+		throw new Error(error)
 	}
 }
 

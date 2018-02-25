@@ -19,7 +19,6 @@ router.get('/:id', async (req, res) => {
         const games = Game.getCountryCodeForTeams(tournament.games)
         res.render('tournament/details', { tournament: tournament, games: games })
     } catch (error) {
-        console.log(error)
         res.status(500).send('Internal_server_error')
     }    
 })

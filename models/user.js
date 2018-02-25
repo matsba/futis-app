@@ -15,7 +15,6 @@ exports.register = (username, password, email, callback) => {
 	})
 		.into('user')
 		.then(()=> {
-			console.log('Inserted user to database: ' + username)
 			return callback()
 		})
 		.catch((err) =>  {
@@ -29,7 +28,6 @@ exports.updatePassword = (username, password, callback) => {
 		.where({username: username})
 		.update({password: hashPassword(password)})
 		.then(() => {
-			console.log('Password updated to database')
 			return callback()
 		})
 		.catch(err => {

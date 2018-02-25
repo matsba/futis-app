@@ -128,7 +128,6 @@ router.post('/changePassword', (req, res) => {
     let errors = req.validationErrors();
 
     if (errors) {
-        console.log(errors)
         res.render('user/user', { errors: errors })
         return
     }

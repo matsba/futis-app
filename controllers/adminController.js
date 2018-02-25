@@ -225,8 +225,6 @@ router.post('/tournament/toggleStatus/', async (req, res) => {
         return res.sendStatus(403)
     }
 
-    console.log(req.body)
-
     const tournamentId = req.body.id
     const active = req.body.active
     const hidden = req.body.hidden
@@ -257,7 +255,6 @@ router.post('/tournament/:id/results', async (req, res) => {
     }
 
     const scores = req.body
-    console.log(scores)
 
     let games = []
     let result, teamScore1, teamScore2
