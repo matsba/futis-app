@@ -16,7 +16,7 @@ exports.Tournament = class Tournament {
     }
   }
 
-exports.getAllAsync = async (active=null, userId=null, orderby='name') => {
+exports.getAllAsync = async (active=null, userId=null, hidden=false, orderby='name') => {
     
     const activeTournaments = (active == true && userId == null)
     const activeTournamentsWithUserParticipation = (active == true && userId != null)
@@ -25,30 +25,33 @@ exports.getAllAsync = async (active=null, userId=null, orderby='name') => {
 
     if(activeTournaments) {
         tournament = await db.raw(`
-        select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+        select id, name, dateplayingstarts, datestarts, dateends, active, hidden, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         where active = ?
+        and hidden = ?
         order by ? desc`
-        , [active, orderby]
+        , [active, hidden, orderby]
         )
     } else if(activeTournamentsWithUserParticipation){
 
         tournament = await db.raw(`
-        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, hidden, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
             (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
         from tournament
         where active = ?
-        order by ? desc`, [userId, active, orderby]
+        and hidden = ?
+        order by ? desc`, [userId, active, hidden, orderby]
         )
     } else {
         tournament = await db.raw(`
-        select id, name, dateplayingstarts, datestarts, dateends, active, winnerbet, topstriker, 
+        select id, name, dateplayingstarts, datestarts, dateends, active, hidden, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         order by ? desc`, [orderby])
     }
+
     return tournament['rows']
 }
 

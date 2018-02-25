@@ -38,7 +38,8 @@ function ToggleValue(event, tournamentId) {
 		id: tournamentId
 	}
 
-	data[target] = value
+	//If checked = tournament should not be hidden
+	data[target] = !value
 
 	$.ajax({
 		type: 'POST',
@@ -51,7 +52,7 @@ function ToggleValue(event, tournamentId) {
 
 		},
 		error: function (error) {
-			event.target.checked = !value
+			event.target.checked = value
 			row.text('Tapahtui virhe!').addClass('toast-error').removeClass('toast-success').show().delay(1000).slideUp('fast')
 
 		}

@@ -62,7 +62,7 @@ router.post('/tournament/do/', async (req, res) => {
     const insertedPools = await Pools.userParticipate(poolsList, extraPoolsList, userId, tournamentId)
     
     if(insertedPools){
-        const activeTournaments = await Tournament.getAllAsync(true, userId)        
+        const activeTournaments = await Tournament.getAllAsync(true, userId, false)        
         res.render('participate/index', {activeTournaments, success: {
             text: "Turnaukseen osallistuminen onnistui!"
         }})

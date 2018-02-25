@@ -40,7 +40,7 @@ router.get('/userManagement', async (req, res) => {
 router.get('/tournamentManagement', async (req, res) => {
     if (authenticateAdmin(req)) {
         try {
-            const tournaments = await Tournament.getAllAsync(orderby='datestarts')
+            const tournaments = await Tournament.getAllAsync(null, null, null, 'datestarts')
             res.render('admin/tournamentManagement', {tournaments: tournaments})
         } catch (error) {
             logger.error(error)
