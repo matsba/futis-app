@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         var userId = req.session.user.id
         const tournamnetId = 'fed06e43-5e24-47f5-ad53-4e8ac238e734'
         const tournament = await Tournament.getByIdAsync(tournamnetId)
-        var userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournament(userId, tournamnetId))
+        var userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamnetId))
         var poolsRight = 0
         userPools.map(pool => {
             if (pool.pool == pool.result) {

@@ -28,7 +28,7 @@ router.get('/:id?', async (req, res, next) => {
                 if(games){
                     todaysGames = Game.filterGamesByDate(games, '2018-06-20') //mock date
                     tomorrowsGames = Game.filterGamesByDate(games, '2018-06-21') //mock date         
-                    userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournament(userId, tournamentId))                
+                    userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))                
                 }
     
                 res.render('index', {
