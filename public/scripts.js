@@ -169,3 +169,14 @@ function uuidv4() {
 		return v.toString(16)
 	})
 }
+
+function colorRows() {
+	$('.pool-table-row').each(function () {
+		let pool = $(this).find(".pool-table-row-own-pool").text()
+		let result = $(this).find(".pool-table-row-result").text()
+
+		if (pool == result) {
+			$(this).addClass("bg-success-important")
+		}
+	})
+}

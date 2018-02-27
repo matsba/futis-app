@@ -1,5 +1,12 @@
 extends layout
 
+block scripts
+    script(src="/public/scripts.js")
+    script.
+        $(document).ready(function (){
+            colorRows();
+        })
+
 block content    
     if tournaments.length > 1
         div.columns.pb-2
@@ -93,8 +100,8 @@ block content
                             th Oma
                             th Tulos
                     tbody
-                    for game in userPools
-                        tr
+                    for game in userPools                  
+                        tr.pool-table-row
                             td= moment(game.game_start_datetime).format('D.M.YYYY')
                             td
                                 span
@@ -103,8 +110,8 @@ block content
                                 span  -                           
                                     =game.team_2
                                     img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                            td= game.pool
-                            td= game.result
+                            td.pool-table-row-own-pool= game.pool
+                            td.pool-table-row-result= game.result
             else if moment(tournament.dateStarts) > moment()
                 div.empty
                     div.empty-icon

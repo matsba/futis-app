@@ -289,3 +289,9 @@ input[type="radio"]:checked + label {
     opacity: 0;
     transition-duration: 750ms;
 }
+
+
+.bg-success-important {
+	background: #32b643 !important;
+	color: #fff;
+}
