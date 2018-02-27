@@ -1,7 +1,7 @@
 const db = require('../database/db')
 const moment = require('moment')
 const util = require('util')
-
+const logger = require('../logger')
 
 const makePoolsList = (poolsList, userId, participantId) => {
 
@@ -76,4 +76,23 @@ exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournam
 		logger.error('Error in userParticipateAsync: ' + error)
 		throw new Error(error)
 	}	
+}
+
+exports.updateTournamentParticipantScoresAsync = async(tournamentId) => {
+	
+	try {
+		await db.raw(`update participant
+		set score = 
+			(
+				select count(*) from pools
+				join game
+				on game.id = pools.game_id
+				and pools.participant_id = participant.id
+				and pools.pool = game.result
+			)
+		where tournament_id = ?`, [tournamentId])
+	} catch (error) {
+		logger.error('There was an error updating scores: ' + error)
+		throw new Error(error)
+	}
 }

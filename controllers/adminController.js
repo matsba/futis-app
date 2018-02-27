@@ -4,6 +4,7 @@ const moment = require('moment')
 const User = require('../models/user')
 const Tournament = require('../models/tournament')
 const Game = require('../models/game')
+const Pools = require('../models/pools')
 const session = require('express-session')
 const mainHelper = require('../helpers/mainHelper')
 const util = require('util')
@@ -255,6 +256,7 @@ router.post('/tournament/:id/results', async (req, res) => {
     }
 
     const scores = req.body
+    const tournamentId = req.params.id
 
     let games = []
     let result, teamScore1, teamScore2
@@ -286,10 +288,15 @@ router.post('/tournament/:id/results', async (req, res) => {
             result: result
         })
     }
+    try {
+        await Game.updateGames(games)
+        await Pools.updateTournamentParticipantScoresAsync(tournamentId)    
+        res.redirect('')
+    } catch (error) {
+        //TODO: create info for not succesfull
+        next(error)
+    }
 
-    const succesful = await Game.updateGames(games)
-
-    res.redirect('')
 })
 
 function authenticateAdmin(req) {
