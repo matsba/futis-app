@@ -185,7 +185,14 @@ router.post('/tournament/update/:id', async (req, res) => {
         return res.sendStatus(403)
     }
     const par = req.body
-
+    
+    const tournament = {
+        id: req.params.id,
+        datestarts: par.tournamentStartDate,
+        dateplayingstarts: par.tournamentPlayingStartDate,
+        dateends: par.tournamentEndDate,
+        name: par.tournamentName
+    }
 
     let games = []
 
@@ -197,14 +204,6 @@ router.post('/tournament/update/:id', async (req, res) => {
 					team_2: par.team_2[i],
 					game_start_datetime: moment(par.game_datetime[i], "DD.MM.YYYY HH:mm").format()
 				})
-    }
-
-    const tournament = {
-        id: req.params.id,
-        datestarts: par.tournamentStartDate,
-        dateplayingstarts: par.tournamentPlayingStartDate,
-        dateends: par.tournamentEndDate,
-        name: par.tournamentName
     }
 
     const editSuccesful = await Tournament.updateTournamentAsync(tournament)

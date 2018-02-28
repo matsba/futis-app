@@ -140,10 +140,14 @@ block content
                         th Nimi
                         th Pisteet
                 tbody
-                    tr
-                        td mikko
-                        td 20
-                    tr
-                        td masa
-                        td 19
-    
+                if userScores && user
+                    for score in userScores
+                        if user.id == score.id
+                            tr.bg-primary-imporant
+                                td= score.username
+                                td= score.score
+                        else
+                            tr
+                                td= score.username
+                                td= score.score
+        

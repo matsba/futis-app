@@ -96,3 +96,18 @@ exports.updateTournamentParticipantScoresAsync = async(tournamentId) => {
 		throw new Error(error)
 	}
 }
+
+exports.getUserScoreOfTournament = async (tournamentId) => {	
+	try {
+		const userList = await db('participant')
+						.join('user', 'user.id', '=', 'participant.user_id')
+						.select('user.id', 'user.username', 'participant.score')
+						.where({'participant.tournament_id': tournamentId})
+						.orderBy('score', 'desc')
+
+		return userList
+	} catch (error) {
+		logger.error('Error in getUserScoreOfTournament function: ' + error)
+		throw new Error(error)
+	}
+}

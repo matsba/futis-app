@@ -23,12 +23,14 @@ router.get('/:id?', async (req, res, next) => {
                 }
                 const tournament = await Tournament.getByIdAsync(tournamentId)
                 const games = Game.getCountryCodeForTeams(tournament.games)
-                let todaysGames, tomorrowsGames, userPools
+                let todaysGames, tomorrowsGames, userPools, userScores
+
                 
                 if(games){
                     todaysGames = Game.filterGamesByDate(games, '2018-06-20') //mock date
                     tomorrowsGames = Game.filterGamesByDate(games, '2018-06-21') //mock date         
-                    userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))                
+                    userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId)) 
+                    userScores = await Pools.getUserScoreOfTournament(tournamentId)               
                 }
     
                 res.render('index', {
@@ -37,7 +39,8 @@ router.get('/:id?', async (req, res, next) => {
                     games: games || null,
                     todays: todaysGames || null,
                     tomorrows: tomorrowsGames || null,
-                    userPools: userPools || null
+                    userPools: userPools || null,
+                    userScores: userScores || null
                 })
             }
         } catch (error) {

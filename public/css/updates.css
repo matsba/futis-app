@@ -295,3 +295,8 @@ input[type="radio"]:checked + label {
 	background: #32b643 !important;
 	color: #fff;
 }
+
+.bg-primary-imporant {
+	background: #5755d9 !important;
+	color: #fff;
+}
