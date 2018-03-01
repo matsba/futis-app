@@ -13,7 +13,7 @@ router.get('/:id?', async (req, res, next) => {
         var userId = req.session.user.id
 
         try {
-            const tournaments = await Tournament.getAllAsync(true, null, false, 'dateplayingstarts')
+            const tournaments = await Tournament.getAllAsync(true, null, true, 'dateplayingstarts')
             if(tournaments.length < 1){
                 res.render('notournaments')
             } else {

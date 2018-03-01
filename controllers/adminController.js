@@ -227,10 +227,10 @@ router.post('/tournament/toggleStatus/', async (req, res) => {
 
     const tournamentId = req.body.id
     const active = req.body.active
-    const hidden = req.body.hidden
+    const published = req.body.published
 
     try {
-        await Tournament.updateTournamentAsync({id: tournamentId, active: active, hidden: hidden})
+        await Tournament.updateTournamentAsync({id: tournamentId, active: active, published: published})
         res.sendStatus(200)
     } catch (error) {
         res.sendStatus(500)

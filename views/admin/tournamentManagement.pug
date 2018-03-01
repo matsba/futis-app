@@ -33,7 +33,7 @@ block content
                         td= moment(t.datestarts).format('D.M.YYYY')
                         td= t.name
                         td 
-                            input(type="checkbox" checked=(!t.hidden) name="hidden" onClick='ToggleValue(event, "'+t.id+'")')
+                            input(type="checkbox" checked=(t.published) name="published" onClick='ToggleValue(event, "'+t.id+'")')
                         td  
                             input(type="checkbox" checked=t.active name="active" onClick='ToggleValue(event, "'+t.id+'")')
                         td

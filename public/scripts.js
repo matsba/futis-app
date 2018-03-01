@@ -28,18 +28,18 @@ function cancelButton(event) {
 }
 
 function ToggleValue(event, tournamentId) {
-	const value = event.target.checked
+	//gets value in time of checked
+	let value = event.target.checked
 	event.preventDefault()
-
 	const row = $('#message-row')
-	//active or hidden
+	
+	//active or published
 	const target = event.target.name
+
 	let data = {
 		id: tournamentId
 	}
-
-	//If checked = tournament should not be hidden
-	data[target] = !value
+	data[target] = value
 
 	$.ajax({
 		type: 'POST',
@@ -52,7 +52,7 @@ function ToggleValue(event, tournamentId) {
 
 		},
 		error: function (error) {
-			event.target.checked = value
+			event.target.checked = !value
 			row.text('Tapahtui virhe!').addClass('toast-error').removeClass('toast-success').show().delay(1000).slideUp('fast')
 
 		}

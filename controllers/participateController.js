@@ -83,7 +83,22 @@ router.get('/', async (req, res) => {
     const userId = req.session.user.id
 
     try {
-        const activeTournamentsForUser = await Tournament.getAllAsync(true, userId)
+        let activeTournamentsForUser = {}
+        activeTournamentsForUser['tournaments'] = await Tournament.getAllAsync(true, userId)
+        
+        const particpatedToAll = async (tournaments) => {
+            let participation = true
+            for(obj of tournaments){ 
+                if(!obj.userparticipated){
+                    participation = false
+                    break
+                }                    
+            }
+            return participation
+        }
+
+        activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)
+
         res.render('participate/index', {activeTournaments: activeTournamentsForUser})
     } catch (error) {
         res.status(500).send('Internal_server_error')
