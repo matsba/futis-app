@@ -133,7 +133,7 @@ block content
                                         span=game.team_2
                             td.pool-table-row-own-pool= game.pool
                             td.pool-table-row-result= game.result
-            else if moment(tournament.dateplayingstarts) < moment()
+            else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
                 div.empty
                     div.empty-icon
                         i(class="fa fa-users fa-5x" aria-hidden="true")

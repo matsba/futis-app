@@ -4,6 +4,7 @@ const User = require('../models/user')
 const Pools = require('../models/pools')
 const Tournament = require('../models/tournament')
 const Game = require('../models/game')
+const logger = require('../logger')
 
 router.get('/', async (req, res) => {
     if (User.authenticateUser(req)) {
@@ -40,7 +41,7 @@ router.post('/login', (req, res) => {
             res.redirect('/')
         } else {
             if (err == 'Not approved') {
-                res.render('user/login', { 'loginErrorMsg': 'Admin ei ole hyväksynyt rekisteröintiäsi vielä!' })
+                res.render('user/login', { 'loginErrorMsg': 'Rekisteröintiäsi ei ole hyväksytty vielä!' })
             } else if (err == "Authentication error") {
                 res.render('user/login', { 'loginErrorMsg': 'Virheellinen käyttäjätunnus tai salasana!' })
             } else {
@@ -62,13 +63,9 @@ router.post('/register', (req, res) => {
 
     req.checkBody('password').isLength({ min: 5, max: 20 }).withMessage('Salasanan tulee olla 5-20 merkkiä pitkä')
     req.checkBody('password').isAlphanumeric().withMessage('Salasana saa sisältää vain numeroita ja kirjaimia')
-    req.checkBody('username').isLength({ min: 5, max: 20 }).withMessage('Käyttäjätunnuksen tulee olla 5-20 merkkiä')
+    req.checkBody('username').isLength({ min: 3, max: 20 }).withMessage('Käyttäjätunnuksen tulee olla 3-20 merkkiä')
     req.checkBody('username').isAlphanumeric().withMessage('Käyttäjätunnus saa sisältää vain numeroita ja kirjaimia')
     req.checkBody('email').isEmail().withMessage('Sähköposti väärässä muodossa')
-
-    req.sanitizeBody('username').escape()
-    req.sanitizeBody('password').escape()
-    req.sanitizeBody('password2').escape()
 
     var errors = req.validationErrors();
 
@@ -84,7 +81,7 @@ router.post('/register', (req, res) => {
             if (password == password2) {
                 User.register(username, password, email, (err) => {
                     if (err) {
-                        console.log('There was an error:', err.code, '\nError detail: ', err.detail)
+                        logger.error('Error in registration: ' + err)
 
                         if (err.code == 23505) {
                             res.render('user/register', { 'regErrorMsg': 'Käyttäjätunnus tai sähköposti on jo käytössä!' })

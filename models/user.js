@@ -1,5 +1,6 @@
 const db  = require('../database/db')
 const bcrypt = require('bcryptjs')
+const logger = require('../logger')
 
 var hashPassword = (password) => {
 	var salt = bcrypt.genSaltSync(10)
@@ -74,9 +75,17 @@ exports.approveUsersAsync = (idsToApprove) => {
 		.catch((err) => {console.log(err)})
 }
 
-exports.removeUsersAsync = (idsToRemove) => {
-	db('user').whereIn('id', idsToRemove).del()
-		.catch((err) => {console.log(err)})
+exports.removeUsersAsync = async (idsToRemove) => {
+	try {
+		await db('pools').whereIn('user_id', idsToRemove).del()
+		await db('participant').whereIn('user_id', idsToRemove).del()
+		await db('user').whereIn('id', idsToRemove).del()
+		logger.info('Deleted users with ids: ' + idsToRemove)
+	} catch (error) {
+		logger.error("Error deleting users: " + error)
+		throw new Error(error)
+	}
+	
 }
 
 exports.authenticateUser = (req) => {
