@@ -1,17 +1,17 @@
 function cancelButton(event) {
 
 	const target = event.target
-	const isInput = target.tagName == 'INPUT' ? true : false    
+	const isInput = target.tagName == 'INPUT' ? true : false
 	const buttonText = isInput ? target.value : target.textContent
 	const confirmText = 'Varmasti?'
-	if(!isInput && target.innerText == confirmText){
+	if (!isInput && target.innerText == confirmText) {
 		return history.back(-1)
 	} else if (isInput && target.value == confirmText) {
 		return
 	} else {
 		event.preventDefault()
 	}
-  
+
 	target.classList.add('fade-out')
 	setTimeout(() => {
 		isInput ? target.value = confirmText : target.textContent = confirmText
@@ -32,7 +32,7 @@ function ToggleValue(event, tournamentId) {
 	let value = event.target.checked
 	event.preventDefault()
 	const row = $('#message-row')
-	
+
 	//active or published
 	const target = event.target.name
 
@@ -61,13 +61,13 @@ function ToggleValue(event, tournamentId) {
 
 function addGames() {
 	var nbr = $('#numberOfGames').val()
-	var table = $('#addGamesSectionTBody')  
+	var table = $('#addGamesSectionTBody')
 
 	//Clear table contents
 	table.html('')
-    
+
 	//Loop to make input fields based on user input on form
-	for (var i = 0; i < nbr; i++){   
+	for (var i = 0; i < nbr; i++) {
 		rowToTable(table)
 	}
 	initAutoComplite()
@@ -75,22 +75,22 @@ function addGames() {
 }
 
 function rowToTable(table) {
-  
+
 	var typeaheadUid = uuidv4()
-  
+
 	var tr = $('<tr></td>')
 	table.append(tr)
-                      
-	tr.append('<td>'+ table.children().length +'</td>')                            
+
+	tr.append('<td>' + table.children().length + '</td>')
 	tr.append('<td><input class="form-input" name="game-datetime" type="text" placeholder="01.01.2018 12:00" required /></td>')
-	tr.append('<td><input class="form-input countries-complete" id=' + typeaheadUid +' name="team-1" type="text" required /></td>')
+	tr.append('<td><input class="form-input countries-complete" id=' + typeaheadUid + ' name="team-1" type="text" required /></td>')
 	tr.append('<td><img class="img-responsive img-flag-small" id=' + 'flag-' + typeaheadUid + ' src="/public/img/flags/placeholder.png" /></td>')
 	tr.append('<td>vs.</td>')
-  
+
 	typeaheadUid = uuidv4()
-  
+
 	tr.append('<td><input class="form-input countries-complete" id=' + typeaheadUid + ' name="team-2" type="text" required></td>')
-	tr.append('<td><img class="img-responsive img-flag-small" id=' + 'flag-' +typeaheadUid + ' src="/public/img/flags/placeholder.png"></td>')
+	tr.append('<td><img class="img-responsive img-flag-small" id=' + 'flag-' + typeaheadUid + ' src="/public/img/flags/placeholder.png"></td>')
 	tr.append('<td><a class="text-error" onClick="removeRow(event)"><i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i></a></td>')
 }
 
@@ -109,7 +109,7 @@ function initAutoComplite() {
 						var id = el.attr('id')
 						var countyCode = el.getSelectedItemData().code
 						var imgSource = '/public/img/flags/' + countyCode.toLowerCase() + '.png'
-						var flagEl = $('#flag-' +id)
+						var flagEl = $('#flag-' + id)
 						flagEl.attr('src', imgSource)
 					},
 					match: {
@@ -122,9 +122,9 @@ function initAutoComplite() {
 	$('.easy-autocomplete').removeAttr('style')
 }
 
-function addRow(event){
+function addRow(event) {
 	var table = $('#addGamesSectionTBody')
-	if(table.children(':first').attr('id') == 'exampleRow') {
+	if (table.children(':first').attr('id') == 'exampleRow') {
 		table.html('')
 	}
 	var lastRow = table.children(':last')
@@ -138,25 +138,25 @@ function removeRow(event) {
 	event.preventDefault()
 	var target = event.target
 	var table = $('#addGamesSectionTBody')
-  
+
 	$(target).parentsUntil('tbody')[2].remove()
 	updateRowCount(table)
 	initAutoComplite()
 	buttonState()
 }
 
-function updateRowCount(table) {    
-	$(table.children()).each(function(i) {
+function updateRowCount(table) {
+	$(table.children()).each(function (i) {
 		$(this).children(':first').text(i + 1)
 	})
 }
 
-$('document').ready(function(){
+$('document').ready(function () {
 	buttonState()
 })
 
 function buttonState() {
-	if($('#addGamesSectionTBody').children(':first').attr('id') != 'exampleRow' && $('#addGamesSectionTBody').html() != ''){
+	if ($('#addGamesSectionTBody').children(':first').attr('id') != 'exampleRow' && $('#addGamesSectionTBody').html() != '') {
 		$('#submitButton').attr('disabled', false)
 	} else {
 		$('#submitButton').attr('disabled', true)
@@ -164,7 +164,7 @@ function buttonState() {
 }
 
 function uuidv4() {
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
 		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8)
 		return v.toString(16)
 	})
@@ -180,3 +180,39 @@ function colorRows() {
 		}
 	})
 }
+
+function toggleTable(table) {
+	const rows = $(table).find('tr')
+	const moreLink = $(table).next()
+	const moreText = $(moreLink).text()
+
+	$(rows).each(function (index, value) {
+		if (index > 4) {
+			$(value).toggle()
+		}
+	})
+	
+	moreText == 'Näytä vähemmän' || moreText == '' ?
+		$(moreLink).text('Näytä lisää') :
+		$(moreLink).text('Näytä vähemmän')
+}
+
+function mobileFriendlyLists() {
+	const tables = $('table')
+	tables.each(function (index, value) {
+		if ($(value).find('tr').length > 4) {
+
+			$(value).after('<a></a>')
+
+			$(value).next().text('Näytä lisää').click(function () {
+				toggleTable($(value))
+			})
+			$(value).click(function () {
+				toggleTable($(value))
+			})
+			toggleTable($(value))
+		}
+	})
+
+}
+

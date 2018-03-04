@@ -87,7 +87,7 @@ exports.updateTournamentParticipantScoresAsync = async(tournamentId) => {
 				select count(*) from pools
 				join game
 				on game.id = pools.game_id
-				and pools.participant_id = participant.id
+				where pools.participant_id = participant.id
 				and pools.pool = game.result
 			)
 		where tournament_id = ?`, [tournamentId])

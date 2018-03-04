@@ -12,25 +12,30 @@ block content
                 dt Rekisteröitynyt
                 dd #{moment(user.dateRegistered).format("D.M.YYYY, HH:mm")}
             div.divider
-            h5 Päivitä salasanasi
-            if passwordUpdateMsg
-                span(class='toast toast-success')= passwordUpdateMsg
-            if errors
-                dl
-                    for error in errors
-                        dd(class='text-error')= error.msg
-            form(action='/user/changePassword', method='POST')
-                label.form-label Nykyinen salasana
-                if oldPwdErrorMsg
-                    span(class='label label-error')= oldPwdErrorMsg
-                input(type='password', name='oldPassword' class="form-input" required)
-                label.form-label Uusi salasana
-                if pwdErrorMsg
-                    span(class='label label-error')= pwdErrorMsg
-                input(type='password', name='password' class="form-input" required)
-                label.form-label Uusi salasana uudestaan
-                input(type='password', name='password2' class="form-input" required)
-                input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')
+            details.accordion
+                summary.accordion-header
+                    i(class="icon icon-arrow-right mr-1")
+                    |Päivitä salasanasi
+                div.accordion-body
+                    if passwordUpdateMsg
+                        span(class='toast toast-success')= passwordUpdateMsg
+                    if errors
+                        dl
+                            for error in errors
+                                dd(class='text-error')= error.msg            
+                    form(action='/user/changePassword', method='POST')
+                        label.form-label Nykyinen salasana
+                        if oldPwdErrorMsg
+                            span(class='label label-error')= oldPwdErrorMsg
+                        input(type='password', name='oldPassword' class="form-input" required)
+                        label.form-label Uusi salasana
+                        if pwdErrorMsg
+                            span(class='label label-error')= pwdErrorMsg
+                        input(type='password', name='password' class="form-input" required)
+                        label.form-label Uusi salasana uudestaan
+                        input(type='password', name='password2' class="form-input" required)
+                        input(type='submit', value='Päivitä salasana', class='btn btn-primary login-button')
+            div.divider
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
             if user.username != 'admin'

@@ -92,16 +92,17 @@ exports.createTournamentAsync = async (tournament) => {
 }
 
 exports.updateTournamentAsync = async (tournament) => {
-    //Prevents sucess if there are columns that are not in the database
+    //Prevents updating id to the database
+    //which causes successful update even without other values
     const tournamentId = tournament.id
     tournament.id = undefined
-
-    console.dir(tournament)
 
     try {
         await db('tournament').where('id', tournamentId).update(tournament)
         logger.info('Updated tournament with id ' + tournamentId)
-        return
+        //id back to the referenced 
+        tournament.id = tournamentId
+        return true
     } catch (error) {
         logger.error(error)
         throw new Error('Update failed')

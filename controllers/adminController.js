@@ -207,7 +207,7 @@ router.post('/tournament/update/:id', async (req, res) => {
     }
 
     const editSuccesful = await Tournament.updateTournamentAsync(tournament)
-		const gamesSuccesful = await Game.updateGames(games)
+	const gamesSuccesful = await Game.updateGames(games)
 
     if (editSuccesful && gamesSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
