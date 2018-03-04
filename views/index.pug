@@ -5,8 +5,9 @@ block scripts
     script.
         $(document).ready(function (){
             colorRows()
-            const screensize = $( window ).width();
-            if(screensize <= '640px'){
+            const screensize = $( window ).width()
+            console.log(screensize)
+            if(screensize <= '640'){
                 mobileFriendlyLists()
             }
         })
@@ -119,15 +120,20 @@ block content
                         tr.pool-table-row
                             td= moment(game.game_start_datetime).format('D.M.YYYY')
                             td
-                                span
-                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                    =game.team_1 
-                                span  -                           
-                                    =game.team_2
-                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                div.columns.teams-row
+                                    div.col-md-12
+                                        img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_1 
+                                        span.dash-teams -
+                                    div.hide-md
+                                        span=game.team_2
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    div.col-md-12.show-md
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_2
                             td.pool-table-row-own-pool= game.pool
                             td.pool-table-row-result= game.result
-            else if moment(tournament.dateStarts) > moment()
+            else if moment(tournament.dateplayingstarts) > moment()
                 div.empty
                     div.empty-icon
                         i(class="fa fa-users fa-5x" aria-hidden="true")

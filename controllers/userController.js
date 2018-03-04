@@ -11,14 +11,7 @@ router.get('/', async (req, res) => {
         const tournamnetId = 'fed06e43-5e24-47f5-ad53-4e8ac238e734'
         const tournament = await Tournament.getByIdAsync(tournamnetId)
         var userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamnetId))
-        var poolsRight = 0
-        userPools.map(pool => {
-            if (pool.pool == pool.result) {
-                poolsRight++
-            }
-        })
-        var points = poolsRight + '/' + userPools.length
-        res.render('user/user', { userPools: userPools, points: points, tournament: tournament})
+        res.render('user/user', { userPools: userPools, tournament: tournament})
     } else {
         res.redirect('/user/login')
     }

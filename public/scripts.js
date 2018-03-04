@@ -204,7 +204,7 @@ function mobileFriendlyLists() {
 
 			$(value).after('<a></a>')
 
-			$(value).next().text('Näytä lisää').click(function () {
+			$(value).next().click(function () {
 				toggleTable($(value))
 			})
 			$(value).click(function () {

@@ -217,7 +217,7 @@ input[type="radio"]:checked + label {
 }
 
 .container.landing-page {
-    max-height: 400px;
+    max-height: 350px;
     padding: 0;
 }
 
@@ -226,6 +226,7 @@ input[type="radio"]:checked + label {
 	color: white;
     padding: 1.4em;
     text-align: center;
+    height: 350px;
 }
 
 .columns.landing-page {
@@ -234,7 +235,8 @@ input[type="radio"]:checked + label {
 
 .column.landing-login {
 	padding: 1.4em;
-	padding-left: 2.4em;
+    padding-left: 2.4em;
+    height: 350px;
 }
 
 .landing-icon {
@@ -299,4 +301,8 @@ input[type="radio"]:checked + label {
 .bg-primary-imporant {
 	background: #5755d9 !important;
 	color: #fff;
+}
+
+.dash-teams {
+	padding: 0px 2px 0px 2px;
 }
