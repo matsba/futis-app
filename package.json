@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "heroku-postbuild": "knex migrate:latest --knexfile ./database/knexfile.js && knex seed:run --knexfile ./database/knexfile.js"
+    "heroku-postbuild": "knex migrate:latest --knexfile ./database/knexfile.js",
+    "test-seed-db": "knex seed:run --knexfile ./database/knexfile.js"
   },
   "author": "",
   "license": "ISC",
