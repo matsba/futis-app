@@ -40,7 +40,8 @@ router.get('/:id?', async (req, res, next) => {
                     todays: todaysGames || null,
                     tomorrows: tomorrowsGames || null,
                     userPools: userPools || null,
-                    userScores: userScores || null
+                    userScores: userScores || null, 
+                    siteTitle: 'Kotisivu'
                 })
             }
         } catch (error) {

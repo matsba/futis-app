@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 	if(req.session && req.session.user){
 		res.redirect('/home/')
 	} else {
-		res.render('user/login')
+		res.render('user/login', {siteTitle: 'Kirjaudu'})
 	}
 })
 

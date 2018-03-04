@@ -50,7 +50,7 @@ app.use(function(req, res) {
 app.use(function(error, req, res, next) {
 	res.status(500)
 	res.render('500.pug')
-});
+})
 
 app.listen(app.get('port'), () => {
 	console.log('App is running on port ', app.get('port'))

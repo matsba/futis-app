@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         var userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamnetId))
         res.render('user/user', { userPools: userPools, tournament: tournament})
     } else {
-        res.redirect('/user/login')
+        res.redirect('/user/login', {siteTitle: 'Kirjaudu'})
     }
 })
 
@@ -23,7 +23,7 @@ router.get('/login', (req, res) => {
         return res.redirect('/')
     }    
         
-    res.render('user/login')
+    res.render('user/login', {siteTitle: 'Kirjaudu'})
 
 })
 
