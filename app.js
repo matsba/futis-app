@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const flash = require('express-flash')
 const favicon = require('serve-favicon')
+const logger = require('./logger')
 require('dotenv').config()
 //var cookieParser = require('cookie-parser')
 
@@ -48,6 +49,7 @@ app.use(function(req, res) {
 
 // Handle 500
 app.use(function(error, req, res, next) {
+	logger.error(error)
 	res.status(500)
 	res.render('500.pug')
 })
