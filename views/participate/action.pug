@@ -16,50 +16,60 @@ block content
             table(class='table table-striped table-hover')
                 thead
                     tr
-                        th Aika
+                        th.hide-sm Aika
                         th Peli
                         th Veikkaus
                 tbody
-                    for game in tournament.games
+                    for game in tournament.games 
                         tr
-                            td= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
+                            td.hide-sm= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
                             td
-                                span
-                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                    =game.team_1 
-                                span  -                           
-                                    =game.team_2
-                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                            td.form-group
-                                input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id)
-                                label(for="radio_" + game.id +"_1") 1 
-                                input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id)
-                                label(for="radio_" + game.id +"_x") x 
-                                input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id)
-                                label(for="radio_" + game.id +"_2") 2
+                                div.columns
+                                    div.col-md-12
+                                        img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_1
+                                    div.hide-md
+                                        | &nbsp; 
+                                        | -
+                                        | &nbsp;                                        
+                                        span=game.team_2
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                    div.col-md-12.show-md
+                                        img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                        span=game.team_2
+                            td
+                                div.form-group
+                                    div.col-sm-12
+                                        input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id)
+                                        label(for="radio_" + game.id +"_1") 1 
+                                    div.col-sm-12
+                                        input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id)
+                                        label(for="radio_" + game.id +"_x") x 
+                                    div.col-sm-12
+                                        input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id)
+                                        label(for="radio_" + game.id +"_2") 2
             if tournament.topstriker || tournament.winnerbet
                 h5.ptb-1-4 Täytä vielä nämä...
                 if tournament.topstriker
                     div.form-group
-                        div.col-3
+                        div.col-3.col-sm-12
                             label.form-label Maalikuningas
-                        div.col-6
+                        div.col-6.col-sm-12
                             input(type="text" name="top_striker" class="form-input")
                 if tournament.winnerbet
                     div.form-group
-                        div.col-3
+                        div.col-3.col-sm-12
                             label.form-label Turnauksen voittaja
-                        div.col-6
+                        div.col-6.col-sm-12
                             input(type="text" name="first_place" class="form-input")
                     div.form-group
-                        div.col-3
+                        div.col-3.col-sm-12
                             label.form-label Turnauksen 2. sija
-                        div.col-6
+                        div.col-6.col-sm-12
                             input(type="text" name="second_place" class="form-input")
             div.form-group.pt-20
-                div.col-9
-                div.col-1                    
-                    a(class='btn btn-link' onclick="cancelButton(event)") Peruuta
-                div.col-2
-                    button(class='btn btn-primary' type='submit') Lähetä veikkaukset
+                div.col-sm-4.col-md-3.col-2.col-ml-auto                
+                    a(class='btn btn-link float-right' onclick="cancelButton(event)") Peruuta
+                div.col-sm-8.col-md-4col-2
+                    button(class='btn btn-primary float-right' type='submit') Lähetä veikkaukset
 

@@ -55,8 +55,11 @@ block content
                                     div.columns
                                         div.col-md-12
                                             img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                            span=game.team_1 + ' - '
+                                            span=game.team_1
                                         div.hide-md
+                                            | &nbsp; 
+                                            | -
+                                            | &nbsp;
                                             span=game.team_2
                                             img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
                                         div.col-md-12.show-md
@@ -75,6 +78,8 @@ block content
             h4.card-heading 
                 i(class="fa fa-calendar-o card-icon" aria-hidden="true")
                 | Huomisen pelit
+            -
+                console.log(tomorrows)
             if tomorrows.length > 0
                 table(class='table table-hover')
                     thead
@@ -89,8 +94,11 @@ block content
                                 div.columns
                                     div.col-md-12
                                         img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                        span=game.team_1 + ' - '
+                                        span=game.team_1
                                     div.hide-md
+                                        | &nbsp; 
+                                        | -
+                                        | &nbsp;                                        
                                         span=game.team_2
                                         img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
                                     div.col-md-12.show-md

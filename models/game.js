@@ -34,7 +34,7 @@ exports.getCountryCodeForTeams = (games) => {
 	return games
 }
 
-exports.filterGamesByDate = (games, date) => {    
+exports.filterGamesByDate = (games, date) => {   
 	const formatedDate = moment(date).format('YYYY-MM-DD')
 	const filtered = games.filter(game => moment(game.game_start_datetime).format('YYYY-MM-DD') == formatedDate)
 	return filtered
