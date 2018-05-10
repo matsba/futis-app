@@ -26,12 +26,7 @@ block content
                         tr
                             td= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
                             td
-                                span
-                                    img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                    =game.team_1 
-                                span  -                           
-                                    =game.team_2
-                                    img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
+                                +gamesVersusElement(game)
                                 if game.team_1_score 
                                     td #{game.team_1_score} - #{game.team_2_score}
                                 else
