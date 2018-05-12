@@ -10,36 +10,36 @@ const util = require('util')
 
 router.get('/:id?', async (req, res, next) => {
     if (User.authenticateUser(req)) {
-        var userId = req.session.user.id
+        const userId = req.session.user.id
 
         try {
-            const tournaments = await Tournament.getAllAsync(true, null, true, 'dateplayingstarts')
-            if(tournaments.length < 1){
+            const activeTournaments = await Tournament.getAllAsync(true, null, true, 'dateplayingstarts')
+
+            if(activeTournaments.length < 1){
                 res.render('notournaments')
             } else {
-                let tournamentId = tournaments instanceof Array ? tournaments[0].id : tournaments.id
-                if(req.params.id){
-                    tournamentId = req.params.id
-                }
-                const tournament = await Tournament.getByIdAsync(tournamentId)
-                const games = Game.getCountryCodeForTeams(tournament.games)
-                let todaysGames, tomorrowsGames, userPools, userScores
-              
-                if(games){
-                    todaysGames = Game.filterGamesByDate(games, moment().format()) 
-                    tomorrowsGames = Game.filterGamesByDate(games, moment().add(1, 'days').format())          
-                    userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId)) 
-                    userScores = await Pools.getUserScoreOfTournament(tournamentId)               
+                //Just need one id
+                let tournamentId = activeTournaments instanceof Array ? activeTournaments[0].id : activeTournaments.id
+                //Use url parameter if found
+                if(req.params.id) tournamentId = req.params.id
+
+                //Init objects to pass to view
+                let tournament = await Tournament.getByIdAsync(tournamentId)
+                let user = {}
+                
+                //enrich data
+                if(tournament.games){
+                    tournament.games = Game.getCountryCodeForTeams(tournament.games)
+                    tournament.todaysGames = Game.filterGamesByDate(tournament.games, moment().format()) 
+                    tournament.tomorrowsGames = Game.filterGamesByDate(tournament.games, moment().add(1, 'days').format())          
+                    user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId)) 
+                    user.scores = await Pools.getUserScoreOfTournament(tournamentId)               
                 }
 
                 res.render('index', {
-                    tournaments: tournaments,
+                    activeTournaments: activeTournaments,
                     tournament: tournament,
-                    games: games || null,
-                    todays: todaysGames || null,
-                    tomorrows: tomorrowsGames || null,
-                    userPools: userPools || null,
-                    userScores: userScores || null, 
+                    currentUser: user,
                     siteTitle: 'Kotisivu'
                 })
             }

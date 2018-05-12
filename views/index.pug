@@ -12,14 +12,14 @@ block scripts
         })
 
 block content    
-    if tournaments.length > 1
+    if activeTournaments.length > 1
         div.columns.pb-2
             div(class='column col-3 col-sm-12')
                 span.text-gray Aktiiviset turnaukset:
             div(class='column col-9 col-sm-12')
-                for t in tournaments
+                for tournament in activeTournaments
                     span.chip
-                        a(href="/home/"+t.id)= t.name
+                        a(href="/home/"+tournament.id)= tournament.name
     div.columns
         div(class='column col-12')
             img(src='/public/img/banner.png' class='img-responsive banner')
@@ -39,7 +39,7 @@ block content
             h4.card-heading 
                 i(class="fa fa-calendar-check-o card-icon" aria-hidden="true")
                 | Päivän pelit
-            if todays.length > 0
+            if tournament.todaysGames.length > 0
                 table(class='table table-hover')
                     thead
                         tr
@@ -47,7 +47,7 @@ block content
                             th Peli
                             th Tulos
                     tbody
-                        for game in todays
+                        for game in tournament.todaysGames
                             tr
                                 td= moment(game.game_start_datetime).format("H:mm")
                                 td
@@ -65,14 +65,14 @@ block content
             h4.card-heading 
                 i(class="fa fa-calendar-o card-icon" aria-hidden="true")
                 | Huomisen pelit
-            if tomorrows.length > 0
+            if tournament.tomorrowsGames.length > 0
                 table(class='table table-hover')
                     thead
                         tr
                             th Klo
                             th Peli
                     tbody
-                    for game in tomorrows
+                    for game in tournament.tomorrowsGames
                         tr
                             td= moment(game.game_start_datetime).format("H:mm")
                             td
@@ -87,8 +87,8 @@ block content
             h4.card-heading 
                 i(class="fa fa-list-ul card-icon" aria-hidden="true")
                 | Omat tulokset
-            if userPools && userPools.length > 0
-                +gamesResultsTable(userPools)
+            if currentUser.pools && currentUser.pools.length > 0
+                +gamesResultsTable(currentUser.pools)
             else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
                 div.empty
                     div.empty-icon
@@ -117,8 +117,8 @@ block content
                         th Nimi
                         th Pisteet
                 tbody
-                if userScores && user
-                    for score in userScores
+                if currentUser.scores && user
+                    for score in currentUser.scores
                         if user.id == score.id
                             tr.bg-primary-imporant
                                 td= score.username
