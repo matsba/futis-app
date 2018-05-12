@@ -8,13 +8,21 @@ const logger = require('../logger')
 
 router.get('/', async (req, res) => {
     if (User.authenticateUser(req)) {
-        var userId = req.session.user.id
-        const tournamnetId = 'fed06e43-5e24-47f5-ad53-4e8ac238e734'
-        const tournament = await Tournament.getByIdAsync(tournamnetId)
-        var userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamnetId))
-        res.render('user/user', { userPools: userPools, tournament: tournament})
+        const userId = req.session.user.id
+        let tournaments = await Tournament.getAllAsync(true, userId, true, 'dateplayingstarts')
+
+        //no tournaments for the user
+        if (tournaments.length < 1) return res.render('user/user', { userPools: null, tournaments: null })
+
+        //fetch user's pools for each tournament and add them to the tournaments object
+        for(let i = 0; i < tournaments.length; i++){
+            tournaments[i].userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournaments[i].id))
+        }
+
+        res.render('user/user', { tournaments: tournaments })
+
     } else {
-        res.redirect('/user/login', {siteTitle: 'Kirjaudu'})
+        res.render('/user/login', { siteTitle: 'Kirjaudu' })
     }
 })
 

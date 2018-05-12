@@ -49,40 +49,18 @@ block content
             div.divider
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
+            h5.card-heading 
+                i(class="fa fa-list-ul card-icon" aria-hidden="true")
+                | Omat tulokset
             if user.username != 'admin'
-                h3= tournament.name
-                h5.card-heading 
-                    i(class="fa fa-list-ul card-icon" aria-hidden="true")
-                    | Omat tulokset
-                if userPools && userPools.length > 0
-                    table(class='table table-striped table-hover pool-table')
-                        thead
-                            tr
-                                th pvm
-                                th Peli
-                                th Oma
-                                th Tulos
-                        tbody
-                        for game in userPools                  
-                            tr.pool-table-row
-                                td= moment(game.game_start_datetime).format('D.M.YYYY')
-                                td
-                                    div.columns.teams-row
-                                        div.col-md-12
-                                            img(src="/public/img/flags/" + (game.team_1_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                            span=game.team_1 
-                                            span.dash-teams -
-                                        div.hide-md
-                                            span=game.team_2
-                                            img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                        div.col-md-12.show-md
-                                            img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
-                                            span=game.team_2
-                                td.pool-table-row-own-pool= game.pool
-                                td.pool-table-row-result= game.result
-                h5.card-heading 
-                    i(class="fa fa-history card-icon" aria-hidden="true")
-                    | Aikaisemmat turnaukset
+                for tournament in tournaments
+                    details.accordion
+                        summary.accordion-header
+                            i(class="icon icon-arrow-right mr-1")
+                            span= tournament.name
+                        div.accordion-body
+                            a(href="/tournament/" + tournament.id class="float-right") Turnauksen sivu
+                            +gamesResultsTable(tournament.userPools)
             else
                 dd 
                 a(href='/admin/tournamentManagement' class='btn  btn-primary')

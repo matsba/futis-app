@@ -88,21 +88,7 @@ block content
                 i(class="fa fa-list-ul card-icon" aria-hidden="true")
                 | Omat tulokset
             if userPools && userPools.length > 0
-                table(class='table table-striped table-hover pool-table')
-                    thead
-                        tr
-                            th pvm
-                            th Peli
-                            th Oma
-                            th Tulos
-                    tbody
-                    for game in userPools                  
-                        tr.pool-table-row
-                            td= moment(game.game_start_datetime).format('D.M.YYYY')
-                            td
-                                +gamesVersusElement(game)
-                            td.pool-table-row-own-pool= game.pool
-                            td.pool-table-row-result= game.result
+                +gamesResultsTable(userPools)
             else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
                 div.empty
                     div.empty-icon

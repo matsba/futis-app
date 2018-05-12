@@ -12,3 +12,20 @@ mixin gamesVersusElement(game)
         div.col-md-12.show-md
             img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
             span=game.team_2
+
+mixin gamesResultsTable(pools)
+    table(class='table table-striped table-hover pool-table')
+        thead
+            tr
+                th pvm
+                th Peli
+                th Oma
+                th Tulos
+        tbody
+        for game in pools                 
+            tr.pool-table-row
+            td= moment(game.game_start_datetime).format('D.M.YYYY')
+            td
+                +gamesVersusElement(game)
+            td.pool-table-row-own-pool= game.pool
+            td.pool-table-row-result= game.result
