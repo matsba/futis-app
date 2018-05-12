@@ -27,21 +27,47 @@ const makePoolsList = (poolsList, userId, participantId) => {
 exports.getPoolsByUserAndTournamentAsync = async (userId, tournamentId) => {
 	
 	try {
-		const pools = db.select('g.team_1', 'g.team_2', 'g.team_1_score', 'g.team_2_score', 'g.result', 'g.game_start_datetime', 'p.pool')
-		.from('user as u')
-		.join('participant as par', 'par.user_id', '=', 'u.id')
-		.join('tournament as t', 't.id', '=', 'par.tournament_id')
-		.join('game as g', 'g.tournament_id', '=', 't.id')
-		.leftJoin('pools as p', function () {
-			this.on('p.user_id', '=', 'u.id').andOn('g.id', '=', 'p.game_id')
-		})
-		.where({
-			'u.id': userId,
-			't.id': tournamentId
-		})
-		.orderBy('g.game_start_datetime', 'ASC')
+		const pools = await db.raw(`
+			SELECT  game.team_1, 
+					game.team_2, 
+					game.team_1_score, 
+					game.team_2_score, 
+					game.result, 
+					game.game_start_datetime,
+					pools.pool
+			from participant as par 
+			join tournament as tour 
+				on par.tournament_id = tour.id 
+			join game 
+				on tour.id = game.tournament_id
+			left join pools
+				on par.id = pools.participant_id and game.id = pools.game_id
+			where par.user_id = ? and tour.id = ?
+			order by game.game_start_datetime ASC`, [userId, tournamentId])
 
-		return pools
+		return pools['rows']
+
+	} catch (error) {
+		logger.error("Error on getPoolsByUserAndTournamentAsync: " + error)
+		throw new Error(error)
+	}
+	
+}
+
+exports.getExtraPoolsByUserAndTournamentAsync = async (userId, tournamentId) => {
+	
+	try {
+		const pools = await db.raw(`
+			SELECT  
+				ep.top_striker,
+				ep.first_place,
+				ep.second_place
+			from participant as par 
+			join extra_pools as ep
+				on ep.participant_id = par.id
+			where par.user_id = ? and par.tournament_id = ?`, [userId, tournamentId])
+
+		return pools['rows'][0]
 
 	} catch (error) {
 		logger.error("Error on getPoolsByUserAndTournamentAsync: " + error)
@@ -68,7 +94,7 @@ exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournam
 
 		extraPoolsList['participant_id'] = id
 
-		db.insert(extraPoolsList).into('extra_pools')
+		await db.insert(extraPoolsList).into('extra_pools')
 
 		return true
 

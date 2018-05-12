@@ -82,13 +82,32 @@ block content
                     div.empty-icon
                         i(class="fa fa-calendar-times-o fa-5x" aria-hidden="true")
                     p.empty-title.h5 Ei pelejä huomiselle
+    if tournament.topstriker
+        div.columns
+            div(class='column col-12 card')
+                h4.card-heading 
+                    i(class="fa fa-futbol-o card-icon" aria-hidden="true")
+                    | Maalitykit
     div.columns
         div(class='column col-md-6 col-sm-12 card')
             h4.card-heading 
                 i(class="fa fa-list-ul card-icon" aria-hidden="true")
-                | Omat tulokset
+                | Omat veikkaukset
             if currentUser.pools && currentUser.pools.length > 0
                 +gamesResultsTable(currentUser.pools)
+                if currentUser.extraPools
+                    div.pt-20
+                        table(class="table")
+                            tbody
+                                tr
+                                    th Maalikuningas: 
+                                    td= currentUser.extraPools.top_striker
+                                tr
+                                    th 1. sija: 
+                                    td= currentUser.extraPools.first_place
+                                tr
+                                    th 2. sija: 
+                                    td= currentUser.extraPools.second_place
             else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
                 div.empty
                     div.empty-icon
@@ -117,8 +136,8 @@ block content
                         th Nimi
                         th Pisteet
                 tbody
-                if currentUser.scores && user
-                    for score in currentUser.scores
+                if tournament.scores && user
+                    for score in tournament.scores
                         if user.id == score.id
                             tr.bg-primary-imporant
                                 td= score.username

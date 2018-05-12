@@ -31,9 +31,10 @@ router.get('/:id?', async (req, res, next) => {
                 if(tournament.games){
                     tournament.games = Game.getCountryCodeForTeams(tournament.games)
                     tournament.todaysGames = Game.filterGamesByDate(tournament.games, moment().format()) 
-                    tournament.tomorrowsGames = Game.filterGamesByDate(tournament.games, moment().add(1, 'days').format())          
-                    user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId)) 
-                    user.scores = await Pools.getUserScoreOfTournament(tournamentId)               
+                    tournament.tomorrowsGames = Game.filterGamesByDate(tournament.games, moment().add(1, 'days').format()) 
+                    tournament.scores = await Pools.getUserScoreOfTournament(tournamentId)           
+                    user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))
+                    user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)             
                 }
 
                 res.render('index', {

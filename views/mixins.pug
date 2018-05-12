@@ -24,8 +24,8 @@ mixin gamesResultsTable(pools)
         tbody
         for game in pools                 
             tr.pool-table-row
-            td= moment(game.game_start_datetime).format('D.M.YYYY')
-            td
-                +gamesVersusElement(game)
-            td.pool-table-row-own-pool= game.pool
-            td.pool-table-row-result= game.result
+                td= moment(game.game_start_datetime).format('D.M.YYYY')
+                td
+                    +gamesVersusElement(game)
+                td.pool-table-row-own-pool= game.pool
+                td.pool-table-row-result= game.result
