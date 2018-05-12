@@ -91,3 +91,11 @@ exports.removeUsersAsync = async (idsToRemove) => {
 exports.authenticateUser = (req) => {
 	return req.session && req.session.user;
 }
+
+exports.isAdmin = (req) => {
+	if(req.session && req.session.user && req.session.user.username == 'admin'){
+		return true
+	} else {
+		return false
+	}
+}

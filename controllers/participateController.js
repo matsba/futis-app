@@ -8,7 +8,7 @@ const moment = require('moment')
 const util = require('util')
 
 router.get('/tournament/:id', async (req, res) => {
-    if (!User.authenticateUser(req)) {
+    if (!User.authenticateUser(req) || User.isAdmin(req)) {
         return res.redirect('/')
     }
     const tournamentId = req.params.id
@@ -24,7 +24,7 @@ router.get('/tournament/:id', async (req, res) => {
 })
 
 router.post('/tournament/do/', async (req, res) => {
-    if (!User.authenticateUser(req)) {
+    if (!User.authenticateUser(req) || User.isAdmin(req)) {
         return res.redirect('/')
     }
 

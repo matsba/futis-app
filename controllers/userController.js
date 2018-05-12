@@ -46,6 +46,9 @@ router.post('/login', (req, res) => {
     User.authenticate(username, password, (user, err) => {
         if (user) {
             req.session.user = user
+            if(user.username == 'admin'){
+                res.redirect('/admin/tournamentManagement')
+            }
             res.redirect('/')
         } else {
             if (err == 'Not approved') {

@@ -22,9 +22,10 @@ html
                         a(id="info-button" href="#" class='btn-link text-light nav-link')
                             i(class="fa fa-info-circle card-icon" aria-hidden="true") 
                             span Info             
-                        a(id="participate-button" href="/participate" class='btn-link text-light nav-link')
-                            i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
-                            span Osallistu
+                        if user.username != 'admin'
+                            a(id="participate-button" href="/participate" class='btn-link text-light nav-link')
+                                i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
+                                span Osallistu
                         div.dropdown.dropdown-right
                             div.btn-group
                                 a(href="/user/" class="btn btn-primary")
@@ -37,10 +38,11 @@ html
                                         a(href="#")
                                             i(class="fa fa-info-circle card-icon" aria-hidden="true") 
                                             span Info
-                                    li.menu-item#participate-menu-item
-                                        a(href="/participate")
-                                            i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
-                                            span Osallistu
+                                    if user.username != 'admin'
+                                        li.menu-item#participate-menu-item
+                                            a(href="/participate")
+                                                i(class="fa fa-check-square-o card-icon" aria-hidden="true") 
+                                                span Osallistu
                                     li.divider#menu-item-divider
                                     if user.username == 'admin'
                                         li.menu-item 
