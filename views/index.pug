@@ -133,4 +133,65 @@ block content
                             tr
                                 td= score.username
                                 td= score.score
+        div(class='column col-12 card')
+            h4.card-heading 
+                i(class="fa fa-bar-chart card-icon" aria-hidden="true")
+                | Kaikkien veikkaukset
+                table.table.table-striped
+                    thead
+                        tr
+                            th Peli
+                            th 1
+                            th X
+                            th 2
+                    tbody
+                    for game in tournament.pools
+                        tr
+                            td
+                                +gamesVersusElement(game) 
+                            td                                
+                                if game.pool_1
+                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_1_percentage.toFixed() +" %"
+                                    div.modal.modal-sm
+                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                        div.modal-container
+                                            div.modal-header
+                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                div.modal-title.h5 Veikanneet
+                                            div.modal-body
+                                                div.content
+                                                    ul
+                                                    for u in game.pool_1
+                                                        li= u
+                                            div.modal-footer
+                            td
+                                if game.pool_x
+                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_x_percentage.toFixed() +" %"
+                                    div.modal.modal-sm
+                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                        div.modal-container
+                                            div.modal-header
+                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                div.modal-title.h5 Veikanneet
+                                            div.modal-body
+                                                div.content
+                                                    ul
+                                                    for u in game.pool_x
+                                                        li= u
+                                            div.modal-footer
+                            td                   
+                                if game.pool_2
+                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_2_percentage.toFixed() +" %"       
+                                    div.modal.modal-sm
+                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                        div.modal-container
+                                            div.modal-header
+                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                div.modal-title.h5 Veikanneet
+                                            div.modal-body
+                                                div.content
+                                                    ul
+                                                    for u in game.pool_2
+                                                        li= u
+                                            div.modal-footer
         

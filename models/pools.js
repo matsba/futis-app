@@ -137,3 +137,67 @@ exports.getUserScoreOfTournament = async (tournamentId) => {
 		throw new Error(error)
 	}
 }
+
+exports.getTournamentAggregatedPools = async (tournamentId) => {
+	try {
+		const results = await db.raw(`
+			SELECT game.id, game.team_1, game.team_2, 
+			(
+				SELECT array_agg(u.username) 
+				FROM pools
+				JOIN "user" as u
+					ON u.id = user_id   
+				WHERE game_id = game.id
+				AND pool = '1'        
+			) 
+			as pool_1, 
+				(
+				SELECT array_agg(u.username) 
+				FROM pools
+				JOIN "user" as u
+					ON u.id = user_id   
+				WHERE game_id = game.id
+				AND pool = 'x'				
+			) 
+			as pool_x, 	
+			(
+				SELECT array_agg(u.username) 
+				FROM pools
+				JOIN "user" as u
+					ON u.id = user_id    
+				WHERE game_id = game.id
+				AND pool = '2'
+			) 
+			as pool_2
+			FROM tournament
+			JOIN game
+				ON game.tournament_id = tournament.id
+			JOIN participant 
+				ON participant.tournament_id = tournament.id
+			WHERE tournament.id = ?
+			GROUP BY game.id
+			ORDER BY game_start_datetime ASC`, [tournamentId])
+
+		let rows = results['rows']
+
+		//Count precentages for pools
+		for(let i = 0; i < rows.length; i++){
+			//mocked data
+			//if(rows[i].pool_1) rows[i].pool_1 = ["Jonah_Sammy","Murphy_Wilbert","Henley_Nath","Edric_Mateo","Phineas_Kyler","John_Jacoby","Salman_Kurt","Vaughn_Gordon","Taylor_Dinesh","Conor_Gus","Storm_Ian","Vlad_Ryker","Perry_Indiana","Alden_Finbar","Prakash_Benjy","Ray_Kellan","Rico_Ayden","Reggie_Kerry","Jersey_Denzel","Rashid_Hector","Reese_Jedediah","Umar_Jerald","Jericho_Morgan","Tyrone_Dayton","Caesar_Langdon","Alex_Koby","Kingsley_Huw","Kit_Wendell","Dmitri_Brogan","Lonnie_Douglas"]
+			
+			const pool_1 = rows[i].pool_1 ? rows[i].pool_1.length : 0
+			const pool_x = rows[i].pool_x ? rows[i].pool_x.length : 0
+			const pool_2 = rows[i].pool_2 ? rows[i].pool_2.length : 0
+			const summed = pool_1 + pool_x + pool_2
+
+			rows[i].pool_1_percentage = (pool_1 / summed * 100)
+			rows[i].pool_x_percentage = (pool_x / summed * 100)
+			rows[i].pool_2_percentage = (pool_2 / summed * 100)
+		}
+		return rows
+
+	} catch (error) {
+		logger.error('Error in getTournamentAggregatedPools function: ' + error)
+		throw new Error(error)
+	}
+}

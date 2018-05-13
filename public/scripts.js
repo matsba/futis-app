@@ -223,3 +223,13 @@ function validityCheck(formEl){
 	}
   }
 
+
+function toggleModal(link){
+
+	if(link.nextSibling.className == "modal modal-sm"){
+	  link.nextSibling.className="modal modal-sm active"
+	}
+	else if(link.offsetParent.className == "modal modal-sm active"){
+	  link.offsetParent.className = "modal modal-sm"
+	}
+  }
