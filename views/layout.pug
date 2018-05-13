@@ -20,7 +20,7 @@ html
                     a(href="/" class="btn btn-link text-light input-group-btn") Futis
                 section.navbar-section
                     if user && user.username
-                        a(id="info-button" href="#" class='btn-link text-light nav-link')
+                        a(id="info-button" href="/info" class='btn-link text-light nav-link')
                             i(class="fa fa-info-circle card-icon" aria-hidden="true") 
                             span Info             
                         if user.username != 'admin'
