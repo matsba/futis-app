@@ -216,3 +216,10 @@ function mobileFriendlyLists() {
 
 }
 
+function validityCheck(formEl){
+	if(!formEl.checkValidty) {
+	  document.getElementById('validity-check').textContent = "Täytä kaikki kentät!"
+	  document.getElementById('validity-check').className = "toast toast-error"
+	}
+  }
+

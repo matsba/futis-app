@@ -94,20 +94,7 @@ block content
                 i(class="fa fa-list-ul card-icon" aria-hidden="true")
                 | Omat veikkaukset
             if currentUser.pools && currentUser.pools.length > 0
-                +gamesResultsTable(currentUser.pools)
-                if currentUser.extraPools
-                    div.pt-20
-                        table(class="table")
-                            tbody
-                                tr
-                                    th Maalikuningas: 
-                                    td= currentUser.extraPools.top_striker
-                                tr
-                                    th 1. sija: 
-                                    td= currentUser.extraPools.first_place
-                                tr
-                                    th 2. sija: 
-                                    td= currentUser.extraPools.second_place
+                +poolsTable(currentUser.pools, currentUser.extraPools)
             else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
                 div.empty
                     div.empty-icon

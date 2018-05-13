@@ -60,7 +60,7 @@ block content
                             span= tournament.name
                         div.accordion-body
                             a(href="/tournament/" + tournament.id class="float-right") Turnauksen sivu
-                            +gamesResultsTable(tournament.userPools)
+                            +poolsTable(tournament.userPools, tournament.userExtraPools)
             else
                 dd 
                 a(href='/admin/tournamentManagement' class='btn  btn-primary')

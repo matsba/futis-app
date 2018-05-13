@@ -9,7 +9,7 @@ const logger = require('../logger')
 router.get('/', async (req, res) => {
     if (User.authenticateUser(req)) {
         const userId = req.session.user.id
-        let tournaments = await Tournament.getAllAsync(true, userId, true, 'dateplayingstarts')
+        let tournaments = await Tournament.getUserParticipatedTournaments(userId)
 
         //no tournaments for the user
         if (tournaments.length < 1) return res.render('user/user', { userPools: null, tournaments: null })
@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
         //fetch user's pools for each tournament and add them to the tournaments object
         for(let i = 0; i < tournaments.length; i++){
             tournaments[i].userPools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournaments[i].id))
+            tournaments[i].userExtraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournaments[i].id)
         }
 
         res.render('user/user', { tournaments: tournaments })

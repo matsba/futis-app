@@ -16,10 +16,31 @@ exports.Tournament = class Tournament {
     }
   }
 
+exports.getUserParticipatedTournaments = async (userId) => {
+
+    try {
+        const tournaments = await db.raw(`
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+            (select count(id) as gamesCount from game where game.tournament_id = tournament.id)
+        from tournament
+        join participant 
+            on tournament.id = participant.tournament_id AND participant.user_id = ?
+        and published = true
+        order by datestarts desc`, [userId])
+
+        return tournaments['rows']
+
+    } catch (error) {
+        logger.error(error)
+        throw new Error('getUserParticipatedTournaments failed')
+    }
+}
+
 exports.getAllAsync = async (active=null, userId=null, published=true, orderby='name') => {
     
-    const activeTournaments = (active == true && userId == null)
-    const activeTournamentsWithUserParticipation = (active == true && userId != null)
+    const activeTournaments = (active == true && userId == null && published == true)
+    const activeTournamentsWithUserParticipation = (active == true && userId != null && published == true)
+    const tournamentsWithUserParticipation = (userId != null && published == true)
 
     let tournament
 
@@ -34,7 +55,6 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
         , [active, published, orderby]
         )
     } else if(activeTournamentsWithUserParticipation){
-
         tournament = await db.raw(`
         select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
@@ -44,7 +64,16 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
         and published = ?
         order by ? desc`, [userId, active, published, orderby]
         )
-    } else {
+    } else if (tournamentsWithUserParticipation){
+        tournament = await db.raw(`
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+            (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
+            (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
+        from tournament
+        and published = ?
+        order by ? desc`, [userId, published, orderby]
+        )
+    }else {
         tournament = await db.raw(`
         select id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 

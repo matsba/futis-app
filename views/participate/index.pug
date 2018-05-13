@@ -7,6 +7,8 @@ block content
             h2 Osallistu
             if success
                 span.toast.toast-success= success.text
+            if error
+                span.toast.toast-success= error.text
     div.columns
         div.column.col-12.pt-1-4
             if activeTournaments.tournaments.length > 0 && !activeTournaments.particpatedToAll
@@ -14,16 +16,16 @@ block content
                 table.table
                     thead
                         th Turnaus
-                        th Osallistuminen loppuu
+                        th Turnaus alkaa 
                         th
                         th 
                     tbody
                     for tournament in activeTournaments.tournaments
-                        if tournament.gamescount > 0 && !tournament.userparticipated
+                        if tournament.gamescount > 0 && !tournament.userparticipated && moment(tournament.datestarts).format() > moment().format() 
                             tr
                                 td= tournament.name
                                 td #{moment(tournament.datestarts).format('D.M.YYYY')}
-                                    i (#{moment(tournament.datestarts).fromNow()})
+                                    i  (#{moment(tournament.datestarts).fromNow()})
                                 td 
                                     a(href="/participate/tournament/" + tournament.id)
                                         button.btn.btn-primary Osallistu

@@ -61,10 +61,28 @@ router.post('/tournament/do/', async (req, res) => {
     const insertedPools = await Pools.userParticipateAsync(poolsList, extraPoolsList, userId, tournamentId)
     
     if(insertedPools){
-        const activeTournaments = await Tournament.getAllAsync(true, userId, false)        
-        res.render('participate/index', {activeTournaments, success: {
-            text: "Turnaukseen osallistuminen onnistui!"
-        }})
+        try {
+            let activeTournamentsForUser = {}
+            activeTournamentsForUser['tournaments'] = await Tournament.getAllAsync(true, userId)
+            
+            const particpatedToAll = async (tournaments) => {
+                let participation = true
+                for(obj of tournaments){ 
+                    if(!obj.userparticipated){
+                        participation = false
+                        break
+                    }                    
+                }
+                return participation
+            }
+    
+            activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)   
+            res.render('participate/index', {activeTournaments: activeTournamentsForUser, success: {
+                text: "Turnaukseen osallistuminen onnistui!"
+            }})         
+        } catch (error) {
+            next(error)
+        }     
     } else {
         let tournament = await Tournament.getByIdAsync(tournamentId)
         const gamesWithCountryCodes = Game.getCountryCodeForTeams(tournament.games)

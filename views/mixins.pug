@@ -13,7 +13,7 @@ mixin gamesVersusElement(game)
             img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
             span=game.team_2
 
-mixin gamesResultsTable(pools)
+mixin poolsTable(pools, extraPools)
     table(class='table table-striped table-hover pool-table')
         thead
             tr
@@ -29,3 +29,16 @@ mixin gamesResultsTable(pools)
                     +gamesVersusElement(game)
                 td.pool-table-row-own-pool= game.pool
                 td.pool-table-row-result= game.result
+    if extraPools
+        div.pt-20
+            table(class="table")
+                tbody
+                    tr
+                        th Maalikuningas: 
+                        td= extraPools.top_striker
+                    tr
+                        th 1. sija: 
+                        td= extraPools.first_place
+                    tr
+                        th 2. sija: 
+                        td= extraPools.second_place
