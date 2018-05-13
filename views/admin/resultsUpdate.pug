@@ -26,6 +26,16 @@ block content
                                     input(type='number' min=0 name="goals_2" value=game.team_2_score)
                                 td= game.result
                                 input(type='hidden' value=game.id name='game_id')
+            if hasTopStriker
+                div.form-group
+                    span.col-3 Paras pistemies
+                    input(type='text' name='topstriker' value=topStriker)
+                
+            if hasWinnerBet
+                div.form-group
+                    span.col-3 Turnauksen voittaja
+                    input(type='text' name='winner' value=winner)
+
             div.form-group.pt-1-4
                 div.col-9
                 div.col-1
