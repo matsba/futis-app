@@ -50,17 +50,27 @@ block content
         div.divider-vert(class='hide-sm')
         div(class='column col-md-6 col-sm-12')
             if user.username != 'admin'
-                h5.card-heading 
-                    i(class="fa fa-list-ul card-icon" aria-hidden="true")
-                    | Omat tulokset
-                for tournament in tournaments
-                    details.accordion
-                        summary.accordion-header
-                            i(class="icon icon-arrow-right mr-1")
-                            span= tournament.name
-                        div.accordion-body
-                            a(href="/tournament/" + tournament.id class="float-right") Turnauksen sivu
-                            +poolsTable(tournament.userPools, tournament.userExtraPools)
+                if tournaments
+                    h5.card-heading 
+                        i(class="fa fa-list-ul card-icon" aria-hidden="true")
+                        | Omat tulokset
+                    for tournament in tournaments
+                        details.accordion
+                            summary.accordion-header
+                                i(class="icon icon-arrow-right mr-1")
+                                span= tournament.name
+                            div.accordion-body
+                                a(href="/tournament/" + tournament.id class="float-right") Turnauksen sivu
+                                +poolsTable(tournament.userPools, tournament.userExtraPools)
+                else
+                    div.empty
+                        div.empty-icon
+                            i(class="fa fa-users fa-5x" aria-hidden="true")
+                        p.empty-title.h5 Hei, #{user.username}!
+                        p.empty-subtitle Osallistu peleihin!
+                        div.empty-action
+                            a(href="/participate/")
+                                button.btn.btn-primary Osallistu
             else
                 dd 
                 a(href='/admin/tournamentManagement' class='btn  btn-primary')
