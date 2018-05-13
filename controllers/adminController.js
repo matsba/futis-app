@@ -1,4 +1,4 @@
-const express = require('express')
+        const express = require('express')
 const router = express.Router()
 const moment = require('moment')
 const User = require('../models/user')
@@ -245,8 +245,15 @@ router.get('/tournament/:id/results', async (req, res) => {
     }
 
     const games = await Game.getGames(req.params.id)
+    const tournament = await Tournament.getByIdAsync(req.params.id)
 
-    res.render('admin/resultsUpdate', { games: games})
+    res.render('admin/resultsUpdate', {
+        games: games,
+        hasWinnerBet: tournament.winnerbet,
+        hasTopStriker: tournament.topstriker,
+        winner: tournament.winner,
+        topStriker: tournament.topstriker
+    })
 })
 
 router.post('/tournament/:id/results', async (req, res) => {
