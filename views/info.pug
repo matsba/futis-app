@@ -1,11 +1,11 @@
 extends layout
 
-block content    
-    div
-        -console.log(info.content)
-        p!= md.render(info.content)
-    div.columns
-        p.text-gray= moment(info.created).format("D.M.YYYY")
+block content
+    if info    
+        div       
+            p!= md.render(info.content)
+        div.columns
+            p.text-gray= moment(info.created).format("D.M.YYYY HH:mm")
     if user.username == 'admin'
         span.divider
         div.columns
@@ -18,5 +18,7 @@ block content
                     div.form-group
                         label.form-label 
                             strong Päivitä sisältö
-                        textarea.content-textarea.form-input(name="content" type="text")= info.content
+                        textarea.content-textarea.form-input(name="content" type="text") 
+                            if info
+                                =info.content
                     button(class='btn btn-primary float-right' type='submit') Päivitä
