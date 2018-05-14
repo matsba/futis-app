@@ -4,15 +4,15 @@ const Content = require('../models/content')
 const User = require('../models/user')
 const logger = require('../logger')
 const markdown = require("markdown").markdown;
+const sanitizeHtml = require('sanitize-html');
+
 
 //This will get /info
 router.get('/', async (req, res) => {
 	if(User.authenticateUser(req)){
         try {
-            const content = await Content.getPageContent('info')
-            const htmlContent = markdown.toHTML(content.content)
-            
-            res.render('info', {info: content, htmlContent })
+            const content = await Content.getPageContent('info')            
+            res.render('info', {info: content })
 
         } catch (error) {
             console.log(error)
@@ -24,9 +24,11 @@ router.get('/', async (req, res) => {
 
 router.post("/new/:page", async (req, res) => {
     if (User.authenticateUser(req) && User.isAdmin(req)) {
-        req.sanitizeBody('content').escape()
+        //do not allow script tags and other shinanigans
+        const content = sanitizeHtml(req.body.content)
+
         try {
-            const updated = await Content.newPageContent(req.params.page, req.body.content, req.session.user.id)
+            const updated = await Content.newPageContent(req.params.page, content, req.session.user.id)
             res.redirect('/content')
         } catch (error) {
             next(error)

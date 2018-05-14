@@ -1,17 +1,22 @@
 extends layout
 
 block content    
-    div.columns
-        h1 Info
-    div.columns
-        p(style="white-space: pre-wrap;")!= htmlContent
+    div
+        -console.log(info.content)
+        p!= md.render(info.content)
     div.columns
         p.text-gray= moment(info.created).format("D.M.YYYY")
     if user.username == 'admin'
+        span.divider
         div.columns
+            div.col-12
+                p 
+                    | Sisältö tukee markdownia 
+                    a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet") (apuja)
             div.col-12
                 form.form(action="/content/new/info" method="POST")
                     div.form-group
-                        label.form-label Päivitä sisältö
-                        textarea.form-input(name="content" type="text" style="white-space: pre-wrap;")= info.content
+                        label.form-label 
+                            strong Päivitä sisältö
+                        textarea.content-textarea.form-input(name="content" type="text")= info.content
                     button(class='btn btn-primary float-right' type='submit') Päivitä

@@ -39,6 +39,7 @@ app.use(flash())
 //This sends moment to use in views
 app.locals.moment = require('moment')
 app.locals.moment.locale('fi')
+app.locals.md = require('markdown-it')({breaks: true})
 app.use(require('./controllers'))
 
 // Handle 404

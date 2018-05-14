@@ -142,6 +142,10 @@ body {
     flex: 1;
 }
 
+textarea.form-input.content-textarea {
+    height: 300px;
+}
+
 .btn.btn-link.text-light {
 	background: 0 0;
 	border-color: transparent;
