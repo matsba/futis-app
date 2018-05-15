@@ -89,4 +89,17 @@ exports.getGames = async (tournamentId) => {
 	}
 }
 
+exports.addGames = async (gameList, tournamentId) => {
+	if (gameList.length < 1) return false;
+	
+	try {
+		await db.insert(gameList).into('game')
+		logger.error("Added " + gameList.length + " to tournament with id: " + tournamentId)
+		return true
+	} catch (error) {
+		logger.error("There was an error inserting games to database: " + error)
+		throw new Error(error)
+	}
+}
+
 //TODO: update game by parameter result, date, team names

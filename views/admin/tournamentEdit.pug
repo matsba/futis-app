@@ -1,5 +1,10 @@
 extends ../layout
 
+block scripts
+    script(src="/easy/jquery.easy-autocomplete.min.js")
+    script(src="/public/scripts.js")
+    link(rel="stylesheet" href="/easy/easy-autocomplete.css")
+
 block content
     div.columns
         div(class='column col-12')
@@ -57,6 +62,43 @@ block content
                                             input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
                                         td
                                             input(name="game_id" type='hidden' value=game.id required)
+                div.pt-1-4
+                    h3 Lisää uusia pelejä turnaukseen:
+                div(class="form-group" id="addGamesSection")
+                    div.col-3
+                    table.table.col-9
+                        thead
+                            tr
+                                th #
+                                th pvm ja aika
+                                th joukue 1
+                                th 
+                                th 
+                                th joukue 2
+                                th
+                                th
+                        tbody(id="addGamesSectionTBody")
+                            tr(id="exampleRow")
+                                td.text-gray 
+                                    i X
+                                td.text-gray 
+                                    i Esimerkki
+                                td.text-gray 
+                                    i Suomi
+                                td.text-gray
+                                td.text-gray 
+                                    i vs
+                                td.text-gray
+                                    i Ruotsi
+                                td.text-gray 
+                                td.text-gray 
+                                td.text-gray 
+                div.form-group
+                    div.col-3
+                    div.col-9
+                        a(class="text-success" onClick="addRow()" id="addGamesButton") 
+                            i(class="fa fa-plus-circle" aria-hidden="true")
+                            | Lisää rivi
                 div.form-group.pt-1-4
                     div.col-3
                     div.col-1
