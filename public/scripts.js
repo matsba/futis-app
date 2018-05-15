@@ -200,6 +200,9 @@ function toggleTable(table) {
 function mobileFriendlyLists() {
 	const tables = $('table')
 	tables.each(function (index, value) {
+		if($(this).hasClass('needs-scroll')){
+			$(this).toggleClass('table-scroll')
+		}
 		if ($(value).find('tr').length > 4) {
 
 			$(value).after('<a></a>')

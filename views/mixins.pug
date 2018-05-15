@@ -175,7 +175,7 @@ mixin tournamentView(tournament, currentUser)
                             +gamesVersusElement(game) 
                         td                                
                             if game.pool_1
-                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_1_percentage.toFixed() +" %"
+                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_1_percentage.toFixed() +"%"
                                 div.modal.modal-sm
                                     a(class="modal-overlay" onclick="toggleModal(this)")                                            
                                     div.modal-container
@@ -190,7 +190,7 @@ mixin tournamentView(tournament, currentUser)
                                         div.modal-footer
                         td
                             if game.pool_x
-                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_x_percentage.toFixed() +" %"
+                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_x_percentage.toFixed() +"%"
                                 div.modal.modal-sm
                                     a(class="modal-overlay" onclick="toggleModal(this)")                                            
                                     div.modal-container
@@ -205,7 +205,7 @@ mixin tournamentView(tournament, currentUser)
                                         div.modal-footer
                         td                   
                             if game.pool_2
-                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_2_percentage.toFixed() +" %"       
+                                span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_2_percentage.toFixed() +"%"       
                                 div.modal.modal-sm
                                     a(class="modal-overlay" onclick="toggleModal(this)")                                            
                                     div.modal-container
@@ -222,7 +222,7 @@ mixin tournamentView(tournament, currentUser)
             div(class='column col-12 card')
                 h5.card-heading 
                     | Muut veikkaukset
-                    table.table.table-striped
+                    table.table.table-striped.needs-scroll
                         thead
                             tr
                                 th 
