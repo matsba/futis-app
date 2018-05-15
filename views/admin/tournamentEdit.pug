@@ -40,23 +40,26 @@ block content
                             label.form-label Turnaus loppuu
                         div.col-3
                             input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=moment(tournament.dateends).format('YYYY-MM-DD') required)
-                h5.card-heading.text-bold Veikkaus asetukset
-                div.plt-20
-                    div.form-group
-                        div.col-3
-                            label.form-label Maalintekijä piste arvo
-                        div.col-1
-                            input(name='epTopStrikerPointsValue' class='form-input' type="number" value=tournament.ep_top_striker_points_value)
-                    div.form-group.pt-1-4
-                        div.col-3
-                            label.form-label 1. sijan piste arvo
-                        div.col-1
-                            input(name='epFirstPlacePointsValue' class='form-input' type="number" value=tournament.ep_first_place_points_value)
-                    div.form-group.pt-1-4
-                        div.col-3
-                            label.form-label 2. sijan piste arvo
-                        div.col-1
-                            input(name='epSecondPlacePointsValue' class='form-input' type="number" value=tournament.ep_second_place_points_value)
+                if tournament.winnerbet || tournament.topstriker
+                    h5.card-heading.text-bold Veikkaus asetukset
+                    div.plt-20
+                        if tournament.topstriker
+                            div.form-group
+                                div.col-3
+                                    label.form-label Maalintekijä piste arvo
+                                div.col-1
+                                    input(name='epTopStrikerPointsValue' class='form-input' type="number" value=tournament.ep_top_striker_points_value)
+                        if tournament.winnerbet
+                            div.form-group.pt-1-4
+                                div.col-3
+                                    label.form-label 1. sijan piste arvo
+                                div.col-1
+                                    input(name='epFirstPlacePointsValue' class='form-input' type="number" value=tournament.ep_first_place_points_value)
+                            div.form-group.pt-1-4
+                                div.col-3
+                                    label.form-label 2. sijan piste arvo
+                                div.col-1
+                                    input(name='epSecondPlacePointsValue' class='form-input' type="number" value=tournament.ep_second_place_points_value)
                 h5.card-heading.text-bold Pelit
                 div.plt-20
                     div.form-group
