@@ -1,6 +1,7 @@
 const db  = require('../database/db')
 const moment = require('moment')
 const Game = require('../models/game')
+const Pools = require('../models/pools')
 const util = require('util')
 const logger = require('../logger')
 
@@ -136,4 +137,23 @@ exports.updateTournamentAsync = async (tournament) => {
         logger.error(error)
         throw new Error('Update failed')
     }
+}
+
+exports.getTournamentViewContent = async (tournamentId, userId) => {
+    let tournament = await this.getByIdAsync(tournamentId)
+    let user = {}
+    
+    //enrich data
+    if(tournament.games){
+        tournament.games = Game.getCountryCodeForTeams(tournament.games)
+        tournament.todaysGames = Game.filterGamesByDate(tournament.games, moment().format()) 
+        tournament.tomorrowsGames = Game.filterGamesByDate(tournament.games, moment().add(1, 'days').format()) 
+        tournament.scores = await Pools.getUserScoresOfTournament(tournamentId)        
+        tournament.pools = Game.getCountryCodeForTeams(await Pools.getTournamentAggregatedPools(tournamentId))
+        tournament.extraPools = await Pools.getTournamentExtraPools(tournamentId)  
+        user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))
+        user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)             
+    }
+
+    return {user, tournament}
 }

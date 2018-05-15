@@ -23,21 +23,7 @@ router.get('/:id?', async (req, res, next) => {
                 //Use url parameter if found
                 if(req.params.id) tournamentId = req.params.id
 
-                //Init objects to pass to view
-                let tournament = await Tournament.getByIdAsync(tournamentId)
-                let user = {}
-                
-                //enrich data
-                if(tournament.games){
-                    tournament.games = Game.getCountryCodeForTeams(tournament.games)
-                    tournament.todaysGames = Game.filterGamesByDate(tournament.games, moment().format()) 
-                    tournament.tomorrowsGames = Game.filterGamesByDate(tournament.games, moment().add(1, 'days').format()) 
-                    tournament.scores = await Pools.getUserScoresOfTournament(tournamentId)        
-                    tournament.pools = Game.getCountryCodeForTeams(await Pools.getTournamentAggregatedPools(tournamentId))
-                    tournament.extraPools = await Pools.getTournamentExtraPools(tournamentId)  
-                    user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))
-                    user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)             
-                }
+                const {user, tournament} = await Tournament.getTournamentViewContent(tournamentId, userId)
 
                 res.render('index', {
                     activeTournaments: activeTournaments,
