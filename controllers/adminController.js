@@ -197,15 +197,6 @@ router.post('/tournament/update/:id', async (req, res) => {
         ep_second_place_points_value: par.epSecondPlacePointsValue
     }
 
-    const daGame = {
-        tournament_id: req.params.id,
-        team_1: par['team-1'],
-        team_2: par['team-2'],
-        game_start_datetime: moment(par['game-datetime'], "DD.MM.YYYY HH:mm").format()
-    }
-    console.log("TÄSSÄ ON SE GAME")
-    console.log(daGame)
-
     let games = []
     let newGames = []
 
@@ -218,23 +209,26 @@ router.post('/tournament/update/:id', async (req, res) => {
 		})
     }
 
-    if (typeof par['team-1'] == 'string') {
-        newGames.push({
-            tournament_id: req.params.id,
-			team_1: par['team-1'],
-			team_2: par['team-2'],
-			game_start_datetime: moment(par['game-datetime'], "DD.MM.YYYY HH:mm").format()
-		})
-    } else if (par['team-1'].length > 1) {
-        for (let i = 0; i < par['team-1'].length; i++) {
+    if (par['team-1']) {
+        if (typeof par['team-1'] == 'string') {
             newGames.push({
                 tournament_id: req.params.id,
-                team_1: par['team-1'][i],
-                team_2: par['team-2'][i],
-                game_start_datetime: moment(par['game-datetime'][i], "DD.MM.YYYY HH:mm").format()
+                team_1: par['team-1'],
+                team_2: par['team-2'],
+                game_start_datetime: moment(par['game-datetime'], "DD.MM.YYYY HH:mm").format()
             })
-        }
+        } else if (par['team-1'].length > 1) {
+            for (let i = 0; i < par['team-1'].length; i++) {
+                newGames.push({
+                    tournament_id: req.params.id,
+                    team_1: par['team-1'][i],
+                    team_2: par['team-2'][i],
+                    game_start_datetime: moment(par['game-datetime'][i], "DD.MM.YYYY HH:mm").format()
+                })
+            }
+        } 
     }
+    
 
     let editSuccesful;
     let gamesSuccesful;
@@ -242,8 +236,10 @@ router.post('/tournament/update/:id', async (req, res) => {
 
     try {
         editSuccesful = await Tournament.updateTournamentAsync(tournament)
-        gamesSuccesful = await Game.updateGames(games)
-        addSuccesful = await Game.addGames(newGames, req.params.id)    
+        if (games)
+            gamesSuccesful = await Game.updateGames(games)
+        if (newGames)
+            addSuccesful = await Game.addGames(newGames, req.params.id)    
     } catch (error) {
         logger.error("There was an error updating the tournament: " + error)
 		//throw new Error(error)
