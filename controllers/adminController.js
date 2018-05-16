@@ -191,7 +191,10 @@ router.post('/tournament/update/:id', async (req, res) => {
         datestarts: par.tournamentStartDate,
         dateplayingstarts: par.tournamentPlayingStartDate,
         dateends: par.tournamentEndDate,
-        name: par.tournamentName
+        name: par.tournamentName,
+        ep_top_striker_points_value: par.epTopStrikerPointsValue,
+        ep_first_place_points_value: par.epFirstPlacePointsValue,
+        ep_second_place_points_value: par.epSecondPlacePointsValue
     }
 
     const daGame = {
@@ -240,8 +243,6 @@ router.post('/tournament/update/:id', async (req, res) => {
     try {
         editSuccesful = await Tournament.updateTournamentAsync(tournament)
         gamesSuccesful = await Game.updateGames(games)
-        console.log("GAMES NEW ON TÄÄLLLÄ KATSO TÄNNE IDIOOTTI")
-        console.log(newGames)
         addSuccesful = await Game.addGames(newGames, req.params.id)    
     } catch (error) {
         logger.error("There was an error updating the tournament: " + error)

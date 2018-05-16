@@ -11,13 +11,17 @@ router.get('/:id', async (req, res) => {
     if (!User.authenticateUser(req)) {
         return res.redirect('/')
     }    
-    
+
+    const userId = req.session.user.id
     const tournamentId = req.params.id
 
     try {
-        const tournament = await Tournament.getByIdAsync(tournamentId)
-        const games = Game.getCountryCodeForTeams(tournament.games)
-        res.render('tournament/details', { tournament: tournament, games: games })
+        const {user, tournament} = await Tournament.getTournamentViewContent(tournamentId, userId)
+
+        res.render('tournament/details', { 
+            tournament: tournament,
+            currentUser: user,
+         })
     } catch (error) {
         res.status(500).send('Internal_server_error')
     }    

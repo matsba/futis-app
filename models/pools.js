@@ -123,7 +123,7 @@ exports.updateTournamentParticipantScoresAsync = async(tournamentId) => {
 	}
 }
 
-exports.getUserScoreOfTournament = async (tournamentId) => {	
+exports.getUserScoresOfTournament = async (tournamentId) => {	
 	try {
 		const userList = await db('participant')
 						.join('user', 'user.id', '=', 'participant.user_id')
@@ -200,4 +200,26 @@ exports.getTournamentAggregatedPools = async (tournamentId) => {
 		logger.error('Error in getTournamentAggregatedPools function: ' + error)
 		throw new Error(error)
 	}
+}
+
+exports.getTournamentExtraPools = async (tournamentId) => {
+
+	try {
+		const result = await db.raw(`
+			SELECT u.id, username, top_striker, first_place, second_place
+			FROM participant
+			LEFT JOIN extra_pools
+				ON extra_pools.participant_id = participant.id
+			JOIN "user" as u
+				ON u.id = participant.user_id
+			WHERE participant.tournament_id = ?
+			`, [tournamentId]
+			)
+
+		return result['rows']
+	} catch (error) {
+		logger.error('Error in getTournamentExtraPools function: ' + error)
+		throw new Error(error)
+	}
+
 }

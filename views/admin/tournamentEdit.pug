@@ -20,48 +20,72 @@ block content
         div(class='column col-12')
             h3.pt-1-4=tournament.name
             form(action="/admin/tournament/update/" + tournament.id method="post" class="form-horizontal")
-                div.form-group
-                    div.col-3
-                        label.form-label Turnauksen nimi
-                    div.col-6
-                        input(id="tournamentName" name='tournamentName' class='form-input' type="text" value=tournament.name required)
-                div.form-group
-                    div.col-3
-                        label.form-label Veikkaamisen voi aloittaa
-                    div.col-3
-                        p Päivämäärä muodossa MM/DD/YYYY
-                        input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date" value=moment(tournament.dateplayingstarts).format('YYYY-MM-DD') required)
-                        p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
-                div.form-group
-                    div.col-3
-                        label.form-label Turnaus alkaa
-                    div.col-3
-                        input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" value=moment(tournament.datestarts).format('YYYY-MM-DD')  required)
-                        p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
-                div.form-group
-                    div.col-3
-                        label.form-label Turnaus loppuu
-                    div.col-3
-                        input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=moment(tournament.dateends).format('YYYY-MM-DD') required)
-                div.form-group.pt-1-4
-                    div.col-12
-                        table
-                            thead
-                                tr
-                                    th pvm ja aika
-                                    th joukue 1
-                                    th joukue 2
-                            tbody
-                                for game in tournament.games
+                h5.card-heading.text-bold Perustiedot
+                div.plt-20
+                    div.form-group
+                        div.col-3
+                            label.form-label Turnauksen nimi
+                        div.col-6
+                            input(id="tournamentName" name='tournamentName' class='form-input' type="text" value=tournament.name required)
+                    div.form-group
+                        div.col-3
+                            label.form-label Veikkaamisen voi aloittaa
+                        div.col-3
+                            p Päivämäärä muodossa MM/DD/YYYY
+                            input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date" value=moment(tournament.dateplayingstarts).format('YYYY-MM-DD') required)
+                            p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa
+                    div.form-group
+                        div.col-3
+                            label.form-label Turnaus alkaa
+                        div.col-3
+                            input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" value=moment(tournament.datestarts).format('YYYY-MM-DD')  required)
+                            p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
+                    div.form-group
+                        div.col-3
+                            label.form-label Turnaus loppuu
+                        div.col-3
+                            input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" value=moment(tournament.dateends).format('YYYY-MM-DD') required)
+                if tournament.winnerbet || tournament.topstriker
+                    h5.card-heading.text-bold Veikkaus asetukset
+                    div.plt-20
+                        if tournament.topstriker
+                            div.form-group
+                                div.col-3
+                                    label.form-label Maalintekijä piste arvo
+                                div.col-1
+                                    input(name='epTopStrikerPointsValue' class='form-input' type="number" value=tournament.ep_top_striker_points_value)
+                        if tournament.winnerbet
+                            div.form-group.pt-1-4
+                                div.col-3
+                                    label.form-label 1. sijan piste arvo
+                                div.col-1
+                                    input(name='epFirstPlacePointsValue' class='form-input' type="number" value=tournament.ep_first_place_points_value)
+                            div.form-group.pt-1-4
+                                div.col-3
+                                    label.form-label 2. sijan piste arvo
+                                div.col-1
+                                    input(name='epSecondPlacePointsValue' class='form-input' type="number" value=tournament.ep_second_place_points_value)
+                h5.card-heading.text-bold Pelit
+                div.plt-20
+                    div.form-group
+                        div.col-12
+                            table
+                                thead
                                     tr
-                                        td
-                                            input(class="form-input" name="game_datetime" type="text" value=moment(game.game_start_datetime).format('D.M.YYYY H:mm') required)
-                                        td
-                                            input(class="form-input countries-complete" name="team_1" type="text" value=game.team_1 required)
-                                        td
-                                            input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
-                                        td
-                                            input(name="game_id" type='hidden' value=game.id required)
+                                        th pvm ja aika
+                                        th joukue 1
+                                        th joukue 2
+                                tbody
+                                    for game in tournament.games
+                                        tr
+                                            td
+                                                input(class="form-input" name="game_datetime" type="text" value=moment(game.game_start_datetime).format('D.M.YYYY H:mm') required)
+                                            td
+                                                input(class="form-input countries-complete" name="team_1" type="text" value=game.team_1 required)
+                                            td
+                                                input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
+                                            td
+                                                input(name="game_id" type='hidden' value=game.id required)
                 div.pt-1-4
                     h3 Lisää uusia pelejä turnaukseen:
                 div(class="form-group" id="addGamesSection")
@@ -99,6 +123,7 @@ block content
                         a(class="text-success" onClick="addRow()" id="addGamesButton") 
                             i(class="fa fa-plus-circle" aria-hidden="true")
                             | Lisää rivi
+
                 div.form-group.pt-1-4
                     div.col-3
                     div.col-1
@@ -106,4 +131,3 @@ block content
                     div.col-6
                         input(name=tournamentId type='hidden' value=tournament.id)
                         button(class='btn btn-primary' type='submit') Tallenna muutokset
-
