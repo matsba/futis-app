@@ -284,15 +284,13 @@ router.get('/tournament/:id/results', async (req, res) => {
         return res.sendStatus(403)
     }
 
-    const games = await Game.getGames(req.params.id)
     const tournament = await Tournament.getByIdAsync(req.params.id)
 
     res.render('admin/resultsUpdate', {
-        games: games,
+        games: tournament.games,
+        tournament: tournament,
         hasWinnerBet: tournament.winnerbet,
-        hasTopStriker: tournament.topstriker,
-        winner: tournament.winner,
-        topStriker: tournament.topstriker
+        hasTopStriker: tournament.topstriker
     })
 })
 
@@ -303,7 +301,13 @@ router.post('/tournament/:id/results', async (req, res) => {
 
     const scores = req.body
     const tournamentId = req.params.id
-
+    const tournament  = { 
+                                id: tournamentId,
+                                ep_top_striker_result: req.body.epTopStrikerResult, 
+                                ep_first_place_result: req.body.epFirstPlaceResult, 
+                                ep_second_place_result: req.body.epSecondPlaceResult
+                            }
+    console.log(tournament)
     let games = []
     let result, teamScore1, teamScore2
 
@@ -336,10 +340,12 @@ router.post('/tournament/:id/results', async (req, res) => {
     }
     try {
         await Game.updateGames(games)
+        await Tournament.updateTournamentAsync(tournament)
         await Pools.updateTournamentParticipantScoresAsync(tournamentId)    
         res.redirect('')
     } catch (error) {
         //TODO: create info for not succesfull
+        logger.error(error)
         next(error)
     }
 
