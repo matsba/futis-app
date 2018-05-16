@@ -197,22 +197,59 @@ router.post('/tournament/update/:id', async (req, res) => {
         ep_second_place_points_value: par.epSecondPlacePointsValue
     }
 
-    let games = []
+    const daGame = {
+        tournament_id: req.params.id,
+        team_1: par['team-1'],
+        team_2: par['team-2'],
+        game_start_datetime: moment(par['game-datetime'], "DD.MM.YYYY HH:mm").format()
+    }
+    console.log("TÄSSÄ ON SE GAME")
+    console.log(daGame)
 
+    let games = []
+    let newGames = []
 
     for (let i = 0; i < par.game_id.length; i++) {
         games.push({
-					id: par.game_id[i],
-					team_1: par.team_1[i],
-					team_2: par.team_2[i],
-					game_start_datetime: moment(par.game_datetime[i], "DD.MM.YYYY HH:mm").format()
-				})
+			id: par.game_id[i],
+			team_1: par.team_1[i],
+			team_2: par.team_2[i],
+			game_start_datetime: moment(par.game_datetime[i], "DD.MM.YYYY HH:mm").format()
+		})
     }
 
-    const editSuccesful = await Tournament.updateTournamentAsync(tournament)
-	const gamesSuccesful = await Game.updateGames(games)
+    if (typeof par['team-1'] == 'string') {
+        newGames.push({
+            tournament_id: req.params.id,
+			team_1: par['team-1'],
+			team_2: par['team-2'],
+			game_start_datetime: moment(par['game-datetime'], "DD.MM.YYYY HH:mm").format()
+		})
+    } else if (par['team-1'].length > 1) {
+        for (let i = 0; i < par['team-1'].length; i++) {
+            newGames.push({
+                tournament_id: req.params.id,
+                team_1: par['team-1'][i],
+                team_2: par['team-2'][i],
+                game_start_datetime: moment(par['game-datetime'][i], "DD.MM.YYYY HH:mm").format()
+            })
+        }
+    }
 
-    if (editSuccesful && gamesSuccesful) {
+    let editSuccesful;
+    let gamesSuccesful;
+    let addSuccesful;
+
+    try {
+        editSuccesful = await Tournament.updateTournamentAsync(tournament)
+        gamesSuccesful = await Game.updateGames(games)
+        addSuccesful = await Game.addGames(newGames, req.params.id)    
+    } catch (error) {
+        logger.error("There was an error updating the tournament: " + error)
+		//throw new Error(error)
+    } 
+    
+    if (editSuccesful && gamesSuccesful && addSuccesful) {
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
         req.flash('successful', 'true')
         res.redirect('/admin/tournament/' + tournament.id)
