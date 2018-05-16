@@ -1,6 +1,7 @@
 const db  = require('../database/db')
 const bcrypt = require('bcryptjs')
 const logger = require('../logger')
+const moment = require('moment')
 
 var hashPassword = (password) => {
 	var salt = bcrypt.genSaltSync(10)
@@ -99,3 +100,21 @@ exports.isAdmin = (req) => {
 		return false
 	}
 }
+
+exports.canPaticipate = (tournament) => {
+    const now = moment().format()
+    const tournamentStarts = moment(tournament.datestarts).format()
+     //tournament comes from active tournaments
+    if(tournament.gamescount > 0 && !tournament.userparticipated){
+        if(now < tournamentStarts){
+            return true
+        } /* else if(tournament.newGamesAdded && tournament.newGamesStartDate){
+            return true
+        } else {
+            return false
+        } */
+    } else {
+        return false
+	}     
+	return false
+ }

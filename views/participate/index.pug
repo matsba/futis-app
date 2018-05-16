@@ -21,7 +21,7 @@ block content
                         th 
                     tbody
                     for tournament in activeTournaments.tournaments
-                        if tournament.gamescount > 0 && !tournament.userparticipated && moment(tournament.datestarts).format() > moment().format() 
+                        if tournament.userCanParticipate
                             tr
                                 td= tournament.name
                                 td #{moment(tournament.datestarts).format('D.M.YYYY')}

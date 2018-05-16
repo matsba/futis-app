@@ -116,6 +116,10 @@ router.get('/', async (req, res) => {
         }
 
         activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)
+        
+        for(let i = 0; i < activeTournamentsForUser['tournaments'].length; i++){
+            activeTournamentsForUser['tournaments'][i]['userCanParticipate'] = User.canPaticipate(activeTournamentsForUser['tournaments'][i])
+        }
 
         res.render('participate/index', {activeTournaments: activeTournamentsForUser})
     } catch (error) {
