@@ -347,6 +347,80 @@ router.post('/tournament/:id/results', async (req, res) => {
 
 })
 
+router.get('/tournament/:id/users', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const tournamentId = req.params.id
+
+    try {
+        const users = await User.hasPermissionToParticipateForTournament(tournamentId)
+
+        res.render('admin/tournamentManageUsers', { users, tournamentId })
+    } catch (error) {
+        next(error)
+    }
+
+})
+
+router.post('/tournament/:id/users', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const tournamentId = req.params.id
+    
+    const userIds = req.body.userId
+    const allowedUserIds = req.body.allowed
+    let allowedDb = []
+    let notAllowedDb = []
+
+    userIds.forEach(user => {
+        if(allowedUserIds.indexOf(user) > -1){
+            allowedDb.push(`( ${user}, '${tournamentId}'::uuid)`)
+        } else {
+            notAllowedDb.push(user)
+        }
+    })
+
+    try {
+        console.log(allowedDb, notAllowedDb, tournamentId)
+        const users = await User.setUserPermissionsForTournament(allowedDb, notAllowedDb, tournamentId)
+
+        res.redirect(`/admin//tournament/${tournamentId}/users`)
+    } catch (error) {
+        res.sendStatus(500)
+    }
+
+})
+
+
+router.post('/tournamentDelete', async (req, res) => {
+    if (!authenticateAdmin(req)) {
+        return res.sendStatus(403)
+    }
+
+    const tournamentId = req.body.tournamentId
+
+    try {
+        if(await Tournament.deleteTournament(tournamentId)){
+            req.session.success = 'Turnaus poistaminen onnistui!'
+            res.redirect('/admin/tournamentManagement')
+            delete req.session.success
+        } else {
+            req.session.error = 'Turnaus poistaminen epäonnistui! Voit poistaa vain turnauksia johon ei ole osallistujia.'
+            res.redirect('/admin/tournamentManagement')
+            delete req.session.error
+        }
+    } catch (error) {
+        req.session.error = 'Turnaus poistaminen epäonnistui! Voit poistaa vain turnauksia johon ei ole osallistujia.'
+        res.redirect('/admin/tournamentManagement')
+        delete req.session.error
+    }   
+
+})
+
 function authenticateAdmin(req) {
     return req.session && req.session.user && req.session.user.username == 'admin';
 }

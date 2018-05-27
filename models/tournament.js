@@ -157,3 +157,14 @@ exports.getTournamentViewContent = async (tournamentId, userId) => {
 
     return {user, tournament}
 }
+
+exports.deleteTournament = async (tournamentId) => {
+    try {
+        await db('game').where('tournament_id', tournamentId).del()
+        await db('tournament').where('id', tournamentId).del()
+        return true
+    } catch (error) {
+        logger.error(error)
+        throw new Error('Delete failed')
+    }
+}

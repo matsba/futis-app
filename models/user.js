@@ -118,3 +118,48 @@ exports.canPaticipate = (tournament) => {
 	}     
 	return false
  }
+
+
+exports.hasPermissionToParticipateForTournament = async (tournamentId) => {
+
+	try {
+		const users = await db.raw(`select u.id, username, email,
+										(select True
+										from user_auth
+										where allowed_in_tournament = ?
+										and user_id = u.id) as "allowed"
+									from "user" as u
+									where approved = true`, [tournamentId])
+		return users['rows']
+
+	} catch (error) {
+		logger.error("Error getting users: " + error)
+		throw new Error(error)
+	}
+	
+ }
+
+exports.setUserPermissionsForTournament = async (allowedUsers, notAllowedUsers, tournamentId) => {
+
+	const allowedUsersStr = allowedUsers.toString()
+	try {
+		await db.raw(`with data(user_id, allowed_in_tournament)  as (
+			values ${allowedUsersStr}
+		 ) 
+		 insert into user_auth (user_id, allowed_in_tournament) 
+		 select d.user_id, d.allowed_in_tournament
+		 from data d
+		 where not exists (select 1
+						   from user_auth u2
+						   where u2.user_id = d.user_id
+						  and u2.allowed_in_tournament = d.allowed_in_tournament)`)
+				
+		await db('user_auth').whereIn('user_id', notAllowedUsers).andWhere('allowed_in_tournament', tournamentId).del()
+		return true
+
+	} catch (error) {
+		logger.error("Error setting user permissions: " + error)
+		throw new Error(error)
+	}
+
+}

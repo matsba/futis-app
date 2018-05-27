@@ -15,6 +15,11 @@ block content
     div.columns
         div(class='column col-12')
             span(id="message-row" class="toast" style="display: none")
+    div(class='column col-12')
+        if errors
+            span(class='toast toast-error')= errors
+        if success
+            span(class='toast toast-success')= success
     div.columns
         div(class='column col-12')
             h3.pt-1-4 Turnaukset
@@ -26,6 +31,7 @@ block content
                 th Julkaistu
                 th Aktiivinen
                 th 
+                th
                 th
             tbody
                 for t in tournaments
@@ -40,6 +46,8 @@ block content
                             a(class="btn" href='tournament/' + t.id + '/results') Päivitä tuloksia
                         td
                             a(class="btn" href='tournament/' + t.id) Muokkaa
+                        td
+                            a(class="btn" href="tournament/" + t.id + '/users') Hallitse osallistujia
 
 
 

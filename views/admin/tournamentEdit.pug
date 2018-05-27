@@ -68,39 +68,35 @@ block content
                 h5.card-heading.text-bold Pelit
                 div.plt-20
                     div.form-group
-                        div.col-12
-                            table
-                                thead
+                        table.table.col-12
+                            thead
+                                tr
+                                    th #
+                                    th pvm ja aika
+                                    th joukue 1
+                                    th joukue 2
+                            tbody
+                                for game in tournament.games
                                     tr
-                                        th pvm ja aika
-                                        th joukue 1
-                                        th joukue 2
-                                tbody
-                                    for game in tournament.games
-                                        tr
-                                            td
-                                                input(class="form-input" name="game_datetime" type="text" value=moment(game.game_start_datetime).format('D.M.YYYY H:mm') required)
-                                            td
-                                                input(class="form-input countries-complete" name="team_1" type="text" value=game.team_1 required)
-                                            td
-                                                input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
-                                            td
-                                                input(name="game_id" type='hidden' value=game.id required)
+                                        td
+                                        td
+                                            input(class="form-input" name="game_datetime" type="text" value=moment(game.game_start_datetime).format('D.M.YYYY H:mm') required)
+                                        td
+                                            input(class="form-input countries-complete" name="team_1" type="text" value=game.team_1 required)
+                                        td
+                                            input(class="form-input countries-complete" name="team_2" type="text" value=game.team_2 required)
+                                        td
+                                            input(name="game_id" type='hidden' value=game.id required)
                 div.pt-1-4
                     h3 Lisää uusia pelejä turnaukseen:
                 div(class="form-group" id="addGamesSection")
-                    div.col-3
-                    table.table.col-9
+                    table.table.col-12
                         thead
                             tr
                                 th #
                                 th pvm ja aika
                                 th joukue 1
-                                th 
-                                th 
                                 th joukue 2
-                                th
-                                th
                         tbody(id="addGamesSectionTBody")
                             tr(id="exampleRow")
                                 td.text-gray 
@@ -110,24 +106,25 @@ block content
                                 td.text-gray 
                                     i Suomi
                                 td.text-gray
-                                td.text-gray 
-                                    i vs
-                                td.text-gray
                                     i Ruotsi
-                                td.text-gray 
-                                td.text-gray 
-                                td.text-gray 
                 div.form-group
-                    div.col-3
-                    div.col-9
+                    div.col-12
                         a(class="text-success" onClick="addRow()" id="addGamesButton") 
                             i(class="fa fa-plus-circle" aria-hidden="true")
                             | Lisää rivi
 
                 div.form-group.pt-1-4
-                    div.col-3
-                    div.col-1
+                    div.col-1.col-ml-auto
                         a(class='btn btn-link' href="/admin/tournamentManagement") Peruuta
-                    div.col-6
-                        input(name=tournamentId type='hidden' value=tournament.id)
+                    div.col-1
+                        input(name='tournamentId' type='hidden' value=tournament.id)
                         button(class='btn btn-primary' type='submit') Tallenna muutokset
+
+        div.column.col-12
+            form(action="/admin/tournamentDelete" method="post" class="form-horizontal")
+                div.form-group.pt-1-4
+                    div.col-3.col-ml-auto
+                        p.text-error Voit poistaa vain turnauksia jolla ei ole osallistujia
+                    div.col-1
+                        input(name='tournamentId' type='hidden' value=tournament.id)
+                        button(class='btn btn-error' type='submit') Poista turnaus

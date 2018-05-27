@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+
+    div.column.col-12
+        form(action="/admin/tournament/" + tournamentId +"/users" method="post")
+            table.table.table-striped
+                thead
+                    tr
+                        th Voi osallistua
+                        th Käyttäjä
+                        th Sähköposti
+                tbody
+                for u in users
+                    tr
+                        td
+                            input(type="hidden" value=u.id name="userId")
+                            input(type="checkbox" checked=u.allowed value=u.id name="allowed")
+                        td= u.username
+                        td= u.email
+            
+            div.form-group.pt-1-4
+                div.col-1.col-ml-auto
+                    button(class='btn btn-primary' type='submit') Tallenna muutokset
