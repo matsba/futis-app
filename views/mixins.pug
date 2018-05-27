@@ -116,7 +116,7 @@ mixin tournamentView(tournament, currentUser)
                 | Omat veikkaukset
             if currentUser.pools && currentUser.pools.length > 0
                 +poolsTable(currentUser.pools, currentUser.extraPools)
-            else if moment(tournament.dateplayingstarts) < moment() && moment(tournament.datestarts) > moment()
+            else if currentUser.userCanParticipate
                 div.empty
                     div.empty-icon
                         i(class="fa fa-users fa-5x" aria-hidden="true")
@@ -130,7 +130,7 @@ mixin tournamentView(tournament, currentUser)
                     div.empty-icon
                         i(class="fa fa-calendar-times-o fa-5x" aria-hidden="true")
                     p.empty-title.h5 Pahoittelut, #{user.username}!
-                    p.empty-subtitle Peliin osallistuminen ei ole enää mahdollista.
+                    p.empty-subtitle Peliin osallistuminen ei ole mahdollista.
 
 
         div(class='column col-md-6 col-sm-12 card')

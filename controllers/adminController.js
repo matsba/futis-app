@@ -355,7 +355,7 @@ router.get('/tournament/:id/users', async (req, res) => {
     const tournamentId = req.params.id
 
     try {
-        const users = await User.hasPermissionToParticipateForTournament(tournamentId)
+        const users = await User.allHavePermissionToParticipateForTournament(tournamentId)
 
         res.render('admin/tournamentManageUsers', { users, tournamentId })
     } catch (error) {

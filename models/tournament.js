@@ -2,6 +2,7 @@ const db  = require('../database/db')
 const moment = require('moment')
 const Game = require('../models/game')
 const Pools = require('../models/pools')
+const User = require('../models/user')
 const util = require('util')
 const logger = require('../logger')
 
@@ -152,7 +153,8 @@ exports.getTournamentViewContent = async (tournamentId, userId) => {
         tournament.pools = Game.getCountryCodeForTeams(await Pools.getTournamentAggregatedPools(tournamentId))
         tournament.extraPools = await Pools.getTournamentExtraPools(tournamentId)  
         user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))
-        user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)             
+        user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)
+        user.userCanParticipate = await User.canPaticipate(tournamentId, userId)             
     }
 
     return {user, tournament}

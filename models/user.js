@@ -101,11 +101,11 @@ exports.isAdmin = (req) => {
 	}
 }
 
-exports.canPaticipate = (tournament) => {
+exports.canPaticipate = async (tournament, userId) => {
     const now = moment().format()
     const tournamentStarts = moment(tournament.datestarts).format()
-     //tournament comes from active tournaments
-    if(tournament.gamescount > 0 && !tournament.userparticipated){
+	 //tournament comes from active tournaments
+    if(tournament.gamescount > 0 && !tournament.userparticipated && await exports.hasPermissionToParticipateForTournament(tournament.id, userId)){
         if(now < tournamentStarts){
             return true
         } /* else if(tournament.newGamesAdded && tournament.newGamesStartDate){
@@ -120,7 +120,7 @@ exports.canPaticipate = (tournament) => {
  }
 
 
-exports.hasPermissionToParticipateForTournament = async (tournamentId) => {
+exports.allHavePermissionToParticipateForTournament = async (tournamentId) => {
 
 	try {
 		const users = await db.raw(`select u.id, username, email,
@@ -132,6 +132,26 @@ exports.hasPermissionToParticipateForTournament = async (tournamentId) => {
 									where approved = true`, [tournamentId])
 		return users['rows']
 
+	} catch (error) {
+		logger.error("Error getting users: " + error)
+		throw new Error(error)
+	}
+	
+ }
+
+exports.hasPermissionToParticipateForTournament = async (tournamentId, userId) => {
+
+	try {
+		const found = await db('user_auth').where({
+			'user_id': userId,
+			'allowed_in_tournament': tournamentId
+		})
+
+		if(found.length > 0){
+			return true
+		} else {
+			return false
+		}
 	} catch (error) {
 		logger.error("Error getting users: " + error)
 		throw new Error(error)
