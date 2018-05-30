@@ -44,6 +44,7 @@ mixin poolsTable(pools, extraPools)
                         td= extraPools.second_place
 
 mixin tournamentView(tournament, currentUser)
+    - console.log(currentUser)
     div.columns
         div(class='column col-12')
             span.text-gray Turnaus

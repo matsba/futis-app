@@ -102,10 +102,12 @@ exports.isAdmin = (req) => {
 }
 
 exports.canPaticipate = async (tournament, userId) => {
+	if(tournament.gamescount <= 0) return false
+	
     const now = moment().format()
     const tournamentStarts = moment(tournament.datestarts).format()
 	 //tournament comes from active tournaments
-    if(tournament.gamescount > 0 && !tournament.userparticipated && await exports.hasPermissionToParticipateForTournament(tournament.id, userId)){
+    if(!tournament.userparticipated && await exports.hasPermissionToParticipateForTournament(tournament.id, userId)){
         if(now < tournamentStarts){
             return true
         } /* else if(tournament.newGamesAdded && tournament.newGamesStartDate){

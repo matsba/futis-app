@@ -154,7 +154,7 @@ exports.getTournamentViewContent = async (tournamentId, userId) => {
         tournament.extraPools = await Pools.getTournamentExtraPools(tournamentId)  
         user.pools = Game.getCountryCodeForTeams(await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId))
         user.extraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournamentId)
-        user.userCanParticipate = await User.canPaticipate(tournamentId, userId)             
+        user.userCanParticipate = await User.canPaticipate(tournament, userId)             
     }
 
     return {user, tournament}
