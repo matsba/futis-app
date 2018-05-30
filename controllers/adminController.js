@@ -229,31 +229,24 @@ router.post('/tournament/update/:id', async (req, res) => {
         } 
     }
     
-
-    let editSuccesful;
-    let gamesSuccesful;
-    let addSuccesful;
-
     try {
-        editSuccesful = await Tournament.updateTournamentAsync(tournament)
-        if (games)
-            gamesSuccesful = await Game.updateGames(games)
-        if (newGames)
-            addSuccesful = await Game.addGames(newGames, req.params.id)    
-    } catch (error) {
-        logger.error("There was an error updating the tournament: " + error)
-		//throw new Error(error)
-    } 
-    
-    if (editSuccesful && gamesSuccesful && addSuccesful) {
+        await Tournament.updateTournamentAsync(tournament)
+        
+        if (games.length > 0)
+            await Game.updateGames(games)
+        if (newGames.length > 0)
+            await Game.addGames(newGames, req.params.id) 
+
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
         req.flash('successful', 'true')
-        res.redirect('/admin/tournament/' + tournament.id)
-    } else {
+        res.redirect('/admin/tournament/' + tournament.id)   
+
+    } catch (error) {
         req.flash('info', 'Turnauksen tietojen päivityksessä ongelma, tarkista tiedot')
         req.flash('successful', 'false')
         res.redirect('/admin/tournament/' + tournament.id)
-    }
+
+    } 
 })
 
 router.post('/tournament/toggleStatus/', async (req, res) => {
