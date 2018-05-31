@@ -13,6 +13,21 @@ mixin gamesVersusElement(game)
             img(src="/public/img/flags/" + (game.team_2_country_code || 'placeholder') + ".png" class="img-flag-tiny")
             span=game.team_2
 
+mixin gamesTable(games)
+    table(class='table table-striped table-hover pool-table')
+        thead
+            tr
+                th pvm
+                th Peli
+                th Tulos
+        tbody
+        for game in games                 
+            tr.pool-table-row
+                td= moment(game.game_start_datetime).format('D.M.YYYY HH:mm')
+                td
+                    +gamesVersusElement(game)
+                td #{game.team_1_score} - #{game.team_2_score} 
+
 mixin poolsTable(pools, extraPools)
     table(class='table table-striped table-hover pool-table')
         thead
@@ -103,6 +118,8 @@ mixin tournamentView(tournament, currentUser)
                     div.empty-icon
                         i(class="fa fa-calendar-times-o fa-5x" aria-hidden="true")
                     p.empty-title.h5 Ei pelejä huomiselle
+    a(href="/tournament/games/" + tournament.id) Kaikki pelit
+
     if tournament.topstriker && tournament.ep_top_striker_result
         div.columns
             div(class='column col-12 card')

@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+
+    div.columns
+    div(class='column col-md-6 col-sm-12 card')
+        h4.card-heading Pelit -  #{tournament.name}
+        +gamesTable(games)
