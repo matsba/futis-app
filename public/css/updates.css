@@ -310,6 +310,11 @@ input[type="radio"]:checked + label {
 	color: #fff;
 }
 
+.bg-error-imporant {
+	background: #e85600 !important;
+	color: #fff;
+}
+
 .dash-teams {
 	padding: 0px 2px 0px 2px;
 }

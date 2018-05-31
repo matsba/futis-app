@@ -175,8 +175,10 @@ function colorRows() {
 		let pool = $(this).find(".pool-table-row-own-pool").text()
 		let result = $(this).find(".pool-table-row-result").text()
 
-		if (pool == result) {
+		if (pool == result && pool !== "" && result !== "") {
 			$(this).addClass("bg-success-important")
+		} else if (pool === "") {
+			$(this).addClass("bg-error-imporant")
 		}
 	})
 }
