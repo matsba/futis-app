@@ -89,11 +89,12 @@ exports.getGames = async (tournamentId) => {
 	}
 }
 
-exports.addGames = async (gameList, tournamentId) => {
+exports.addGames = async (gameList, tournamentId, earliestNewGame, updateTime) => {
 	if (gameList.length < 1) return false;
 	
 	try {
 		await db.insert(gameList).into('game')
+		await db('tournament').where('id', tournamentId).update({new_games_first_date: earliestNewGame, new_games_added: updateTime})
 		logger.error("Added " + gameList.length + " to tournament with id: " + tournamentId)
 		return true
 	} catch (error) {
