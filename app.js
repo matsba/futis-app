@@ -55,8 +55,10 @@ app.use(function(error, req, res, next) {
 	res.render('500.pug')
 })
 
+app.use(favicon(__dirname + '/public/img/favicon.ico')) 
+
 app.listen(app.get('port'), () => {
 	console.log('App is running on port ', app.get('port'))
 })
 
-app.use(favicon(__dirname + '/public/img/favicon.ico')) 
+

@@ -2,7 +2,14 @@ extends ../layout
 
 block scripts
     script(src="/public/scripts.js")
-
+    script.
+        $(document).ready(function (){
+            colorRows()
+            const screensize = $( window ).width()
+            if(screensize <= '640'){
+                mobileFriendlyLists()
+            }
+        })
 block content
     div(class='column col-12')
         ul(class="tab tab-block")
@@ -21,7 +28,7 @@ block content
         p  Hyväksy käyttäjiä jotka ovat rekisteröityneet
         if usersToApprove.length > 0
             form(action="/admin/approveUsers", method="post")
-                table(class='table table-striped')
+                table(class='table table-striped needs-scroll')
                     thead
                         tr
                             th Nimi
@@ -47,7 +54,7 @@ block content
         
         if users.length > 0
             form(action="/admin/removeUsers", method="post")
-                table(class='table table-striped')
+                table(class='table table-striped needs-scroll')
                     thead
                         tr
                             th Nimi
