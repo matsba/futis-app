@@ -2,7 +2,7 @@ extends ../layout
 
 block content
         p Kun päivität tuloksia, pelaajien tulokset päivittyvät
-        
+
         form(action='/admin/tournament/' + tournament.id + '/results' method="post" class="form-horizontal")
             div.columns
                 table.table.table-horizontal
@@ -25,6 +25,7 @@ block content
                                     td= game.result
                                     input(type='hidden' value=game.id class='form-input' name='game_id')
             div.columns.pt-1-4
+                p Käytä koko nimiä pelaajista (esim. Lionel Messi) ja joukkueista.
                 if hasTopStriker
                     div.form-group.col-12
                         label.form-label.col-3 Maalikuningas
