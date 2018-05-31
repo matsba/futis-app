@@ -1,6 +1,8 @@
 extends ../layout
 
 block content
+        p Kun päivität tuloksia, pelaajien tulokset päivittyvät
+        
         form(action='/admin/tournament/' + tournament.id + '/results' method="post" class="form-horizontal")
             div.columns
                 table.table.table-horizontal

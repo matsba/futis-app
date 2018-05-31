@@ -110,13 +110,45 @@ exports.updateTournamentParticipantScoresAsync = async(tournamentId) => {
 		await db.raw(`update participant
 		set score = 
 			(
-				select count(*) from pools
-				join game
-				on game.id = pools.game_id
-				where pools.participant_id = participant.id
-				and pools.pool = game.result
+				(
+                    select count(*) from pools
+                    join game
+                    on game.id = pools.game_id
+                    where pools.participant_id = participant.id
+                    and pools.pool = game.result
+                ) 
+                +
+                coalesce 
+                (
+                    (
+                        SELECT tournament.ep_top_striker_points_value
+                        FROM tournament
+                        JOIN extra_pools on extra_pools.participant_id = participant.id
+                        WHERE tournament.ep_top_striker_result = extra_pools.top_striker
+                	), 0
+                )
+                +
+                coalesce 
+                (
+                    (
+                        SELECT tournament.ep_first_place_points_value
+                        FROM tournament
+                        JOIN extra_pools on extra_pools.participant_id = participant.id
+                        WHERE tournament.ep_first_place_result = extra_pools.first_place
+                    ),0
+                )
+                +
+                coalesce 
+                (
+                    (
+                        SELECT tournament.ep_second_place_points_value
+                        FROM tournament
+                        JOIN extra_pools on extra_pools.participant_id = participant.id
+                        WHERE tournament.ep_second_place_result = extra_pools.second_place
+                    ), 0
+                )
 			)
-		where tournament_id = ?`, [tournamentId])
+		where tournament_id =  ?`, [tournamentId])
 	} catch (error) {
 		logger.error('There was an error updating scores: ' + error)
 		throw new Error(error)
