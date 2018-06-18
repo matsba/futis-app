@@ -423,8 +423,6 @@ function authenticateAdmin(req) {
 
 function findEarliestGame(games) {
     let earliest = games[0].game_start_datetime
-    console.log("EARLIEST TÄSSÄ ennen")
-    console.log(earliest)
     for (let i = 0; i < games.length; i++) {
         if (games[i].game_start_datetime < earliest) {
             erliest = games[i].game_start_datetime
