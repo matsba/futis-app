@@ -1,32 +1,31 @@
 extends ../layout
 
 block content
+        p Kun päivität tuloksia, pelaajien tulokset päivittyvät
+
         form(action='/admin/tournament/' + tournament.id + '/results' method="post" class="form-horizontal")
             div.columns
                 table.table.table-horizontal
                     thead
-                        th pvm
+                        th.hide-sm pvm
                         th Maalit
-                        th Kotijoukkue
-                        th -
-                        th Vierasjoukkue
+                        th Peli
                         th Maalit
                         th Tulos
                     tbody
                         div.form-group
                             for game in games
                                 tr
-                                    td= moment(game.game_start_datetime).format('D.M.YYYY H:mm')
+                                    td.hide-sm= moment(game.game_start_datetime).format('D.M.YYYY H:mm')
                                     td
-                                        input(type='number' min=0 name="goals_1" class='form-input' value=game.team_1_score)
-                                    td= game.team_1
-                                    td -
-                                    td= game.team_2
+                                        input(type='number' min=0 name="goals_1" class='form-input col-2 col-sm-12' value=game.team_1_score)
+                                    td #{game.team_1} - #{game.team_2}
                                     td
-                                        input(type='number' min=0 name="goals_2" class='form-input' value=game.team_2_score)
+                                        input(type='number' min=0 name="goals_2" class='form-input col-2 col-sm-12' value=game.team_2_score)
                                     td= game.result
                                     input(type='hidden' value=game.id class='form-input' name='game_id')
             div.columns.pt-1-4
+                p Käytä koko nimiä pelaajista (esim. Lionel Messi) ja joukkueista.
                 if hasTopStriker
                     div.form-group.col-12
                         label.form-label.col-3 Maalikuningas
@@ -41,8 +40,7 @@ block content
                         input(type='text' name='epSecondPlaceResult' class='form-input col-4 col-sm-12' value=tournament.ep_second_place_result)
             div.columns
                 div.form-group.pt-1-4.col-12
-                    div.col-9
-                    div.col-1
+                    div.col-1.col-sm-6.col-ml-auto
                         a(class='btn btn-link' href="/admin/tournamentManagement") Peruuta
-                    div.col-2
+                    div.col-2.col-sm-6
                         button(class='btn btn-primary' type='submit') Tallenna tulokset

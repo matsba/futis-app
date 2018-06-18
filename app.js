@@ -49,14 +49,16 @@ app.use(function(req, res) {
 });
 
 // Handle 500
-/* app.use(function(error, req, res, next) {
+app.use(function(error, req, res, next) {
 	logger.error(error)
 	res.status(500)
 	res.render('500.pug')
-}) */
+})
+
+app.use(favicon(__dirname + '/public/img/favicon.ico')) 
 
 app.listen(app.get('port'), () => {
 	console.log('App is running on port ', app.get('port'))
 })
 
-app.use(favicon(__dirname + '/public/img/favicon.ico')) 
+

@@ -192,9 +192,9 @@ router.post('/tournament/update/:id', async (req, res) => {
         dateplayingstarts: par.tournamentPlayingStartDate,
         dateends: par.tournamentEndDate,
         name: par.tournamentName,
-        ep_top_striker_points_value: par.epTopStrikerPointsValue,
-        ep_first_place_points_value: par.epFirstPlacePointsValue,
-        ep_second_place_points_value: par.epSecondPlacePointsValue
+        ep_top_striker_points_value: par.epTopStrikerPointsValue || null,
+        ep_first_place_points_value: par.epFirstPlacePointsValue || null,
+        ep_second_place_points_value: par.epSecondPlacePointsValue || null
     }
 
     let games = []

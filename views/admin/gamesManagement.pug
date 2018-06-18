@@ -25,33 +25,33 @@ block content
             h4 Turnauksen tiedot
             form(action="/admin/createGames" method="post" class="form-horizontal")
                 div.form-group
-                    div.col-3
+                    div.col-3.col-sm-6
                         label.form-label Turnauksen nimi
-                    div.col-6
+                    div.col-6.col-sm-6
                         input(id="tournamentName" name='tournamentName' class='form-input' type="text" required)
                 div.form-group
-                    div.col-3
+                    div.col-3.col-sm-6
                         label.form-label Veikkaamisen voi aloittaa
-                    div.col-3
+                    div.col-3.col-sm-6
                         input(id="tournamentPlayingStartDate" name='tournamentPlayingStartDate' class='form-input' type="date"  min=currentDate required)
                         p.form-input-hint.no-validation Päivämäärä jolloin turnaus muuttuu käyttäjille aktiiviseksi ja veikkaamisen voi aloittaa 
                 div.form-group
-                    div.col-3
+                    div.col-3.col-sm-6
                         label.form-label Turnaus alkaa 
-                    div.col-3
+                    div.col-3.col-sm-6
                         input(id="tournamentStartDate" name='tournamentStartDate' class='form-input' type="date" min=currentDate required)
                         p.form-input-hint.no-validation Turnauksen alkamisen päivämäärä, jolloin myös veikkaaminen loppuu
                 div.form-group
-                    div.col-3
+                    div.col-3.col-sm-6
                         label.form-label Turnaus loppuu
-                    div.col-3
+                    div.col-3.col-sm-6
                         input(id="tournamentEndDate" name='tournamentEndDate' class='form-input' type="date" min=currentDate required)
                 div.form-group.pt-1-4
-                    div.col-3
+                    div.col-3.col-sm-6
                         label.form-label Alkusarjan pelit
-                    div.col-1
+                    div.col-1.col-sm-3
                         input(id="numberOfGames" class='form-input' type="number" min="1" max="50" step="1" value ="24")
-                    div.col-2
+                    div.col-2.col-sm-3
                         a(class="btn btn-primary" onClick="addGames()" id="addGamesButton") Lisää
                 div(class="form-group" id="addGamesSection")
                     div.col-3
@@ -83,8 +83,8 @@ block content
                                 td.text-gray 
                                 td.text-gray 
                 div.form-group
-                    div.col-3
-                    div.col-9
+                    div.col-3.hide-sm
+                    div.col-9.col-sm-12
                         a(class="text-success" onClick="addRow()" id="addGamesButton") 
                             i(class="fa fa-plus-circle" aria-hidden="true")
                             | Lisää rivi               
@@ -106,6 +106,5 @@ block content
                             | Maalintekijä 
                         p.form-input-hint Lisää turnaukseen paras maalintekijä osion        
                 div.form-group
-                    div.col-9
-                    div.col-3
+                    div.col-3.col-ml-auto
                         button(class='btn btn-primary' type='submit' id="submitButton") Luo turnaus
