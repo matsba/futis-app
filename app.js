@@ -10,6 +10,7 @@ require('dotenv').config()
 //var cookieParser = require('cookie-parser')
 
 const app = express()
+app.use(favicon(__dirname + '/public/img/favicon.ico')) 
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -54,8 +55,6 @@ app.use(function(error, req, res, next) {
 	res.status(500)
 	res.render('500.pug')
 })
-
-app.use(favicon(__dirname + '/public/img/favicon.ico')) 
 
 app.listen(app.get('port'), () => {
 	console.log('App is running on port ', app.get('port'))
