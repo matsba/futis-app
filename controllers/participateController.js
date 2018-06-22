@@ -104,19 +104,6 @@ router.get('/', async (req, res) => {
         let activeTournamentsForUser = {}
         activeTournamentsForUser['tournaments'] = await Tournament.getAllAsync(true, userId)
         
-        const particpatedToAll = async (tournaments) => {
-            let participation = true
-            for(obj of tournaments){ 
-                if(!obj.userparticipated){
-                    participation = false
-                    break
-                }                    
-            }
-            return participation
-        }
-
-        activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)
-        
         for(let i = 0; i < activeTournamentsForUser['tournaments'].length; i++){
             activeTournamentsForUser['tournaments'][i]['userCanParticipate'] = await User.canPaticipate(activeTournamentsForUser['tournaments'][i], userId)
         }

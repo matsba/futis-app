@@ -105,19 +105,15 @@ exports.canPaticipate = async (tournament, userId) => {
 	if(tournament.gamescount <= 0) return false
 	
     const now = moment().format()
-    const tournamentStarts = moment(tournament.datestarts).format()
-	 //tournament comes from active tournaments
-    if(!tournament.userparticipated && await exports.hasPermissionToParticipateForTournament(tournament.id, userId)){
-        if(now < tournamentStarts){
+	const tournamentStarts = moment(tournament.datestarts).format()
+	const newGamesAdded = moment(tournament.new_games_added).format()
+	const newGamesFirstDate = moment(tournament.new_games_first_date).format()
+	//tournament comes from active tournaments
+    if(await exports.hasPermissionToParticipateForTournament(tournament.id, userId)){
+        if((!tournament.userparticipated && now < tournamentStarts) || (now > newGamesAdded && now < newGamesFirstDate)){
             return true
-        } /* else if(tournament.newGamesAdded && tournament.newGamesStartDate){
-            return true
-        } else {
-            return false
-        } */
-    } else {
-        return false
-	}     
+        }
+    }    
 	return false
  }
 

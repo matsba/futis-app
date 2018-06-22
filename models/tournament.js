@@ -48,7 +48,7 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
 
     if(activeTournaments) {
         tournament = await db.raw(`
-        select id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+        select id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, new_games_added, new_games_first_date,
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         where active = ?
@@ -58,7 +58,7 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
         )
     } else if(activeTournamentsWithUserParticipation){
         tournament = await db.raw(`
-        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, new_games_added, new_games_first_date,
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
             (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
         from tournament
@@ -68,7 +68,7 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
         )
     } else if (tournamentsWithUserParticipation){
         tournament = await db.raw(`
-        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+        select tournament.id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, new_games_added, new_games_first_date,
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id), 
             (select true as userparticipated from participant where tournament.id = participant.tournament_id AND participant.user_id = ?)
         from tournament
@@ -77,7 +77,7 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
         )
     }else {
         tournament = await db.raw(`
-        select id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, 
+        select id, name, dateplayingstarts, datestarts, dateends, active, published, winnerbet, topstriker, new_games_added, new_games_first_date,
             (select count(id) as gamesCount from game where game.tournament_id = tournament.id) 
         from tournament
         order by ? desc`, [orderby])

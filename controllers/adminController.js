@@ -228,14 +228,17 @@ router.post('/tournament/update/:id', async (req, res) => {
             }
         } 
     }
-    
+
+    const earliestNewGame = newGames.length > 0 ? findEarliestGame(newGames) : null
+    const updateTime = moment(new Date(), "DD.MM.YYYY HH:mm").format()
+
     try {
         await Tournament.updateTournamentAsync(tournament)
         
         if (games.length > 0)
             await Game.updateGames(games)
         if (newGames.length > 0)
-            await Game.addGames(newGames, req.params.id) 
+            await Game.addGames(newGames, req.params.id, earliestNewGame, updateTime) 
 
         req.flash('info', 'Turnauksen tiedot päivitetty onnistuneesti')
         req.flash('successful', 'true')
@@ -416,6 +419,16 @@ router.post('/tournamentDelete', async (req, res) => {
 
 function authenticateAdmin(req) {
     return req.session && req.session.user && req.session.user.username == 'admin';
+}
+
+function findEarliestGame(games) {
+    let earliest = games[0].game_start_datetime
+    for (let i = 0; i < games.length; i++) {
+        if (games[i].game_start_datetime < earliest) {
+            erliest = games[i].game_start_datetime
+        }
+    }
+    return earliest
 }
 
 module.exports = router
