@@ -6,6 +6,7 @@ block scripts
 block content
 
     div.column.col-12
+    - console.log(userPools, tournament)
         if error
             span.toast.toast-error= error.text
         h2= tournament.name
@@ -21,22 +22,35 @@ block content
                         th Peli
                         th Veikkaus
                 tbody
-                    for game in tournament.games 
-                        tr
+                    for game in tournament.games                    
+                        tr(class=(game.hasPool ? 'c-not-allowed' : ''))
                             td.hide-sm= moment(game.game_start_datetime).format('D.M.YYYY[, klo] H:mm')
                             td
                                 +gamesVersusElement(game)
-                            td
-                                div.form-group
-                                    div.col-sm-12
-                                        input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id required)
-                                        label(for="radio_" + game.id +"_1") 1 
-                                    div.col-sm-12
-                                        input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id)
-                                        label(for="radio_" + game.id +"_x") x 
-                                    div.col-sm-12
-                                        input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id)
-                                        label(for="radio_" + game.id +"_2") 2
+                            if game.hasPool 
+                                td
+                                    div.form-group
+                                        div.col-sm-12
+                                            input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id disabled checked=(game.hasPool == '1' ? true : false))
+                                            label(for="radio_" + game.id +"_1") 1 
+                                        div.col-sm-12
+                                            input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id disabled checked=(game.hasPool == 'x' ? true : false))
+                                            label(for="radio_" + game.id +"_x") x 
+                                        div.col-sm-12
+                                            input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id disabled checked=(game.hasPool == '2' ? true : false))
+                                            label(for="radio_" + game.id +"_2") 2
+                            else
+                                td
+                                    div.form-group
+                                        div.col-sm-12
+                                            input(type="radio" value="1" id="radio_" + game.id +"_1" name=game.id required)
+                                            label(for="radio_" + game.id +"_1") 1 
+                                        div.col-sm-12
+                                            input(type="radio" value="x" id="radio_" + game.id +"_x" name=game.id)
+                                            label(for="radio_" + game.id +"_x") x 
+                                        div.col-sm-12
+                                            input(type="radio" value="2" id="radio_" + game.id +"_2" name=game.id)
+                                            label(for="radio_" + game.id +"_2") 2
             if tournament.topstriker || tournament.winnerbet
                 h5.ptb-1-4 Täytä vielä nämä...
                 p Käytä koko nimiä pelaajista (esim. Lionel Messi) ja joukkueista.

@@ -28,7 +28,9 @@ exports.getPoolsByUserAndTournamentAsync = async (userId, tournamentId) => {
 	
 	try {
 		const pools = await db.raw(`
-			SELECT  game.team_1, 
+			SELECT  
+					game.id,
+					game.team_1, 
 					game.team_2, 
 					game.team_1_score, 
 					game.team_2_score, 

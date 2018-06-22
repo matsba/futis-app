@@ -12,12 +12,25 @@ router.get('/tournament/:id', async (req, res) => {
         return res.redirect('/')
     }
     const tournamentId = req.params.id
+    const userId = req.session.user.id
     
     try {
         let tournament = await Tournament.getByIdAsync(tournamentId)
-        const gamesWithCountryCodes = Game.getCountryCodeForTeams(tournament.games)
-        tournament.games = gamesWithCountryCodes;
-        res.render('participate/action', {tournament: tournament})
+        tournament.games = Game.getCountryCodeForTeams(tournament.games)
+        const userPools = await Pools.getPoolsByUserAndTournamentAsync(userId, tournament.id)
+
+        for (let i = 0; i < tournament.games.length; i++){
+            let game = tournament.games[i]
+            userPools.find( pool => {            
+                if(pool.id === game.id & pool.pool !== null){
+                    return game.hasPool = pool.pool
+                } else {
+                    game.hasPool = null
+                }
+            })
+        }
+
+        res.render('participate/action', {tournament})
     } catch (error) {
         res.status(500).send('Internal_server_error')
     }
