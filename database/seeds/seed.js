@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
 	// Deletes ALL existing entries
-	return knex.raw('delete from extra_pools;delete from pools; delete from participant; delete from game; delete from tournament; delete from "user"')
+	return knex.raw('delete from content; delete from user_auth;delete from extra_pools;delete from pools; delete from participant; delete from game; delete from tournament; delete from "user"')
 
 		.then(() => {
 			return knex('tournament').insert([

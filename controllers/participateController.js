@@ -19,15 +19,8 @@ router.get('/tournament/:id', async (req, res) => {
         tournament.games = Game.getCountryCodeForTeams(tournament.games)
         const userPools = await Pools.getPoolsByUserAndTournamentAsync(userId, tournament.id)
 
-        for (let i = 0; i < tournament.games.length; i++){
-            let game = tournament.games[i]
-            userPools.find( pool => {            
-                if(pool.id === game.id & pool.pool !== null){
-                    return game.hasPool = pool.pool
-                } else {
-                    game.hasPool = null
-                }
-            })
+        if(userPools){
+            tournament = findBettedGames(tournament, userPools);
         }
 
         res.render('participate/action', {tournament})
@@ -54,42 +47,42 @@ router.post('/tournament/do/', async (req, res) => {
     //   firstplace: 'Italia',
     //   secondplace: 'Suomi'}
 
-    
-    let poolsList = []
-    let extraPoolsList = new Object()
+    //Initialize variables
     const tournamentId = req.body.tournament_id
     const userId = req.session.user.id
+    let activeTournamentsForUser = {}
+    let newPoolsInserted = null
+    let insertedPools = null
+    const {poolsList, extraPoolsList} = extractPoolsFromRequestBody(req);
 
-    for(let bet in req.body){
-        if(!['top_striker', 'first_place', 'second_place', 'tournament_id'].includes(bet)){
-            poolsList.push({
-                'game_id': bet,
-                'pool': req.body[bet]
-            })
-        } else if(['top_striker', 'first_place', 'second_place'].includes(bet)) {
-            extraPoolsList[bet] = req.body[bet]
-        }
+       
+    //Check user particiption for if new games have been added
+    const userParticiapted = await Pools.getPoolsByUserAndTournamentAsync(userId, tournamentId)
+
+    if(userParticiapted){
+        const participantId = userParticiapted[0].participantid
+        //Insert pools to database
+        newPoolsInserted = await Pools.userParticipateAsync(poolsList, extraPoolsList, userId, tournamentId, participantId)
+    } else {
+        //Insert pools to database
+        insertedPools = await Pools.userParticipateAsync(poolsList, extraPoolsList, userId, tournamentId)    
     }
 
-    const insertedPools = await Pools.userParticipateAsync(poolsList, extraPoolsList, userId, tournamentId)
-    
-    if(insertedPools){
+    if(insertedPools || newPoolsInserted){
         try {
-            let activeTournamentsForUser = {}
-            activeTournamentsForUser['tournaments'] = await Tournament.getAllAsync(true, userId)
+            activeTournamentsForUser.tournaments = await Tournament.getAllAsync(true, userId)
             
-            const particpatedToAll = async (tournaments) => {
-                let participation = true
-                for(obj of tournaments){ 
-                    if(!obj.userparticipated){
-                        participation = false
-                        break
-                    }                    
-                }
-                return participation
-            }
-    
-            activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)   
+            // Not needed
+            // let participation = true
+            // for(obj of tournaments){ 
+            //     if(!obj.userparticipated){
+            //         participation = false
+            //         break
+            //     }                    
+            // }
+            // return participation
+            // activeTournamentsForUser['particpatedToAll'] = await particpatedToAll(activeTournamentsForUser.tournaments)   
+
             res.render('participate/index', {activeTournaments: activeTournamentsForUser, success: {
                 text: "Turnaukseen osallistuminen onnistui!"
             }})         
@@ -98,9 +91,8 @@ router.post('/tournament/do/', async (req, res) => {
         }     
     } else {
         let tournament = await Tournament.getByIdAsync(tournamentId)
-        const gamesWithCountryCodes = Game.getCountryCodeForTeams(tournament.games)
-        tournament.games = gamesWithCountryCodes;
-        res.render('participate/action', {tournament: tournament, error: {
+        tournament.games = Game.getCountryCodeForTeams(tournament.games)
+        res.render('participate/action', { tournament, error: {
             text: "Tapahtui odottamaton virhe. Yritä uudelleen."
         }})
     }    
@@ -127,4 +119,39 @@ router.get('/', async (req, res) => {
     }
 })
 
+function extractPoolsFromRequestBody(req) {
+    let poolsList = []
+    let extraPoolsList = new Object()
+
+    for (let bet in req.body) {
+        if (!['top_striker', 'first_place', 'second_place', 'tournament_id'].includes(bet)) {
+            poolsList.push({
+                'game_id': bet,
+                'pool': req.body[bet]
+            });
+        }
+        else if (['top_striker', 'first_place', 'second_place'].includes(bet)) {
+            extraPoolsList[bet] = req.body[bet];
+        }
+    }
+
+    return {poolsList, extraPoolsList}
+}
+
+function findBettedGames(tournament, userPools) {
+    for (let i = 0; i < tournament.games.length; i++) {
+        let game = tournament.games[i];
+        userPools.find(pool => {
+            if (pool.id === game.id & pool.pool !== null) {
+                return game.hasPool = pool.pool;
+            }
+            else {
+                game.hasPool = null;
+            }
+        });
+    }
+    return tournament
+}
+
 module.exports = router
+

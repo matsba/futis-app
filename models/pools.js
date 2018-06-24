@@ -36,7 +36,8 @@ exports.getPoolsByUserAndTournamentAsync = async (userId, tournamentId) => {
 					game.team_2_score, 
 					game.result, 
 					game.game_start_datetime,
-					pools.pool
+					pools.pool,
+					par.id as participantId
 			from participant as par 
 			join tournament as tour 
 				on par.tournament_id = tour.id 
@@ -47,7 +48,11 @@ exports.getPoolsByUserAndTournamentAsync = async (userId, tournamentId) => {
 			where par.user_id = ? and tour.id = ?
 			order by game.game_start_datetime ASC`, [userId, tournamentId])
 
-		return pools['rows']
+		if(pools['rows'].length > 0){
+			return pools['rows']			
+		} else{
+			return false
+		}		
 
 	} catch (error) {
 		logger.error("Error on getPoolsByUserAndTournamentAsync: " + error)
@@ -78,12 +83,18 @@ exports.getExtraPoolsByUserAndTournamentAsync = async (userId, tournamentId) => 
 	
 }
 
-exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournamentId) => {
+exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournamentId, oldParticipantId=null) => {
 
 	try {
-		//Insert user into participant table and return created id
-		const participantId = await db.insert({ 'user_id': userId, 'tournament_id': tournamentId }).into('participant').returning('id')
-		const id = participantId[0]
+		let id = null
+		
+		if(!oldParticipantId){
+			//Insert user into participant table and return created id
+			const participantId = await db.insert({ 'user_id': userId, 'tournament_id': tournamentId }).into('participant').returning('id')
+			id = participantId[0]
+		} else {
+			id = oldParticipantId
+		}
 
 		await db.insert(makePoolsList(poolsList, userId, id)).into('pools')
 
@@ -94,9 +105,10 @@ exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournam
 		// 	secondplace: 'Suomi'
 		// }
 
-		extraPoolsList['participant_id'] = id
-
-		await db.insert(extraPoolsList).into('extra_pools')
+		if(extraPoolsList){
+			extraPoolsList['participant_id'] = id
+			await db.insert(extraPoolsList).into('extra_pools')
+		}
 
 		return true
 

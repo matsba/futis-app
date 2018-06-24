@@ -86,6 +86,19 @@ exports.getAllAsync = async (active=null, userId=null, published=true, orderby='
     return tournament['rows']
 }
 
+exports.userHasParticipated = async (tournamentId, userId) => {
+    const userParticipated = await db.raw(`
+    select true as userparticipated 
+    from participant 
+    where participant.tournament_id = ? AND participant.user_id = ?`, [tournamentId, userId]
+    )    
+    if(userParticipated['rows'].length > 0){
+        return true
+    } else {
+        return false
+    }
+}
+
 exports.getByIdAsync = async (tournamentId) => {
     try {
         const tournament = await db.raw(`select row_to_json(t) as tournament
@@ -99,7 +112,7 @@ exports.getByIdAsync = async (tournamentId) => {
                     where tournament_id = tournament.id
                     order by game_start_datetime asc
                 ) g         
-                ) as games   
+                ) as games
             from tournament
             where id = ?
         ) t`, [tournamentId])
@@ -143,6 +156,7 @@ exports.updateTournamentAsync = async (tournament) => {
 exports.getTournamentViewContent = async (tournamentId, userId) => {
     let tournament = await this.getByIdAsync(tournamentId)
     let user = {}
+    tournament.userparticipated = await this.userHasParticipated(tournamentId, userId)
     
     //enrich data
     if(tournament.games){
