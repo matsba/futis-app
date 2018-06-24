@@ -18,6 +18,7 @@ router.get('/tournament/:id', async (req, res) => {
         let tournament = await Tournament.getByIdAsync(tournamentId)
         tournament.games = Game.getCountryCodeForTeams(tournament.games)
         const userPools = await Pools.getPoolsByUserAndTournamentAsync(userId, tournament.id)
+        tournament.userExtraPools = await Pools.getExtraPoolsByUserAndTournamentAsync(userId, tournament.id)
 
         if(userPools){
             tournament = findBettedGames(tournament, userPools);
@@ -108,9 +109,14 @@ router.get('/', async (req, res) => {
     try {
         let activeTournamentsForUser = {}
         activeTournamentsForUser['tournaments'] = await Tournament.getAllAsync(true, userId)
-        
+
         for(let i = 0; i < activeTournamentsForUser['tournaments'].length; i++){
-            activeTournamentsForUser['tournaments'][i]['userCanParticipate'] = await User.canPaticipate(activeTournamentsForUser['tournaments'][i], userId)
+            let tournament = activeTournamentsForUser['tournaments'][i]            
+            let userPools = await Pools.getPoolsByUserAndTournamentAsync(userId, tournament.id)
+            tournament.games = await Game.getGames(tournament.id)
+
+            tournament.userCanParticipate = await User.canPaticipate(tournament, userId)
+            tournament.userHasBettedAllGames = userHasBettedAllGames(tournament, userPools)
         }
 
         res.render('participate/index', {activeTournaments: activeTournamentsForUser})
@@ -136,6 +142,25 @@ function extractPoolsFromRequestBody(req) {
     }
 
     return {poolsList, extraPoolsList}
+}
+
+function userHasBettedAllGames(tournament, userPools){
+    if(!userPools) return false
+    let userHasBettedAllGames = null
+
+    for (let i = 0; i < tournament.games.length; i++) {
+        let game = tournament.games[i];
+
+        userPools.find(pool => {
+            if (pool.id === game.id & pool.pool !== null) {
+                userHasBettedAllGames = true
+            } else {
+                userHasBettedAllGames = false
+                return userHasBettedAllGames
+            }
+        })
+    }
+    return userHasBettedAllGames
 }
 
 function findBettedGames(tournament, userPools) {

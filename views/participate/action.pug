@@ -59,18 +59,27 @@ block content
                         div.col-3.col-sm-12
                             label.form-label Maalikuningas
                         div.col-6.col-sm-12
-                            input(type="text" name="top_striker" class="form-input" required)
+                            if tournament.userExtraPools && tournament.userExtraPools.top_striker
+                                input(type="text" name="top_striker" class="form-input" value=tournament.userExtraPools.top_striker disabled required)
+                            else
+                                input(type="text" name="top_striker" class="form-input" required)
                 if tournament.winnerbet
                     div.form-group
                         div.col-3.col-sm-12
                             label.form-label Turnauksen voittaja
                         div.col-6.col-sm-12
-                            input(type="text" name="first_place" class="form-input" required)
+                            if tournament.userExtraPools && tournament.userExtraPools.first_place
+                                input(type="text" name="top_striker" class="form-input" value=tournament.userExtraPools.first_place disabled required)
+                            else
+                                input(type="text" name="first_place" class="form-input" required)
                     div.form-group
                         div.col-3.col-sm-12
                             label.form-label Turnauksen 2. sija
                         div.col-6.col-sm-12
-                            input(type="text" name="second_place" class="form-input" required)
+                            if tournament.userExtraPools && tournament.userExtraPools.second_place
+                                input(type="text" name="top_striker" class="form-input" value=tournament.userExtraPools.second_place disabled required)
+                            else
+                                input(type="text" name="second_place" class="form-input" required)
             div.form-group.pt-20
                 div.col-sm-4.col-md-3.col-2.col-ml-auto                
                     a(class='btn btn-link float-right' onclick="cancelButton(event)") Peruuta

@@ -21,7 +21,8 @@ block content
                         th 
                     tbody
                     for tournament in activeTournaments.tournaments
-                        if tournament.userCanParticipate
+                        - console.log(tournament)
+                        if tournament.userCanParticipate && !tournament.userHasBettedAllGames
                             tr
                                 td= tournament.name
                                 td #{moment(tournament.datestarts).format('D.M.YYYY')}
