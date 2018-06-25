@@ -105,7 +105,8 @@ exports.userParticipateAsync = async (poolsList, extraPoolsList, userId, tournam
 		// 	secondplace: 'Suomi'
 		// }
 
-		if(extraPoolsList){
+		//Check is extraPoolsList empty
+		if(Object.keys(extraPoolsList).length > 0){
 			extraPoolsList['participant_id'] = id
 			await db.insert(extraPoolsList).into('extra_pools')
 		}

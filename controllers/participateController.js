@@ -35,19 +35,6 @@ router.post('/tournament/do/', async (req, res) => {
         return res.redirect('/')
     }
 
-    //Incoming request example
-    //Where numeric properties are game_ids
-    //    { 'tournament_id': uuid
-    //    '1': '1',
-    //   '2': 'x',
-    //   '3': '2',
-    //   '4': '1',
-    //   '5': 'x',
-    //   '6': '2',
-    //   topstriker: 'Messi',
-    //   firstplace: 'Italia',
-    //   secondplace: 'Suomi'}
-
     //Initialize variables
     const tournamentId = req.body.tournament_id
     const userId = req.session.user.id
@@ -128,6 +115,19 @@ router.get('/', async (req, res) => {
 function extractPoolsFromRequestBody(req) {
     let poolsList = []
     let extraPoolsList = new Object()
+    
+    //Incoming request example
+    //Where numeric properties are game_ids
+    //    { 'tournament_id': uuid
+    //    '1': '1',
+    //   '2': 'x',
+    //   '3': '2',
+    //   '4': '1',
+    //   '5': 'x',
+    //   '6': '2',
+    //   top_striker: 'Messi',
+    //   first_place: 'Italia',
+    //   second_place: 'Suomi'}
 
     for (let bet in req.body) {
         if (!['top_striker', 'first_place', 'second_place', 'tournament_id'].includes(bet)) {
