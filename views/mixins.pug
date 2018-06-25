@@ -182,66 +182,72 @@ mixin tournamentView(tournament, currentUser)
         div(class='column col-12 card')
             h5.card-heading 
                 | Veikkauksien jakauma
-            if tournament.pools && tournament.pools.length > 0
-                table.table.table-striped
-                    thead
-                        tr
-                            th Peli
-                            th 1
-                            th X
-                            th 2
-                    tbody
-                    for game in tournament.pools
-                        tr
-                            td
-                                +gamesVersusElement(game) 
-                            td                                
-                                if game.pool_1
-                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_1_percentage.toFixed() +"%"
-                                    div.modal.modal-sm
-                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
-                                        div.modal-container
-                                            div.modal-header
-                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
-                                                div.modal-title.h5 Veikanneet
-                                            div.modal-body
-                                                div.content
-                                                    ul
-                                                    for u in game.pool_1
-                                                        li= u
-                                            div.modal-footer
-                            td
-                                if game.pool_x
-                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_x_percentage.toFixed() +"%"
-                                    div.modal.modal-sm
-                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
-                                        div.modal-container
-                                            div.modal-header
-                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
-                                                div.modal-title.h5 Veikanneet
-                                            div.modal-body
-                                                div.content
-                                                    ul
-                                                    for u in game.pool_x
-                                                        li= u
-                                            div.modal-footer
-                            td                   
-                                if game.pool_2
-                                    span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_2_percentage.toFixed() +"%"       
-                                    div.modal.modal-sm
-                                        a(class="modal-overlay" onclick="toggleModal(this)")                                            
-                                        div.modal-container
-                                            div.modal-header
-                                                a(class="btn btn-clear float-right" onclick="toggleModal(this)")
-                                                div.modal-title.h5 Veikanneet
-                                            div.modal-body
-                                                div.content
-                                                    ul
-                                                    for u in game.pool_2
-                                                        li= u
-                                            div.modal-footer
+            if !new_games_first_date || moment(new_games_first_date).format("D.MM.YYYY HH:mm") < moment().format("D.MM.YYYY HH:mm")
+                if tournament.pools && tournament.pools.length > 0
+                    table.table.table-striped
+                        thead
+                            tr
+                                th Peli
+                                th 1
+                                th X
+                                th 2
+                        tbody
+                        for game in tournament.pools
+                            tr
+                                td
+                                    +gamesVersusElement(game) 
+                                td                                
+                                    if game.pool_1
+                                        span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_1_percentage.toFixed() +"%"
+                                        div.modal.modal-sm
+                                            a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                            div.modal-container
+                                                div.modal-header
+                                                    a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                    div.modal-title.h5 Veikanneet
+                                                div.modal-body
+                                                    div.content
+                                                        ul
+                                                        for u in game.pool_1
+                                                            li= u
+                                                div.modal-footer
+                                td
+                                    if game.pool_x
+                                        span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_x_percentage.toFixed() +"%"
+                                        div.modal.modal-sm
+                                            a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                            div.modal-container
+                                                div.modal-header
+                                                    a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                    div.modal-title.h5 Veikanneet
+                                                div.modal-body
+                                                    div.content
+                                                        ul
+                                                        for u in game.pool_x
+                                                            li= u
+                                                div.modal-footer
+                                td                   
+                                    if game.pool_2
+                                        span.chip.bg-primary(onclick="toggleModal(this)")= game.pool_2_percentage.toFixed() +"%"       
+                                        div.modal.modal-sm
+                                            a(class="modal-overlay" onclick="toggleModal(this)")                                            
+                                            div.modal-container
+                                                div.modal-header
+                                                    a(class="btn btn-clear float-right" onclick="toggleModal(this)")
+                                                    div.modal-title.h5 Veikanneet
+                                                div.modal-body
+                                                    div.content
+                                                        ul
+                                                        for u in game.pool_2
+                                                            li= u
+                                                div.modal-footer
+                else
+                    p Ei vielä mitään
             else
-                p Ei vielä mitään
+                div.empty
+                    div.empty-icon
+                        i(class="fa fa-calendar-times-o fa-5x" aria-hidden="true")
+                    p.empty-subtitle Osio näkyy taas kun turnauksen uudet pelit alkavat #{moment(tournament.new_games_first_date).format("D.M.YYYY HH:mm")}
         div(class='column col-12 card')
             h5.card-heading 
                 | Muut veikkaukset
