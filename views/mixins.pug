@@ -182,7 +182,7 @@ mixin tournamentView(tournament, currentUser)
         div(class='column col-12 card')
             h5.card-heading 
                 | Veikkauksien jakauma
-            if !new_games_first_date || moment(new_games_first_date).format("D.MM.YYYY HH:mm") < moment().format("D.MM.YYYY HH:mm")
+            if !tournament.new_games_first_date || moment(tournament.new_games_first_date).format("D.MM.YYYY HH:mm") < moment().format("D.MM.YYYY HH:mm")
                 if tournament.pools && tournament.pools.length > 0
                     table.table.table-striped
                         thead
